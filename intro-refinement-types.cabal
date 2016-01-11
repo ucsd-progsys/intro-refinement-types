@@ -25,4 +25,6 @@ executable homepage
                        pandoc-types,
                        template,
                        directory,
-                       filepath
+                       filepath,
+                       either
+
