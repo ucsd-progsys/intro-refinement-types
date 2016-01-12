@@ -36,6 +36,7 @@ PANDOCHTML=$(PANDOC)\
 	 --filter $(LIQUIDCLIENT)/templates/codeblock.hs \
 	 --filter $(FILTERS)/Figures.hs \
 	 --filter $(FILTERS)/Html.hs \
+	 --filter $(FILTERS)/HeaderSlides.hs \
 	 --variable=notitle \
 	 --highlight-style=tango
 
