@@ -43,29 +43,28 @@ MathJax.Hub.Config({
 
 <body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
 
-    <div id="nav">
-       <button id="toggle-nav" class="toggle-nav">
-         <span class="sr-only">Toggle navigation</span>
-         <span class="bar"></span>
-         <span class="bar"></span>
-         <span class="bar"></span>
-       </button>
-    </div>
+  <div id="nav">
+        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:30px; color:black;  z-index:1">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+
+        <button id="toggle-nav" class="toggle-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:30px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+  </div>
 
 <div id='toc' class='mobile-hidden'>
 $toc
 </div>
 
        <div id="checker-status">
-
-         <!-- Navigation  -->
-         <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:30px; z-index:1">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-         </button>
-
-         <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:30px; z-index:1">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-         </button>
 
          <!-- Verifying ... -->
          <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
