@@ -4,13 +4,11 @@
 
 module CodeBlock where
 
-import System.Posix.Env
+-- import System.Posix.Env
 import Data.IORef
 import Text.Pandoc.JSON
 import Text.Pandoc
--- import Data.Char (isSpace)
 import Data.List (isPrefixOf)
--- import Data.Monoid (mempty)
 import Debug.Trace
 import Text.Printf (printf)
 
@@ -22,20 +20,12 @@ import qualified Data.Text.IO as TIO
 import Data.Text.Template
 
 main :: IO ()
-main = do
-  r     <- newIORef 0
-  tpltF <- templateFile
-  tplt  <- TIO.readFile tpltF
-  toJSONFilter (txBlock tplt r)
+main = toJSONFilter txBlocks
 
-templateFile :: IO FilePath
-templateFile = do
-  fo <- getEnv "PANDOC_CODETEMPLATE"
-  case fo of
-    Nothing -> return "templates/code.template"
-    Just f  -> return f
+txBlocks :: [Block] -> IO [Block]
+txBlocks = undefined
 
-txBlock :: T.Text -> IORef Int -> Block -> IO Block
+{-
 
 txBlock t r z@(RawBlock (Format "latex") str)
   | Just contents <- isSpecCode str
@@ -108,8 +98,6 @@ pad tplt n s   = L.unpack $ substitute tplt ctx
     ctx "id"   = tn
     ctx z      = z
 
-
-
 --  EXAMPLE
 doInclude :: Block -> IO Block
 doInclude cb@(CodeBlock (id, classes, namevals) contents) =
@@ -117,3 +105,5 @@ doInclude cb@(CodeBlock (id, classes, namevals) contents) =
        Just f     -> return . (CodeBlock (id, classes, namevals)) =<< readFile f
        Nothing    -> return cb
 doInclude x = return x
+
+-}

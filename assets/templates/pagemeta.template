@@ -90,7 +90,8 @@ $toc
              </button>
              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                <li ng-repeat="err in errorBlocks">
-                 <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a>
+                 <a tabindex="-1" ng-click="jumpToProgPane(err)">{{err.index}}</a>
+                 <!-- <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a> -->
                </li>
              </ul>
          </div>
@@ -133,8 +134,8 @@ $$body$$
   <script src="$$root$$/js/liquid/tooltip.js"></script>
   <script src="$$root$$/js/liquid/annot.js"></script>
   <script src="$$root$$/js/liquid/config.js"></script>
-  <script src="$$root$$/js/liquid/liquid.js"></script>
   <script src="$$root$$/js/liquid/slideshow.js"></script>
+  <script src="$$root$$/js/liquid/liquid.js"></script>
 
   <script type="text/javascript">
     var queryServerURL = "$$liquidserver$$" ;
