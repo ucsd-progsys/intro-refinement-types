@@ -1,6 +1,13 @@
 README
 ======
 
+Todo
+----
+
+1. Add auto-slides (HeaderSlides.hs)
+2. Add jumps to error slides.
+
+
 This repository has the materials for a 25 minute talk on Refinement Types,
 with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 

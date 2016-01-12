@@ -33,6 +33,7 @@ PANDOCHTML=$(PANDOC)\
 	 --mathjax \
 	 --toc \
 	 --section-divs \
+	 --filter $(FILTERs)/slides.hs \
 	 --filter $(LIQUIDCLIENT)/templates/codeblock.hs \
 	 --filter $(FILTERS)/Figures.hs \
 	 --filter $(FILTERS)/Html.hs \
