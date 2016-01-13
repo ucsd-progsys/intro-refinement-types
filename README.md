@@ -106,6 +106,9 @@ Outline
   - insertSort
   - foldr
 
++ Evaluation
+  - take from lh-workshop
+
 + Current Status
   - [LiquidHaskell](lh) / [RefScript][rsc] (UCSD)
   - [Catalyst][catalyst] (Purdue)
