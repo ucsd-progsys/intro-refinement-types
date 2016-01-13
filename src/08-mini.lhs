@@ -7,7 +7,7 @@ All the Code
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
 
-module IntroToRefinementTypes where
+module IntroToRefinemetntTypes where
 
 import Prelude hiding (length, (!))
 

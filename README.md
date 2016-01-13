@@ -1,13 +1,6 @@
 README
 ======
 
-Todo
-----
-
-1. Add auto-slides (HeaderSlides.hs)
-2. Add jumps to error slides.
-
-
 This repository has the materials for a 25 minute talk on Refinement Types,
 with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
@@ -20,30 +13,20 @@ For longer versions, you may be interested in:
 Running LiquidHaskell
 ---------------------
 
-You can run this code in *any of* the following ways:
+1. [Try Online][online]
+2. [VM Image][]
+3. [Build Locally][local]
 
-1. [Online](http://ucsd-progsys.github.io/intro-refinement-types)
+[online]: (http://ucsd-progsys.github.io/intro-refinement-types)
+[local]:(https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
+[vm]: http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova
 
-2. [Virtual Machine](http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova)
-
-3. [Build LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
-
-The **online web demo** is easiest for the workshop. See below
-
-Option 1: Online
-----------------
-
-This is the easiest by far; point your browser [here](http://ucsd-progsys.github.io/lh-workshop/)
-
-
-Option 2: Virtual Machine
--------------------------
+Virtual Machine
+---------------
 
 This is also very easy, if you can manage the 2Gb download.
 
-**Step 1** Download [this VM image](http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova)
-
-he code files are in `lh-workshop/src/*.lhs`
+**Step 1** Download [this VM image][vm]
 
 **Step 2** Choose your editor. For *emacs* do:
 
@@ -53,17 +36,7 @@ and for *Spacemacs* (a great Vim-Emacs hybrid) do:
 
        tar -zxvf liquid-spacemacs.tgz
 
-**Step 3** The code files are in
-
-       ~/lh-workshop/src/*.lhs
-
-
-Option 3: Local Build
----------------------
-
-Finally, if you prefer, you can
-[build LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell/#how-to-clone-build-and-install)
-
+**Step 3** Grab the source files from Github.
 
 Build Slides
 ------------
@@ -98,3 +71,45 @@ Insert Sort
 + https://github.com/davidfstr/idris-insertion-sort/tree/master
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
+
+
+Outline
+-------
+
++ Motivation
+  - Bugs
+  - Orwell
+  - Go wrong
+
++ Theory
+  - Formal language
+  - Dependent Application
+  - Predicate Subtyping
+
++ Examples
+  * First Order
+    - pre/post : at/length
+    - checking : sum
+    - infer    : sumInfer
+
+  * Higher Order
+    - range, sumHO
+
+  * Data types
+    - average  
+    - map
+    - hwAverage
+    - insertSort
+
++ Abstracting Refinements
+  - Incrs/Decrs
+  - insertSort
+  - foldr
+
++ Current Status
+  - LiquidHaskell/RefScript (UCSD)
+  - Catalyst (Purdue)
+  - DML/Stardust/ATS (CMU/BU)
+  - F7/F* (MSR/Inria)
+  - RefinedTypedRacket (IU)
+  - Synquid (MIT)
