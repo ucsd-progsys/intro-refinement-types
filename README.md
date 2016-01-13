@@ -107,9 +107,17 @@ Outline
   - foldr
 
 + Current Status
-  - LiquidHaskell/RefScript (UCSD)
-  - Catalyst (Purdue)
-  - DML/Stardust/ATS (CMU/BU)
-  - F7/F* (MSR/Inria)
-  - RefinedTypedRacket (IU)
+  - [LiquidHaskell](lh) / [RefScript][rsc] (UCSD)
+  - [Catalyst][catalyst] (Purdue)
+  - [DML/Stardust][stardust] / [ATS][ats] (CMU/BU)
+  - [F7/F*][fstar] (MSR/Inria)
+  - [RefinedTypedRacket][rtr] (IU)
   - Synquid (MIT)
+
+[lh]: http://www.refinement-types.org
+[rsc]: http://www.refinement-types.org
+[stardust]: http://www.mpi-sws.org/~joshua/type-refinements.info/
+[ats]: https://github.com/ats-lang/ats-lang.github.io
+[fstar]: http://fstar-lang.org
+[catalyst]: http://gowthamk.github.io/docs/icfp77-kaki.pdf
+[rtr]: http://arxiv.org/abs/1511.07033
