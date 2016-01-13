@@ -1,28 +1,16 @@
+
+<div class="slide">
+
 <br>
 <br>
 <br>
 <br>
 
-<h1 style="border-bottom:none">Programming with Refinement Types</b>
+<h1 style="border-bottom:none">Programming with Refinement Types</h1>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (University of California, San Diego)</i></h4>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
+</div>
 
 Well-Typed Programs *Can* Go Wrong
 ==================================
@@ -36,24 +24,9 @@ main = putStrLn "Easter Egg: to force Makefile"
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Division By Zero
 ----------------
-
 
 <div class="fragment">
 \begin{spec}
@@ -72,22 +45,7 @@ Division By Zero
 *** Exception: divide by zero
 \end{spec}
 
-
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Missing Keys
@@ -113,20 +71,6 @@ Missing Keys
 \end{spec}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Segmentation Faults
 -------------------
@@ -148,19 +92,6 @@ Segmentation Faults
 'ghci' terminated by signal SIGSEGV ...
 \end{spec}
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -188,19 +119,6 @@ Memory overflows **leaking secrets**...
 \end{spec}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Goal: Extend Type System
@@ -213,24 +131,6 @@ Goal: Extend Type System
 + To prevent **wider class** of errors
 
 + To enforce **program specific** properties
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-
 
 
 Plan
@@ -252,21 +152,6 @@ Plan
 + <div class="fragment">[**Low-level Memory**](06-case-study-bytestring.html)</div>
 
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 Evaluation
 ----------
 
@@ -276,7 +161,7 @@ Evaluation
 
 + 10KLoc / 56 Modules
 
-+ Memory Safety, Termination, Functional Correctness
++ Memory Safety, Functional Correctness, Termination
 
 <br>
 
@@ -284,36 +169,15 @@ Evaluation
 **Inference is Crucial**
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Evaluation
 ----------
 
 
 <img src="img/code-spec-indiv.png" height=250px>
 
-
 + **Specifications:** 1 / 10 LOC  (*ok*)
 
 + **Compile Time:**  1s / 10 LOC  (*not ok!*)
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 <div class="hidden">
 
@@ -360,21 +224,6 @@ Conclusion
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
 Current & Future Work
 ---------------------
 
@@ -384,19 +233,6 @@ Current & Future Work
 + Faster Checking
 + Easier Errors
 + Code Synthesis
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -408,16 +244,3 @@ Thank You!
 
 
 [`http://www.refinement-types.org`](http://www.refinement-types.org)
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
