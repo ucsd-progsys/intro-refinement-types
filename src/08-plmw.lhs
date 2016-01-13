@@ -9,13 +9,15 @@ module IntroToRefinementTypes
        , sumInfer
        , sumHO
        , average
+       , insertSort
        )
        where
 
 import Prelude hiding (foldr, map, sum, length, (!))
 import qualified Data.Vector as V
-
 \end{code}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Specifications %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -237,4 +239,64 @@ Abstracting Refinements
 
 **Instantiate** refinements to get different invariants!
 
-HERE
+\begin{code}
+{-@ type Incrs a = [a]<{\x y -> x <= y}> @-} 
+{-@ type Decrs a = [a]<{\x y -> x >= y}> @-} 
+{-@ type Diffs a = [a]<{\x y -> x /= y}> @-} 
+
+{-@ ups   :: Incrs Integer @-}
+ups       = [1, 2, 3, 4]
+
+{-@ downs :: Decrs Integer @-}
+downs     = [4, 3, 2, 1]
+
+{-@ diffs :: Diffs Integer @-}
+diffs     = [1, 3, 2, 4]
+\end{code}
+
+
+Using Abstract Refinements
+--------------------------
+
+\begin{code}
+{-@ insertSort :: (Ord a) => [a] -> Incrs a @-}
+insertSort xs = foldr insert [] xs
+
+insert x []     = [x]
+insert x (y:ys)
+  | x < y       = x : y : ys
+  | otherwise   = y : insert x ys
+\end{code}
+
+
+Bounded Refinements
+-------------------
+
+**Bounded Quantification** for Abstract Refinements
+
+e.g. Below says relation `step` is preserves `inv`:
+
+\begin{spec}
+Inductive inv step = \y ys acc v ->
+  inv ys acc ==> step y acc v ==> inv (y:ys) v
+\end{spec}
+
+Bounded Refinements
+-------------------
+
+Encode _induction_ as the type of `foldr`
+
+\begin{spec}
+foldr :: (Inductive inv step)
+      => (x:a -> acc:b -> b<step x acc>)
+      -> b<inv []>
+      -> xs:[a]
+      -> b<inv xs>
+\end{spec}
+
+Which lets us automatically verify,
+
+\begin{spec}
+insertSort :: (Ord a) => xs:[a] -> {v:Incrs a | size v == size xs}
+\end{spec}
+
