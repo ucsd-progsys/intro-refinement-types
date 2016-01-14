@@ -18,6 +18,46 @@ import qualified Data.Vector as V
 \end{code}
 
 
+<div class="slide">
+
+<br>
+<br>
+<br>
+<br>
+
+<h1 style="border-bottom:none">An Introduction to Refinement Types</h1>
+
+<h4 style="border-bottom:none"><i>Ranjit Jhala (UCSD)</i></h4>
+
+</div>
+
+
+The First *Bug*
+---------------
+
+<img src="img/firstbug-crop2.jpg" height=300px/>
+
+**Page from Harvard Mark II log**
+
+A dead moth removed from the device
+
+Fast forward to Present Day
+---------------------------
+
+<img src="img/news-bug-1.png" height=300px>
+
+
+Fast forward to Present Day
+---------------------------
+
+<img src="img/news-bug-2.png" height=300px>
+
+
+Fast forward to Present Day
+---------------------------
+
+<img src="img/news-bug-3.png" height=300px>
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Specifications %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -240,9 +280,9 @@ Abstracting Refinements
 **Instantiate** refinements to get different invariants!
 
 \begin{code}
-{-@ type Incrs a = [a]<{\x y -> x <= y}> @-} 
-{-@ type Decrs a = [a]<{\x y -> x >= y}> @-} 
-{-@ type Diffs a = [a]<{\x y -> x /= y}> @-} 
+{-@ type Incrs a = [a]<{\x y -> x <= y}> @-}
+{-@ type Decrs a = [a]<{\x y -> x >= y}> @-}
+{-@ type Diffs a = [a]<{\x y -> x /= y}> @-}
 
 {-@ ups   :: Incrs Integer @-}
 ups       = [1, 2, 3, 4]
@@ -299,4 +339,3 @@ Which lets us automatically verify,
 \begin{spec}
 insertSort :: (Ord a) => xs:[a] -> {v:Incrs a | size v == size xs}
 \end{spec}
-

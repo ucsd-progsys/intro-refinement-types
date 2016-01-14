@@ -12,7 +12,12 @@
     <link rel="stylesheet" type="text/css" href="$$root$$/css/editor-slides.css">
     <link rel="stylesheet" type="text/css" href="$$root$$/css/code-format.css">
     <link rel="stylesheet" type="text/css" href="$$root$$/css/slideshow.css">
-
+    <style>
+      body {
+        text-align: center;
+      }
+    </style>
+    
 <!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
 <script type="text/javascript" src="$$root$$/js/jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="$$root$$/js/angular/angular.js"></script>

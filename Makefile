@@ -1,4 +1,5 @@
-MATHJAX=http://cdn.mathjax.org/mathjax/latest
+# MATHJAX=http://cdn.mathjax.org/mathjax/latest
+MATHJAX=js/MathJax-2.6.0
 LIQUIDCLIENT=../liquid-client
 SLIDES=dist/_slides
 SITE=dist/_site
@@ -67,13 +68,16 @@ all: html
 
 ################ rust style html ###################################
 
-html: indexhtml $(htmlObjects)
+html: mathjax indexhtml $(htmlObjects)
 	cp src/*.html               $(SITE)/
 	cp -r $(IMG)                $(SITE)/
 	cp -r $(CSS)                $(SITE)/
 	cp -r $(LIQUIDCLIENT)/fonts $(SITE)/
 	cp -r $(LIQUIDCLIENT)/css   $(SITE)/
 	cp -r $(LIQUIDCLIENT)/js    $(SITE)/
+
+mathjax:
+	cp -r $(JS)                 $(SITE)/
 
 indexhtml: $(INDEX)
 	$(PANDOC) --from=markdown+lhs --to=html5 --template=$(INDEX) $(PREAMBLE) -o $(SITE)/index.html
