@@ -26,10 +26,13 @@ import qualified Data.Vector as V
 <br>
 <br>
 <br>
+<br>
 
 
 <p align=center>
 <h1 style="border-bottom:none">An Introduction to Refinement Types</h1>
+
+<br>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (UCSD)</i></h4>
 </p>
@@ -53,7 +56,7 @@ The First *Bug*
 <br>
 
 <p align=center>
-<img src="img/firstbug-crop2.jpg" height=300px/>
+<img src="img/firstbug-crop2.jpg" height=200px/>
 </p>
 
 <p align=center>
@@ -69,7 +72,7 @@ Fast forward to Present Day
 <br>
 
 <p align=center>
-<img src="img/news-bug-1.png" height=300px>
+<img src="img/news-bug-1.png" height=250px>
 </p>
 
 Fast forward to Present Day
@@ -78,7 +81,7 @@ Fast forward to Present Day
 <br>
 
 <p align=center>
-<img src="img/news-bug-2.png" height=325px>
+<img src="img/news-bug-2.png" height=275px>
 </p>
 
 Fast forward to Present Day
@@ -87,23 +90,157 @@ Fast forward to Present Day
 <br>
 
 <p align=center>
-<img src="img/news-bug-3.png" height=350px>
+<img src="img/news-bug-3.png" height=300px>
 </p>
 
-What do you *do* Ranjit?
-------------------------
 
-<br>
-
-PL Research
------------
-
-<br>
+Programming Languages Research
+------------------------------
 
 <p align=center>
-  <img src="img/george-orwell.jpg" height=250px>
+  <img src="img/george-orwell.jpg" height=240px>
+
+  **George Orwell (1984)**
 </p>
+
+<img src="img/thoughtcrime.png" height=60px>
+
+
+
+Modern Languages
+----------------
 
 <br>
 
-<img src="img/thoughtcrime.png" height=75px>
+F#
+
+Rust
+
+Scala
+
+OCaml
+
+Haskell
+
+
+Modern Languages
+----------------
+
+<br>
+
+Static Typing
+
+<br>
+
+First-class Functions
+
+<br>
+
+Immutability by Default
+
+<br>
+
+Make **good** designs **easy** and **bad** designs **hard**
+
+Modern Languages?
+-----------------
+
+<br>
+
+**Alas ... well-typed programs can go very wrong!**
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+Buffer overflows (!)
+
+
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+Buffer overflows (!)
+
+Non-termination
+
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+Buffer overflows (!)
+
+Non-termination
+
+Correctness Assertions...
+
+
+Goal: Algorithmic Software Verification
+---------------------------------------
+
+<br>
+
+**Expressive**
+
+Verify *program specific* properties via *domain specific* analysis
+
+<br>
+
+**Automatic**
+
+Rapid feedback to influence *design*, not only post-facto validation

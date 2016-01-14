@@ -43,7 +43,11 @@ MathJax.Hub.Config({
   }
 });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+-->
+<script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+
 </head>
 
 <body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
@@ -115,8 +119,8 @@ $$body$$
 </div>
 </div>
 
+<!--Site Meter
 <div class="hidden">
-<!--Site Meter -->
   <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
   <noscript>
     <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes"
@@ -124,9 +128,8 @@ $$body$$
       <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes"
       alt="Site Meter" border="0"/></a>
   </noscript>
-  <!-- Copyright (c)2009 Site Meter -->
 </div>
-
+-->
 
 
 

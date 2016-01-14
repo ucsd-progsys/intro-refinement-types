@@ -68,7 +68,7 @@ all: html
 
 ################ rust style html ###################################
 
-html: mathjax indexhtml $(htmlObjects)
+html: indexhtml $(htmlObjects)
 	cp src/*.html               $(SITE)/
 	cp -r $(IMG)                $(SITE)/
 	cp -r $(CSS)                $(SITE)/
@@ -106,6 +106,10 @@ src/%.lhs.slide.html: src/.liquid/%.lhs.markdown
 ################ CLEAN and SYNC #######################################
 
 clean:
+	rm -rf $(DIST)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
+
+
+distclean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
 
 #clean:
