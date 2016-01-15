@@ -29,7 +29,7 @@ Preconditions
 \begin{code}
 {-@ at :: v:V.Vector a -> {i:Nat | i < vlen v} -> a @-}
 at :: V.Vector a -> Int -> a
-at v i = undefined
+at v i = (V.!)
 \end{code}
 
 Postconditions
@@ -38,7 +38,7 @@ Postconditions
 \begin{code}
 {-@ size :: v:V.Vector a -> {n:Int | n == vlen v} @-}
 size :: V.Vector a -> Int
-size = undefined
+size = V.length
 \end{code}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,8 +77,26 @@ sum v = loop 0
 Refinement Checking (How)
 -------------------------
 
-TODO: Show VCs
 
+
+Verification Conditions
+
+$$\begin{array}{lll}
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i
+  & \Rightarrow 0 \leq v < vlen v
+  & \mbox{(\mathtt{at\ v\ i})} \\
+  & & & \\
+\True
+  & \Rightarrow v = 0
+  & \Rightarrow 0 \leq v
+  & \mbox{(\mathtt{loop}\ 0)} \\
+  & & & \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i + 1
+  & \Rightarrow 0 <= v \\
+  & \mbox{(\mathtt{loop}\ \mathtt{i+1})} \\
+\end{array}$$
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Inference %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
