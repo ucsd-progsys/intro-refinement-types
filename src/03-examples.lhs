@@ -5,7 +5,7 @@
 
 module IntroToRefinementTypes
        ( sum
-       -- , sumInfer
+       , sum'
        -- , sumHO
        -- , average
        -- , insertSort
@@ -154,12 +154,91 @@ Oops! What gives?
 Verification: Vector Sum
 ------------------------
 
-\begin{spec}
-sum :: Vector Int -> Int
-sum v = loop 0
+<img src="img/sum-code-numbers.png" height=150px>
+
+Verification: Vector Sum
+------------------------
+
+<img src="img/sum-code-numbers.png" height=150px>
+
+**Verification Conditions**
+
+$$\begin{array}{lll}
+\True
+  & \Rightarrow v = 0
+  & \Rightarrow 0 \leq v
+  & \mbox{(A)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i + 1
+  & \Rightarrow 0 \leq v
+  & \mbox{(B)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i
+  & \Rightarrow 0 \leq v < \mathit{vlen}\ v
+  & \mbox{(C)} \\
+\end{array}$$
+
+
+Refinement Types by Example
+---------------------------
+
+<div class="mybreak"><br></div>
+
+Specifications
+
+Verification
+
+**Inference**
+
+Collections & HOFs
+
+Invariants & Datatypes
+
+Inference
+---------
+
+<br>
+
+    The more interesting your types get,
+    the less fun it is to write them down.
+                       -- Benjamin Pierce
+
+Inference: Vector Sum
+----------------------
+
+<div class="mybreak"><br></div>
+
+\begin{code}
+sum' :: Vector Int -> Int
+sum' v = loop 0
   where
-    {-@ loop :: Nat -> Int @-}
+    {-@ loop :: _ -> _ @-}
     loop i
-      | i <= size v = at v i + loop (i + 1)
-      | otherwise   = 0
-\end{spec}
+      | i < size v = at v i + loop (i + 1)
+      | otherwise  = 0
+\end{code}
+
+Not magic, just **Abstract Interpretation**
+
+
+Inference: Vector Sum
+---------------------
+
+<img src="img/sum-code-numbers.png" height=150px>
+
+**Verification Conditions**
+
+$$\begin{array}{lll}
+\True
+  & \Rightarrow v = 0
+  & \Rightarrow 0 \leq v
+  & \mbox{(A)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i + 1
+  & \Rightarrow 0 \leq v
+  & \mbox{(B)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i
+  & \Rightarrow 0 \leq v < \mathit{vlen}\ v
+  & \mbox{(C)} \\
+\end{array}$$

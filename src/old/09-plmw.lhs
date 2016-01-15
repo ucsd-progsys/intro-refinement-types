@@ -77,8 +77,6 @@ sum v = loop 0
 Refinement Checking (How)
 -------------------------
 
-
-
 Verification Conditions
 
 $$\begin{array}{lll}
@@ -97,6 +95,7 @@ $$\begin{array}{lll}
   & \Rightarrow 0 <= v \\
   & \mbox{(\mathtt{loop}\ \mathtt{i+1})} \\
 \end{array}$$
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Inference %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
