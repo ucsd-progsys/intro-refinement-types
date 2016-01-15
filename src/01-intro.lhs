@@ -215,53 +215,52 @@ Outline
 
 <br>
 
-Motivation
+[Motivation](01-intro.html)
 
 Outline
 -------
 
 <br>
 
-Motivation
+[Motivation](01-intro.html)
 
-Refinements 101
-
-Outline
--------
-
-<br>
-
-Motivation
-
-Refinements 101
-
-Refinements by Example
+[Refinements 101](02-refinements.html)
 
 Outline
 -------
 
 <br>
 
-Motivation
+[Motivation](01-intro.html)
 
-Refinements 101
+[Refinements 101](02-refinements.html)
 
-Refinements by Example
-
-Abstracting Over Refinements
-
+[Refinements by Example](03-examples.html)
 
 Outline
 -------
 
 <br>
 
-Motivation
+[Motivation](01-intro.html)
 
-Refinements 101
+[Refinements 101](02-refinements.html)
 
-Refinements by Example
+[Refinements by Example](03-examples.html)
 
-Abstracting Over Refinements
+[Abstracting Over Refinements](04-abstracting.html)
 
-Current Status & Future Directions
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[Abstracting Over Refinements](04-abstracting.html)
+
+[Current Status & Future Directions](05-concl.html)
