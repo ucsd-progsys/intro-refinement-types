@@ -218,27 +218,47 @@ sum' v = loop 0
       | otherwise  = 0
 \end{code}
 
-Not magic, just **Abstract Interpretation**
-
 
 Inference: Vector Sum
 ---------------------
 
+<br>
+
+Not magic, just **Abstract Interpretation**
+
+Inference: Vector Sum [[PLDI 2008]][pldi08]
+---------------------
+
+<br>
+
+Not magic, just Abstract Interpretation
+
+Represent **unknown refinements** with $\kvar{}$ variables ...
+
+... Solve resulting **Horn Constraints**
+
+Inference: Vector Sum [[PLDI 2008]][pldi08]
+---------------------
+
 <img src="img/sum-code-numbers.png" height=150px>
 
-**Verification Conditions**
+**Horn Constraints**
 
 $$\begin{array}{lll}
 \True
   & \Rightarrow v = 0
-  & \Rightarrow 0 \leq v
+  & \Rightarrow \kvar{}(v)
   & \mbox{(A)} \\
-0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+\kvar{}(i) \wedge n = \mathit{vlen}\ v \wedge i < n
   & \Rightarrow v = i + 1
-  & \Rightarrow 0 \leq v
+  & \Rightarrow \kvar{}(v)
   & \mbox{(B)} \\
-0 \leq i \wedge n = \mathit{vlen}\ v \wedge i < n
+\kvar{}(i) \wedge n = \mathit{vlen}\ v \wedge i < n
   & \Rightarrow v = i
   & \Rightarrow 0 \leq v < \mathit{vlen}\ v
   & \mbox{(C)} \\
 \end{array}$$
+
+
+
+[pldi08]: http://dl.acm.org/citation.cfm?id=1375602
