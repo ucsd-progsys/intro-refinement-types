@@ -26,7 +26,6 @@ import qualified Data.Vector as V
 <br>
 <br>
 <br>
-<br>
 
 
 <p align=center>
@@ -45,9 +44,8 @@ Whats this?
 
 <br>
 
-
 <p align=center>
-<img src="img/firstbug-crop.jpg" height=300px/>
+<img src="img/firstbug-crop.jpg" height=200px/>
 </p>
 
 The First *Bug*
@@ -56,7 +54,7 @@ The First *Bug*
 <br>
 
 <p align=center>
-<img src="img/firstbug-crop2.jpg" height=200px/>
+<img src="img/firstbug-crop2.jpg" height=120px/>
 </p>
 
 <p align=center>
@@ -69,28 +67,25 @@ A *dead moth* removed from the device
 Fast forward to Present Day
 ---------------------------
 
-<br>
 
 <p align=center>
-<img src="img/news-bug-1.png" height=250px>
+<img src="img/news-bug-1.png" height=200px>
 </p>
 
 Fast forward to Present Day
 ---------------------------
 
-<br>
 
 <p align=center>
-<img src="img/news-bug-2.png" height=275px>
+<img src="img/news-bug-2.png" height=225px>
 </p>
 
 Fast forward to Present Day
 ---------------------------
 
-<br>
 
 <p align=center>
-<img src="img/news-bug-3.png" height=300px>
+<img src="img/news-bug-3.png" height=250px>
 </p>
 
 
@@ -98,12 +93,12 @@ Programming Languages Research
 ------------------------------
 
 <p align=center>
-  <img src="img/george-orwell.jpg" height=240px>
+  <img src="img/george-orwell.jpg" height=170px>
 
   **George Orwell (1984)**
 </p>
 
-<img src="img/thoughtcrime.png" height=60px>
+<img src="img/thoughtcrime.png" height=45px>
 
 
 
@@ -130,11 +125,18 @@ Modern Languages
 
 Static Typing
 
-<br>
-
 First-class Functions
 
+Immutability by Default
+
+Modern Languages
+----------------
+
 <br>
+
+Static Typing
+
+First-class Functions
 
 Immutability by Default
 
@@ -146,29 +148,15 @@ Modern Languages?
 -----------------
 
 <br>
+<br>
+<br>
 
-**Alas ... well-typed programs can go very wrong!**
+**Alas ... well-typed programs go very wrong!**
 
 Well-typed programs can go very wrong!
 -----------------
 
 <br>
-
-Well-typed programs can go very wrong!
------------------
-
-<br>
-
-Divide-by-zero
-
-Well-typed programs can go very wrong!
------------------
-
-<br>
-
-Divide-by-zero
-
-Keys missing in Maps
 
 Well-typed programs can go very wrong!
 -----------------
@@ -181,41 +169,11 @@ Keys missing in Maps
 
 Pattern-match failures
 
-Well-typed programs can go very wrong!
------------------
-
-<br>
-
-Divide-by-zero
-
-Keys missing in Maps
-
-Pattern-match failures
-
-Buffer overflows (!)
-
-
 
 Well-typed programs can go very wrong!
 -----------------
 
-<br>
-
-Divide-by-zero
-
-Keys missing in Maps
-
-Pattern-match failures
-
-Buffer overflows (!)
-
-Non-termination
-
-
-Well-typed programs can go very wrong!
------------------
-
-<br>
+<hr style="height:30pt; visibility:hidden;" />
 
 Divide-by-zero
 
@@ -230,6 +188,20 @@ Non-termination
 Correctness Assertions...
 
 
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+-------------------------         ---------------------------
+Divide-by-zero                    Buffer overflows (!)
+
+Keys missing in Maps              Non-termination
+
+Pattern-match failures            Correctness Assertions...
+-------------------------         ---------------------------
+
+
 Goal: Algorithmic Software Verification
 ---------------------------------------
 
@@ -237,10 +209,19 @@ Goal: Algorithmic Software Verification
 
 **Expressive**
 
-Verify *program specific* properties via *domain specific* analysis
+Verify **program specific** properties via *domain specific* analysis
+
+Goal: Algorithmic Software Verification
+---------------------------------------
 
 <br>
 
-**Automatic**
+<h4 style="border-bottom:none">Expressive</h4>
 
-Rapid feedback to influence *design*, not only post-facto validation
+Verify **program specific** properties via *domain specific* analysis
+
+<br>
+
+<h4 style="border-bottom:none">Automatic</h4>
+
+Rapid feedback to **influence design**, not only post-facto validation

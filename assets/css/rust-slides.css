@@ -309,7 +309,8 @@ hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
-    border-top: 1px solid #eeeeee;
+    /* border-top: 1px solid #eeeeee; */
+    border-top: 1px solid #ffffff;
 }
 
 table {
@@ -319,13 +320,15 @@ table {
     display: block;
 }
 
+/*
 table tr.odd {
     background: #eee;
-}
+} 
+ */
 
 table td,
 table th {
-    border: 1px solid #ddd;
+    border: 1px solid #ffffff;
     padding: 5px;
 }
 

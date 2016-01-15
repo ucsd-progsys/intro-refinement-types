@@ -17,7 +17,7 @@
         text-align: center;
       }
     </style>
-    
+
 <!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
 <script type="text/javascript" src="$$root$$/js/jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="$$root$$/js/angular/angular.js"></script>
@@ -53,6 +53,11 @@ MathJax.Hub.Config({
 <body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
 
   <div id="nav">
+
+        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:30px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-backward"></span>
+        </button>
+
         <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:30px; color:black;  z-index:1">
           <span class="glyphicon glyphicon-chevron-left"></span>
         </button>
@@ -67,6 +72,11 @@ MathJax.Hub.Config({
         <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:30px; color:black; z-index:1">
           <span class="glyphicon glyphicon-chevron-right"></span>
         </button>
+
+        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:30px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-forward"></span>
+        </button>
+
   </div>
 
 <div id='toc' class='mobile-hidden'>
@@ -100,7 +110,6 @@ $toc
              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                <li ng-repeat="err in errorBlocks">
                  <a tabindex="-1" ng-click="jumpToProgPane(err)">{{err.index}}</a>
-                 <!-- <a tabindex="-1" ng-href="#program-{{err.data}}">{{err.index}}</a> -->
                </li>
              </ul>
          </div>
