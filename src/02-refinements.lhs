@@ -8,7 +8,7 @@
 module SimpleRefinements where
 import Prelude hiding (abs, max)
 
-zero, zero', zero'', four :: Int
+zero, zero', zero'', four, four' :: Int
 nats :: [Int]
 
 -- zero'       :: Int
@@ -302,3 +302,47 @@ four' = x + 1   -- x = 3 |- {v = x+1} <: Nat
   where         -- as
     x = 3       -- x = 3 =>  v = x+1  => 0 <= v
 \end{code}
+
+Recap: Refinement Types 101
+---------------------------
+
+<div class="mybreak"><br></div>
+
+**Refinement Types**
+
+Types + Predicates
+
+Recap: Refinement Types 101
+---------------------------
+
+<div class="mybreak"><br></div>
+
+**Refinement Types**
+
+Types + Predicates
+
+<div class="mybreak"><br></div>
+
+**Refinement Checking**
+
+Dependent Application + Predicate Subtyping
+
+
+Recap: Refinement Types 101
+---------------------------
+
+<div class="mybreak"><br></div>
+
+**Refinement Types**
+
+Types + Predicates
+
+<div class="mybreak"><br></div>
+
+**Refinement Checking**
+
+Dependent Application + Predicate Subtyping
+
+<div class="mybreak"><br></div>
+
+**[[Eliminates boring proofs & Makes Verification Practical]](03-examples.html)**
