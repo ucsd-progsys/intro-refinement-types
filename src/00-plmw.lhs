@@ -25,7 +25,6 @@ import qualified Data.Vector as V
 <br>
 <br>
 <br>
-<br>
 
 
 <p align=center>
@@ -161,7 +160,7 @@ Well-typed programs can go very wrong!
 Well-typed programs can go very wrong!
 -----------------
 
-<br>
+<hr style="height:5px; visibility:hidden;" />
 
 Divide-by-zero
 
@@ -173,7 +172,7 @@ Pattern-match failures
 Well-typed programs can go very wrong!
 -----------------
 
-<hr style="height:30pt; visibility:hidden;" />
+<hr style="height:5px; visibility:hidden;" />
 
 Divide-by-zero
 
@@ -187,20 +186,14 @@ Non-termination
 
 Correctness Assertions...
 
-
-Well-typed programs can go very wrong!
------------------
+Goal: Algorithmic Software Verification
+---------------------------------------
 
 <br>
 
--------------------------         ---------------------------
-Divide-by-zero                    Buffer overflows (!)
+**Expressive**
 
-Keys missing in Maps              Non-termination
-
-Pattern-match failures            Correctness Assertions...
--------------------------         ---------------------------
-
+Verify *program specific* properties via *domain specific* analysis
 
 Goal: Algorithmic Software Verification
 ---------------------------------------
@@ -209,19 +202,10 @@ Goal: Algorithmic Software Verification
 
 **Expressive**
 
-Verify **program specific** properties via *domain specific* analysis
-
-Goal: Algorithmic Software Verification
----------------------------------------
+Verify *program specific* properties via *domain specific* analysis
 
 <br>
 
-<h4 style="border-bottom:none">Expressive</h4>
-
-Verify **program specific** properties via *domain specific* analysis
-
-<br>
-
-<h4 style="border-bottom:none">Automatic</h4>
+**Automatic**
 
 Rapid feedback to **influence design**, not only post-facto validation

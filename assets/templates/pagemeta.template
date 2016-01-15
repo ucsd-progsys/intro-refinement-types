@@ -54,11 +54,11 @@ MathJax.Hub.Config({
 
   <div id="nav">
 
-        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:30px; color:black; z-index:1">
+        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
           <span class="glyphicon glyphicon-backward"></span>
         </button>
 
-        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:30px; color:black;  z-index:1">
+        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
           <span class="glyphicon glyphicon-chevron-left"></span>
         </button>
 
@@ -69,11 +69,11 @@ MathJax.Hub.Config({
           <span class="bar"></span>
         </button>
 
-        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:30px; color:black; z-index:1">
+        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
           <span class="glyphicon glyphicon-chevron-right"></span>
         </button>
 
-        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:30px; color:black; z-index:1">
+        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
           <span class="glyphicon glyphicon-forward"></span>
         </button>
 
