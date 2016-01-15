@@ -66,7 +66,6 @@ MathJax.Hub.Config({
           <span class="sr-only">Toggle navigation</span>
           <span class="bar"></span>
           <span class="bar"></span>
-          <span class="bar"></span>
         </button>
 
         <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">

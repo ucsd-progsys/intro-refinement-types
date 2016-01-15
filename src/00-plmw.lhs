@@ -209,3 +209,59 @@ Verify *program specific* properties via *domain specific* analysis
 **Automatic**
 
 Rapid feedback to **influence design**, not only post-facto validation
+
+Outline
+-------
+
+<br>
+
+Motivation
+
+Outline
+-------
+
+<br>
+
+Motivation
+
+Refinements 101
+
+Outline
+-------
+
+<br>
+
+Motivation
+
+Refinements 101
+
+Refinements by Example
+
+Outline
+-------
+
+<br>
+
+Motivation
+
+Refinements 101
+
+Refinements by Example
+
+Abstracting Over Refinements
+
+
+Outline
+-------
+
+<br>
+
+Motivation
+
+Refinements 101
+
+Refinements by Example
+
+Abstracting Over Refinements
+
+Current Status & Future Directions
