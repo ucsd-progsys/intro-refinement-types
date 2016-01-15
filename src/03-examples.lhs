@@ -240,7 +240,7 @@ Represent **unknown refinements** with $\kvar{}$ variables ...
 Inference: Vector Sum [[PLDI 2008]][pldi08]
 ---------------------
 
-<img src="img/sum-code-numbers.png" height=150px>
+<img src="img/sum-code-infer.png" height=150px>
 
 **Horn Constraints**
 

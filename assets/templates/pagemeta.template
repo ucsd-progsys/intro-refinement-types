@@ -26,10 +26,10 @@
 <script type="text/javascript" src="$$root$$/js/angular/angular.js"></script>
 <script type="text/javascript" src="$$root$$/js/bootstrap/bootstrap.js"></script>
 
-
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
   TeX: {
+    extensions: ["color.js"],
     Macros: {
       True: "\\mathit{True}",
       RR:   "{\\bf R}",
@@ -37,7 +37,7 @@ MathJax.Hub.Config({
       Nat:  "\\mathtt{Nat}",
       Zero: "\\mathtt{Zero}",
       foo:   ["{\\bf Jhala FOO #1}", 1],
-      kvar:  ["\\mathbf{\\kappa_{#1}}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{\\kappa_{#1}({#2})}}", 2],
       bindx: ["{{#1}\\!:\\!{#2}}", 2],
       reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
       ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
@@ -47,6 +47,7 @@ MathJax.Hub.Config({
   }
 });
 </script>
+
 <!--<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 -->
 <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
@@ -55,6 +56,8 @@ MathJax.Hub.Config({
 </head>
 
 <body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+
 
   <div id="nav">
 
