@@ -113,16 +113,19 @@ Quantifier-Free Logic of Uninterpreted Functions and Linear Arithmetic
 <br>
 <br>
 
-Example: Integers equal to `0`
-------------------------------
+Example: Natural Numbers
+------------------------
 
 <br>
 
 \begin{code}
-{-@ type Zero = {v:Int | v = 0} @-}
+{-@ type Nat = {v:Int | 0 <= v} @-}
 
-{-@ zero :: Zero @-}
+{-@ zero :: Nat   @-}
 zero     =  0
+
+{-@ nats :: [Nat] @-}
+nats     =  [0, 1, 2, 3]
 \end{code}
 
 <br>
@@ -132,19 +135,6 @@ zero     =  0
 Refinement types via special comments `{-@ ... @-}`
 </div>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Example: Natural Numbers
 ------------------------
@@ -259,8 +249,6 @@ A Term Can Have *Many* Types
 A Term Can Have *Many* Types
 ----------------------------
 
-
-
 <br>
 
 <div class="fragment">
@@ -277,20 +265,6 @@ zero'     = zero
 \end{spec}
 
 </div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 ----------------------------------

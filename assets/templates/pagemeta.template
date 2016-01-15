@@ -16,6 +16,9 @@
       body {
         text-align: center;
       }
+      .mybreak {
+        line-height: 1em;
+      }
     </style>
 
 <!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->
