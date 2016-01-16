@@ -3,7 +3,7 @@
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
 
-module IntroToRefinementTypes
+module Examples
        ( sum
        , sum'
        , sum''

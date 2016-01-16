@@ -1,22 +1,9 @@
-
 <div class="hidden">
 \begin{code}
-{-@ LIQUID "--no-termination" @-}
-{-@ LIQUID "--short-names"    @-}
+module Intro where
 
-
-module IntroToRefinementTypes
-       ( sum
-       , sumBad
-       , sumInfer
-       , sumHO
-       , average
-       , insertSort
-       )
-       where
-
-import Prelude hiding (foldr, map, sum, length, (!))
-import qualified Data.Vector as V
+dummy :: Int
+dummy = 7
 \end{code}
 </div>
 

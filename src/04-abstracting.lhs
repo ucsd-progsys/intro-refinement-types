@@ -1,6 +1,5 @@
 
 <div class="hidden">
-
 \begin{code}
 {-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--short-names"    @-}
@@ -46,10 +45,6 @@ bad = 1 :< 3 :< 2 :< Emp
 \end{code}
 
 But its tedious to use *separate* "lists" ...
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Abstracting Refinements %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Abstracting Refinements
 -----------------------

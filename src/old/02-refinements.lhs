@@ -5,7 +5,7 @@
 {-@ LIQUID "--diff"           @-}
 {-@ LIQUID "--short-names"    @-}
 
-module SimpleRefinements where
+module Refinements where
 import Prelude hiding (abs, max)
 
 nats, poss  :: [Int]
