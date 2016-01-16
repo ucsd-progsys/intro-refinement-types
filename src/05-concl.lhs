@@ -41,12 +41,38 @@ Evaluation
 
 **Compile Time:**  1s / 10 LOC  (*not ok!*)
 
+
 Recap: Refinement Types
 -----------------------
 
 <br>
 
-**SMT-Automated Dependent Typing**
+**Expressive**
+
+Verify *program specific* properties via *domain specific* analysis
+
+<br>
+
+**Automatic**
+
+Rapid feedback to **influence design**, not only post-facto validation
+
+
+Recap: Refinement Types
+-----------------------
+
+<br>
+
+<img src="img/tension3.png" height=200px>
+
+
+Recap: Refinement Types
+-----------------------
+
+<br>
+
+<img src="img/tension5.png" height=200px>
+
 
 Recap: Refinement Types
 -----------------------

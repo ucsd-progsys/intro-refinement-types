@@ -9,6 +9,11 @@ For longer versions, you may be interested in:
 +[2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
 +[Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
 
+TODO
+----
+
++ [04] All of it
++ [05] Fix table centering
 
 Running LiquidHaskell
 ---------------------
@@ -71,67 +76,3 @@ Insert Sort
 + https://github.com/davidfstr/idris-insertion-sort/tree/master
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
-
-
-Outline
--------
-
-+ Motivation
-  - Bugs
-  - Orwell
-  - Go wrong
-
-+ Theory
-  - Formal language
-  - Dependent Application
-  - Predicate Subtyping
-
-
-+ Examples
-  * First Order
-    - pre/post : at/length
-    - checking : sum
-    - infer    : sumInfer
-
-  * Higher Order
-    - range, sumHO
-
-  * Data types
-    - average  
-    - map
-    - hwAverage
-    - insertSort
-
-+ Abstracting Refinements
-  - Incrs/Decrs
-  - insertSort
-  - foldr
-
-+ Evaluation
-  - take from lh-workshop
-
-+ Current Status
-
-  **At UCSD**
-
-  - [LiquidHaskell](lh)
-  - [Refined TypeScript][rsc]
-
-+ Many Friends
-
-
-  - [Catalyst][catalyst] @ Purdue
-  - [DML/Stardust][stardust] @ CMU/UBC
-  - [ATS][ats] @ BU
-  - [F7/F*][fstar] @ MSR/Inria
-  - [RefinedTypedRacket][rtr] @ IU
-  - [Synquid][synquid] @ MIT
-
-[lh]: http://www.refinement-types.org
-[rsc]: http://www.refinement-types.org
-[stardust]: http://www.mpi-sws.org/~joshua/type-refinements.info/
-[ats]: https://github.com/ats-lang/ats-lang.github.io
-[fstar]: http://fstar-lang.org
-[catalyst]: http://gowthamk.github.io/docs/icfp77-kaki.pdf
-[rtr]: http://arxiv.org/abs/1511.07033
-[synquid]: http://arxiv.org/pdf/1510.08419.pdf
