@@ -441,6 +441,8 @@ map f (x:xs) = f x : map f xs
 \end{code}
 
 
+Refining Constructors
+---------------------
 
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

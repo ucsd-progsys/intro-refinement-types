@@ -4,13 +4,28 @@ LiquidHaskell
 
 <br>
 
-+ Diverse Code Bases
-
-+ 10KLoc / 56 Modules
-
-+ Memory Safety, Functional Correctness, Termination
+LiquidHaskell
+-------------
 
 <br>
+
+Diverse Code Bases
+
+10KLoc / 56 Modules
+
+
+LiquidHaskell
+-------------
+
+<br>
+
+Memory Safety
+
+Totality
+
+Termination
+
+Functional Correctness
 
 <div class="fragment">
 **Inference is Crucial**
@@ -20,19 +35,25 @@ Evaluation
 ----------
 
 
-<img src="img/code-spec-indiv.png" height=250px>
+<img src="img/code-spec-indiv.png" height=200px>
 
-+ **Specifications:** 1 / 10 LOC  (*ok*)
+**Specifications:** 1 / 10 LOC  (*ok*)
 
-+ **Compile Time:**  1s / 10 LOC  (*not ok!*)
-
+**Compile Time:**  1s / 10 LOC  (*not ok!*)
 
 Recap: Refinement Types
 -----------------------
 
 <br>
 
-**Refinement Types:** Automated Dependent Typing via SMT
+**SMT-Automated Dependent Typing**
+
+Recap: Refinement Types
+-----------------------
+
+<br>
+
+**SMT-Automated Dependent Typing**
 
 <br>
 
@@ -49,34 +70,29 @@ Recap: Refinement Types
 Many Friends, Many Directions
 -----------------------------
 
+<br>
+
 ----------------------------    ------------
+[ATS][ats]                      BU
 [Catalyst][catalyst]            Purdue
 [DML/Stardust][stardust]        CMU/UBC
-[ATS][ats]                      BU
-[F7/F*][fstar]                  MSR/Inria
-[RefinedTypedRacket][rtr]       IU
+[F7/F*][fstar]                  MSR/INRIA
+[RefinedRacket][rtr]            IU
 [Synquid][synquid]              MIT
 ----------------------------    ------------
 
-
-Many Friends, Many Directions
------------------------------
-
-- [Catalyst][catalyst] @ Purdue
-- [DML/Stardust][stardust] @ CMU/UBC
-- [ATS][ats] @ BU
-- [F7/F*][fstar] @ MSR/Inria
-- [RefinedTypedRacket][rtr] @ IU
-- [Synquid][synquid] @ MIT
 
 Thank You!
 ----------
 
 <br>
 <br>
+<br>
 
-
+<h4 style="border-bottom:none">
 [`http://www.refinement-types.org`](http://www.refinement-types.org)
+</h4>
+
 
 
 [lh]: http://www.refinement-types.org

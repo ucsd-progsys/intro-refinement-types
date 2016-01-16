@@ -184,7 +184,7 @@ Buffer overflows (!)
 
 Non-termination
 
-Correctness Assertions...
+Functional Correctness / Assertions...
 
 Goal: Algorithmic Software Verification
 ---------------------------------------
