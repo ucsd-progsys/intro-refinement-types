@@ -85,7 +85,7 @@ Outline
   - Formal language
   - Dependent Application
   - Predicate Subtyping
-  
+
 
 + Examples
   * First Order
@@ -111,12 +111,20 @@ Outline
   - take from lh-workshop
 
 + Current Status
-  - [LiquidHaskell](lh) / [RefScript][rsc] (UCSD)
-  - [Catalyst][catalyst] (Purdue)
-  - [DML/Stardust][stardust] / [ATS][ats] (CMU/BU)
-  - [F7/F*][fstar] (MSR/Inria)
-  - [RefinedTypedRacket][rtr] (IU)
-  - Synquid (MIT)
+
+  **At UCSD**
+
+  - [LiquidHaskell](lh)
+  - [Refined TypeScript][rsc]
+
++ Many Friends
+
+  - [Catalyst][catalyst] @ Purdue
+  - [DML/Stardust][stardust] @ CMU/UBC
+  - [ATS][ats] @ BU
+  - [F7/F*][fstar] @ MSR/Inria
+  - [RefinedTypedRacket][rtr] @ IU
+  - [Synquid][synquid] @ MIT
 
 [lh]: http://www.refinement-types.org
 [rsc]: http://www.refinement-types.org
@@ -125,3 +133,4 @@ Outline
 [fstar]: http://fstar-lang.org
 [catalyst]: http://gowthamk.github.io/docs/icfp77-kaki.pdf
 [rtr]: http://arxiv.org/abs/1511.07033
+[synquid]: http://arxiv.org/pdf/1510.08419.pdf
