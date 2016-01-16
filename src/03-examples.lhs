@@ -6,7 +6,7 @@
 module IntroToRefinementTypes
        ( sum
        , sum'
-       -- , sumHO
+       , sum''
        -- , average
        -- , insertSort
        )
@@ -16,6 +16,7 @@ import Prelude hiding (foldr, map, sum, length, (!))
 
 data Vector a
 
+range :: Int -> Int -> [Int]
 
 at   :: Vector a -> Int -> a
 at = undefined
@@ -247,18 +248,116 @@ Inference: Vector Sum [[PLDI 2008]][pldi08]
 $$\begin{array}{lll}
 \True
   & \Rightarrow v = 0
-  & \Rightarrow \kvar{}(v)
+  & \Rightarrow \kvar{}{v}
   & \mbox{(A)} \\
-\kvar{}(i) \wedge n = \mathit{vlen}\ v \wedge i < n
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i < n
   & \Rightarrow v = i + 1
-  & \Rightarrow \kvar{}(v)
+  & \Rightarrow \kvar{}{v}
   & \mbox{(B)} \\
-\kvar{}(i) \wedge n = \mathit{vlen}\ v \wedge i < n
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i < n
   & \Rightarrow v = i
   & \Rightarrow 0 \leq v < \mathit{vlen}\ v
   & \mbox{(C)} \\
 \end{array}$$
 
+Inference: Vector Sum [[PLDI 2008]][pldi08]
+---------------------
+
+<div class="mybreak"><br></div>
+
+**Horn Constraints**
+
+$$\begin{array}{lll}
+\True
+  & \Rightarrow v = 0
+  & \Rightarrow \kvar{}{v}
+  & \mbox{(A)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i + 1
+  & \Rightarrow \kvar{}{v}
+  & \mbox{(B)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i < n
+  & \Rightarrow v = i
+  & \Rightarrow 0 \leq v < \mathit{vlen}\ v
+  & \mbox{(C)} \\
+\end{array}$$
+
+<div class="mybreak"><br></div>
+
+**Synthesized Solution**
+
+$$\kvar{}{v} = 0 \leq v$$
+
+Refinement Types by Example
+---------------------------
+
+<div class="mybreak"><br></div>
+
+Specifications
+
+Verification
+
+Inference
+
+**Collections & HOFs**
+
+Invariants & Datatypes
+
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**Composition >> Recursion!**
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**Generic Sequences**
+
+\begin{code}
+range lo hi
+  | lo < hi   = lo : range (lo + 1) hi
+  | otherwise = []
+\end{code}
+
+<div class="mybreak"><br></div>
+
+(What's a good type for `range`?)
+
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**Fold over Sequences**
+
+\begin{code}
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+\end{code}
+
+Collections & Higher-Order Functions
+----------------------
+
+<div class="mybreak"><br></div>
+
+**"Wholemeal" Vector Sum**
+
+\begin{code}
+sum''   :: Vector Int -> Int
+sum'' v = foldr add 0 is
+  where
+    add = \i n -> n + at v i
+    is  = range 0 (size v)
+\end{code}
+
+Types make refinement inference *"just work"* ...
 
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

@@ -37,7 +37,7 @@ MathJax.Hub.Config({
       Nat:  "\\mathtt{Nat}",
       Zero: "\\mathtt{Zero}",
       foo:   ["{\\bf Jhala FOO #1}", 1],
-      kvar:  ["{\\color[rgb]{1,0,0}{\\kappa_{#1}({#2})}}", 2],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
       bindx: ["{{#1}\\!:\\!{#2}}", 2],
       reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
       ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],

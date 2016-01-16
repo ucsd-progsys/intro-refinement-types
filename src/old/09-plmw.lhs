@@ -137,10 +137,10 @@ foldr :: (a -> b -> b) -> b -> [a] -> b
 foldr f b []     = b
 foldr f b (x:xs) = f x (foldr f b xs)
 
-sumHO :: V.Vector Int -> Int
+sumHO :: Vector Int -> Int
 sumHO v = foldr add 0 is
   where
-    add i n = n + at v i
+    add = \i n -> n + at v i
     is  = range 0 (size v)
 \end{code}
 
