@@ -227,18 +227,28 @@ Inference: Vector Sum
 
 Not magic, just **Abstract Interpretation**
 
-Inference: Vector Sum [[PLDI 2008]][pldi08]
+Inference: Vector Sum
 ---------------------
 
 <br>
 
 Not magic, just Abstract Interpretation
 
-Represent **unknown refinements** with $\kvar{}$ variables ...
+Represent **unknown refinements** with $\kvar{}{\cdot}$ variables ...
 
 ... Solve resulting **Horn Constraints**
 
-Inference: Vector Sum [[PLDI 2008]][pldi08]
+<br>
+
+[[PLDI 2008]][pldi08]
+
+Inference: Vector Sum
+---------------------
+
+<img src="img/sum-code-infer.png" height=150px>
+
+
+Inference: Vector Sum
 ---------------------
 
 <img src="img/sum-code-infer.png" height=150px>
@@ -260,7 +270,7 @@ $$\begin{array}{lll}
   & \mbox{(C)} \\
 \end{array}$$
 
-Inference: Vector Sum [[PLDI 2008]][pldi08]
+Inference: Vector Sum
 ---------------------
 
 <div class="mybreak"><br></div>
@@ -440,9 +450,65 @@ map f []     = []
 map f (x:xs) = f x : map f xs
 \end{code}
 
+Refinements for Datatypes
+-------------------------
 
-Refining Constructors
----------------------
+<div class="mybreak"><br></div>
+
+**Measures**
+
+Specify properties as *functions over datatypes*
+
+
+Refinements for Datatypes
+-------------------------
+
+<div class="mybreak"><br></div>
+
+**Measures**
+
+Specify properties as *functions over datatypes*
+
+<div class="mybreak"><br></div>
+
+**Refined Constructors**
+
+Instantiate constraints at *fold* (`C ...`) & *unfold* (`case-of`)
+
+
+Refinements for Datatypes
+-------------------------
+
+<div class="mybreak"><br></div>
+
+**Measures**
+
+Specify properties as functions over datatypes
+
+<div class="mybreak"><br></div>
+
+**Refined Constructors**
+
+Instantiate constraints at *fold* (`C ...`) & *unfold* (`case-of`)
+
+<div class="mybreak"><br></div>
+
+**Automate verification of data types**
+
+Refinement Types by Example
+---------------------------
+
+<div class="mybreak"><br></div>
+
+Specifications
+
+Verification
+
+Inference
+
+Collections & HOFs
+
+Refinements for Datatypes
 
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

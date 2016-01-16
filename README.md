@@ -15,6 +15,7 @@ TODO
 + [04] All of it
 + [05] Fix table centering
 
+
 Running LiquidHaskell
 ---------------------
 
@@ -76,3 +77,12 @@ Insert Sort
 + https://github.com/davidfstr/idris-insertion-sort/tree/master
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
+
+Outline
+-------
+
++ 01-intro         [3]
++ 02-refinements   [6]
++ 03-examples      [9]
++ 04-abstracting   [4]
++ 05-concl         [3]

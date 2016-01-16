@@ -76,7 +76,7 @@ e := x, y, z, ...         -- variables
 
 **Uninterpreted Functions**
 
-$$\forall \overline{x}, \overline{y}. \overline{x} = \overline{y} \Rightarrow f(x) = f(y)$$
+$$\forall \overline{x}, \overline{y}.\ \overline{x} = \overline{y}\ \Rightarrow\ f(x) = f(y)$$
 
 Predicates
 ----------
