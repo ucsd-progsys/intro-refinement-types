@@ -150,7 +150,6 @@ Preconditions on Structures
 Oops, only valid on **non-empty** lists!
 
 \begin{code}
-
 {-@ average :: ListNE Int -> Int @-}
 average xs = total `div` n
   where

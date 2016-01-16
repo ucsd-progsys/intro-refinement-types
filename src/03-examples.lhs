@@ -7,7 +7,7 @@ module IntroToRefinementTypes
        ( sum
        , sum'
        , sum''
-       -- , average
+       , average
        -- , insertSort
        )
        where
@@ -39,7 +39,7 @@ Inference
 
 Collections & HOFs
 
-Invariants & Datatypes
+Refinements for Datatypes
 
 Refinement Types by Example
 ---------------------------
@@ -54,7 +54,7 @@ Inference
 
 Collections & HOFs
 
-Invariants & Datatypes
+Refinements for Datatypes
 
 
 Refinement Types by Example
@@ -131,7 +131,7 @@ Inference
 
 Collections & HOFs
 
-Invariants & Datatypes
+Refinements for Datatypes
 
 Verification: Vector Sum
 ------------------------
@@ -193,7 +193,7 @@ Verification
 
 Collections & HOFs
 
-Invariants & Datatypes
+Refinements for Datatypes
 
 Inference
 ---------
@@ -301,7 +301,7 @@ Inference
 
 **Collections & HOFs**
 
-Invariants & Datatypes
+Refinements for Datatypes
 
 
 Collections & Higher-Order Functions
@@ -358,6 +358,89 @@ sum'' v = foldr add 0 is
 \end{code}
 
 Types make refinement inference *"just work"* ...
+
+
+Refinement Types by Example
+---------------------------
+
+<div class="mybreak"><br></div>
+
+Specifications
+
+Verification
+
+Inference
+
+Collections & HOFs
+
+**Refinements for Datatypes**
+
+Example: List `average`
+-----------------------
+
+\begin{code}
+{-@ average :: [Int] -> Int @-}
+average xs  = total `div` n
+  where
+    total   = foldr (+) 0 xs
+    n       = length xs
+
+length        :: [a] -> Int
+length []     = 0
+length (_:xs) = 1 + length xs
+\end{code}
+
+Yikes! `average` requires **non-empty** lists!
+
+Refinements for Datatypes
+-------------------------
+
+**Lift** (some) functions into specification logic:
+
+\begin{code}
+{-@ measure length @-}
+\end{code}
+
+which lets us define a type alias
+
+\begin{code}
+{-@ type ListNE a = {v:[a] | 0 < length v} @-}
+\end{code}
+
+<div class="mybreak"><br></div>
+
+Now lets go back and *fix* `average` ...
+
+Measures Yield Refined Constructors
+-----------------------------------
+
+**Lift** (some) functions into specification logic:
+
+\begin{spec}
+data [a] where
+  []  :: {v:[a] | length v = 0}
+  (:) :: a
+      -> t:[a]
+      -> {v:[a] | length v = 1 + length t}
+\end{spec}
+
+Where `length` is **uninterpreted** in refinement Logic
+
+Example: `map` over Lists
+-------------------------
+
+What's the problem here? (Lets fix it!)
+
+\begin{code}
+{-@ hwAverage :: ListNE (a, Int) -> Int @-}
+hwAverage nxs = average (map snd nxs)
+
+{-@ map :: (a -> b) -> [a] -> [b] @-}
+map f []     = []
+map f (x:xs) = f x : map f xs
+\end{code}
+
+
 
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

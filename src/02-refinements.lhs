@@ -74,6 +74,22 @@ e := x, y, z, ...         -- variables
    | f e1 ... en          -- uninterpreted function
 \end{spec}
 
+**Uninterpreted Functions**
+
+$$\forall \overline{x}, \overline{y}. \overline{x} = \overline{y} \Rightarrow f(x) = f(y)$$
+
+Predicates
+----------
+
+**Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic**
+
+\begin{spec} <div/>
+e := x, y, z, ...         -- variables
+   | 0, 1, 2, ...         -- constants
+   | e + e | c * e | ...  -- arithmetic
+   | f e1 ... en          -- uninterpreted function
+\end{spec}
+
 \begin{spec} <div/>
 p := e <= e | ...         -- atoms
    | p && p | p || p | !p -- boolean combinations
