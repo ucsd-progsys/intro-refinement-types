@@ -55,7 +55,7 @@ Verify *program specific* properties via *domain specific* analysis
 
 **Automatic**
 
-Rapid feedback to **influence design**, not only post-facto validation
+Rapid feedback to *influence design*, not only post-facto validation
 
 
 Recap: Refinement Types
