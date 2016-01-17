@@ -55,7 +55,7 @@ Edit Slides
 You can modify the following parameters:
 
 1. **Server URL**: change `liquidserver` in `assets/templates/preamble.lhs`
-
+2. **MathJax URL**: change the relevant link in `assets/templates/pagemeta.template`
 
 Misc Links
 ----------
