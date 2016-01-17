@@ -6,14 +6,8 @@ with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
 For longer versions, you may be interested in:
 
-+[2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
-+[Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
-
-TODO
-----
-
-+ [04] All of it
-+ [05] Fix table centering
++ [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
++ [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
 
 
 Running LiquidHaskell

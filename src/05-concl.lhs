@@ -81,15 +81,13 @@ Recap: Refinement Types
 
 **SMT-Automated Dependent Typing**
 
-<br>
-
 <div class="fragment">
 
--------------------       ------------------------------------------------
+-------------------       -------------------------------------
 **Properties:**           Predicates  *+ Types*
 **Proofs:**               SMT Solvers *+ Subtyping*
-**Inference:**            Abstract Interpretation *+ Hindley-Milner*
--------------------       ------------------------------------------------
+**Inference:**            Abstr. Interp. *+ Hindley-Milner*
+-------------------       -------------------------------------
 
 </div>
 

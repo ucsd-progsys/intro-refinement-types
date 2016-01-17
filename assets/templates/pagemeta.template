@@ -19,6 +19,10 @@
       .mybreak {
         line-height: 1em;
       }
+      table {
+        margin-left: 150px;
+        margin-right: auto;
+      }
     </style>
 
 <!-- <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script> -->

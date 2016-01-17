@@ -6,14 +6,28 @@
 
 module AbstractingRefinements ( insertSort ) where
 
-import Prelude hiding (foldr, map, sum, length, (!))
+import Prelude hiding (foldr)
+
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)
+
 \end{code}
 </div>
 
 Invariants In Constructors
 --------------------------
 
-Many possibilities -- lets *require* increasing order:
+<div class="mybreak"><br></div>
+
+Many *many* possibilities ...
+
+Invariants In Constructors
+--------------------------
+
+<div class="mybreak"><br></div>
+
+Lets specify **ordered lists**:
 
 <div class="hidden">
 \begin{code}
@@ -34,7 +48,9 @@ infixr 9 :<
 Invariants In Constructors
 --------------------------
 
-Make illegal states unrepresentable!
+<div class="mybreak"><br></div>
+
+**Make illegal values unrepresentable!**
 
 \begin{code}
 ok :: OList Int
@@ -44,12 +60,32 @@ bad :: OList Int
 bad = 1 :< 3 :< 2 :< Emp
 \end{code}
 
-But its tedious to use *separate* "lists" ...
+Invariants In Constructors
+--------------------------
+
+<div class="mybreak"><br></div>
+
+Make illegal values unrepresentable!
+
+<div class="mybreak"><br></div>
+
+But its tedious to have **multiple list types** ...
 
 Abstracting Refinements
 -----------------------
 
-**Parameterize** (specifications) with refinements!
+<div class="mybreak"><br></div>
+
+**Parameterize types over refinements!**
+
+Abstracting Refinements
+-----------------------
+
+<div class="mybreak"><br></div>
+
+**Parameterize types over refinements!**
+
+<div class="mybreak"><br></div>
 
 \begin{spec}
 data [a]<p :: a -> a -> Prop> where
@@ -61,28 +97,27 @@ data [a]<p :: a -> a -> Prop> where
 Abstracting Refinements
 -----------------------
 
+<div class="mybreak"><br></div>
+
 **Instantiate** refinements to get different invariants!
 
+<div class="mybreak"><br></div>
+
 \begin{code}
-{-@ type Incrs a = [a]<{\x y -> x < y}> @-}
-{-@ type Decrs a = [a]<{\x y -> x > y}> @-}
+{-@ type Incrs a = [a]<{\x y -> x <= y}> @-}
+{-@ type Decrs a = [a]<{\x y -> x >= y}> @-}
 {-@ type Diffs a = [a]<{\x y -> x /= y}> @-}
-\end{code}
-
-\begin{code}
-{-@ ups   :: Incrs Integer @-}
-ups       = [1, 2, 3, 4]
-
-{-@ downs :: Decrs Integer @-}
-downs     = [4, 3, 2, 1]
-
-{-@ diffs :: Diffs Integer @-}
-diffs     = [1, 3, 2, 4]
 \end{code}
 
 
 Using Abstract Refinements
 --------------------------
+
+<div class="mybreak"><br></div>
+
+**Inference FTW!**
+
+<div class="mybreak"><br></div>
 
 \begin{code}
 {-@ insertSort :: (Ord a) => [a] -> Incrs a @-}
@@ -94,23 +129,67 @@ insert x (y:ys)
   | otherwise   = y : insert x ys
 \end{code}
 
+Recap
+-----
 
-Bounded Refinements
+<div class="mybreak"><br></div>
+
+**Abstract Refinements**
+
+Parametric Polymorphism for Refinement Types
+
+Recap
+-----
+
+<div class="mybreak"><br></div>
+
+**Abstract Refinements**
+
+Parametric Polymorphism for Refinement Types
+
+<div class="mybreak"><br></div>
+
+**Bounded Refinements**
+
+Bounded Quantification for Refinement Types
+
+
+Bounded Refinements: Induction as a Type
 -------------------
 
-**Bounded Quantification** for Abstract Refinements
+<div class="mybreak"><br></div>
 
-e.g. Below says relation `step` is preserves `inv`:
+The **bound** `Inductive` says relation `step` preserves `inv`
 
 \begin{spec}
 Inductive inv step = \y ys acc v ->
   inv ys acc ==> step y acc v ==> inv (y:ys) v
 \end{spec}
 
-Bounded Refinements
+Bounded Refinements: Induction as a Type
 -------------------
 
-Example: **Induction** as the type of `foldr`
+<div class="mybreak"><br></div>
+
+The **bound** `Inductive` says relation `step` preserves `inv`
+
+\begin{spec}
+Inductive inv step = \y ys acc v ->
+  inv ys acc ==> step y acc v ==> inv (y:ys) v
+\end{spec}
+
+**Key Idea**
+
+Bound is a Horn Clause over (Abstract) Refinements
+
+
+
+Bounded Refinements: Induction as a Type
+-------------------
+
+<div class="mybreak"><br></div>
+
+The type of `foldr` encodes **induction over lists** ...
 
 \begin{spec}
 foldr :: (Inductive inv step)
@@ -120,9 +199,18 @@ foldr :: (Inductive inv step)
       -> b<inv xs>
 \end{spec}
 
-Which lets us verify,
+Bounded Refinements: Induction as a Type
+-------------------
+
+<div class="mybreak"><br></div>
+
+... and lets us verify:
+
 
 \begin{spec}
-insertSort :: (Ord a) => xs:[a] -> {v:Incrs a | size v == size xs}
+insertSort :: (Ord a)
+           => xs:[a]
+           -> {v:Incrs a | elts v == elts xs}
+
 insertSort = foldr insert []
 \end{spec}
