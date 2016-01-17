@@ -9,5 +9,4 @@ notitle:        true
 root:           "."
 liquidserver:   "http://localhost:8090/"
 pdflink:        "book.pdf"
-mathjax:        "js/MathJax-2.6.0"
 ---
