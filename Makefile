@@ -9,6 +9,7 @@ FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
 IMG=assets/img
+GHPAGE=../intro-refinement-types-pages/
 
 ##############################################
 PANDOC=pandoc
@@ -111,6 +112,11 @@ clean:
 
 distclean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
+
+upload: all 
+	cp -r $(SITE)/* $(GHPAGE)
+	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
+
 
 #clean:
 #	cd lhs/ && ../cleanup && cd ../
