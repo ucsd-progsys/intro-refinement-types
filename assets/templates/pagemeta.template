@@ -52,10 +52,11 @@ MathJax.Hub.Config({
 });
 </script>
 
-<!--
+<!-- GITHUB 
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 -->
 
+<!-- LOCAL -->
 <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 
