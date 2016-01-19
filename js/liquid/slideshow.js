@@ -50,21 +50,6 @@ $(function () {
     event.preventDefault();
    });
 
-  /*
-  $(window).on("navigate", function (event, data) {
-     var direction = data.state.direction;
-     if (direction == 'back') {
-       // do something
-       gotoSlide(prevSlide(currSlide));
-       event.preventDefault();
-     }
-     if (direction == 'forward') {
-       // do something else
-       gotoSlide(nextSlide(currSlide));
-       event.preventDefault();
-     }
-   });
-  */
 
   $('#page').on("swipeleft",function(event){
     console.log('next slide swipeleft');
@@ -78,6 +63,7 @@ $(function () {
     event.preventDefault();
   });
 
+  
   $('.firstbutton').click(function (event) {
     console.log('first slide click');
     gotoSlide(firstSlide);
