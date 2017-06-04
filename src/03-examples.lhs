@@ -8,7 +8,6 @@ module Examples
        , sum'
        , sum''
        , average
-       -- , insertSort
        )
        where
 
@@ -510,5 +509,6 @@ Collections & HOFs
 
 Refinements for Datatypes
 
+[[continue]](04-abstracting.html)
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

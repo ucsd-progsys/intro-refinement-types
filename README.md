@@ -57,6 +57,14 @@ You can modify the following parameters:
 1. **Server URL**: change `liquidserver` in `assets/templates/preamble.lhs`
 2. **MathJax URL**: change the relevant link in `assets/templates/pagemeta.template`
 
+Outline
+-------
+
++ 01-intro         [3]
++ 02-refinements   [6]
++ 03-examples      [9]
++ 04-abstracting   [4]
++ 05-concl         [3]
 Misc Links
 ----------
 
@@ -72,11 +80,4 @@ Insert Sort
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
 
-Outline
--------
 
-+ 01-intro         [3]
-+ 02-refinements   [6]
-+ 03-examples      [9]
-+ 04-abstracting   [4]
-+ 05-concl         [3]

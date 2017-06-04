@@ -24,17 +24,16 @@ dummy = 7
 
 </div>
 
-<div class="slide">
 
-<br>
-<br>
+Follow Along Here
+-----------------
+
 <br>
 <br>
 <br>
 
 [http://ucsd-progsys.github.io/intro-refinement-types/](http://ucsd-progsys.github.io/intro-refinement-types/)
 
-</div>
 
 Whats this?
 -----------

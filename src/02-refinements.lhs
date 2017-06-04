@@ -26,6 +26,16 @@ Simple Refinement Types
 
 Refinement Types = **Types** + **Predicates**
 
+Types
+-----
+
+<hr style="height:5px; visibility:hidden;" />
+
+\begin{spec}<div/>
+b := Int | Bool | ...  -- primitives
+   | a, b, c           -- type variables
+\end{spec}
+
 
 Types
 -----

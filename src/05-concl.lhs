@@ -39,7 +39,7 @@ Evaluation
 
 **Specifications:** 1 / 10 LOC  (*ok*)
 
-**Compile Time:**  1s / 10 LOC  (*not ok!*)
+**Analysis Time:**  1s / 10 LOC  (*not ok!*)
 
 
 Recap: Refinement Types

@@ -76,14 +76,14 @@ Abstracting Refinements
 
 <div class="mybreak"><br></div>
 
-**Parameterize types over refinements!**
+**Parameterize types over refinements!** [[ESOP 13]](esop13)
 
 Abstracting Refinements
 -----------------------
 
 <div class="mybreak"><br></div>
 
-**Parameterize types over refinements!**
+**Parameterize types over refinements!** [[ESOP 13]](esop13)
 
 <div class="mybreak"><br></div>
 
@@ -153,8 +153,10 @@ Parametric Polymorphism for Refinement Types
 
 Bounded Quantification for Refinement Types
 
+[[IFCP 2015]](icfp15)
 
-Bounded Refinements: Induction as a Type
+
+Bounded Refinements
 -------------------
 
 <div class="mybreak"><br></div>
@@ -166,7 +168,7 @@ Inductive inv step = \y ys acc v ->
   inv ys acc ==> step y acc v ==> inv (y:ys) v
 \end{spec}
 
-Bounded Refinements: Induction as a Type
+Bounded Refinements
 -------------------
 
 <div class="mybreak"><br></div>
@@ -184,7 +186,7 @@ Bound is a Horn Clause over (Abstract) Refinements
 
 
 
-Bounded Refinements: Induction as a Type
+Bounded Refinements
 -------------------
 
 <div class="mybreak"><br></div>
@@ -199,7 +201,7 @@ foldr :: (Inductive inv step)
       -> b<inv xs>
 \end{spec}
 
-Bounded Refinements: Induction as a Type
+Bounded Refinements
 -------------------
 
 <div class="mybreak"><br></div>
@@ -214,3 +216,8 @@ insertSort :: (Ord a)
 
 insertSort = foldr insert []
 \end{spec}
+
+[[continue]](05-concl.html)
+
+[esop13]: https://ranjitjhala.github.io/static/abstract_refinement_types.pdf
+[icfp15]: https://ranjitjhala.github.io/static/bounded_refinement_types.pdf
