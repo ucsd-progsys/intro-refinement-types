@@ -1,23 +1,34 @@
-README
-======
+# README
 
-This repository has the materials for a [25 minute talk on Refinement Types][online],
-with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
+This repository has the materials for
+
+* a [25 minute talk on Refinement Types][online],
+* a [120 minute talk]
+
+on [Refinement Types and LiquidHaskell][lh].
 
 For longer versions, you may be interested in:
 
 + [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
 + [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
 
-Running LiquidHaskell
----------------------
+## TODO
+
+- [*] Add `liquid-client` as submodule
+- [*] Move to github `docs` style
+- [*] Move current to `src-25` which produces talk in `docs/25/`
+- [*] Move current to `src-120` which produces talk in `docs/120/`
+- [ ] Check that you can build+push *both* `25` and `120` versions
+- [ ] Copy stuff from `lh-workshop` over to `120`
+- [ ] Edit stuff in `120`
+
+## Running LiquidHaskell
 
 1. [Try Online][online]
 2. [VM Image][]
 3. [Build Locally][local]
 
-Virtual Machine
----------------
+## Virtual Machine
 
 This is also very easy, if you can manage the 2Gb download.
 
@@ -33,8 +44,7 @@ and for *Spacemacs* (a great Vim-Emacs hybrid) do:
 
 **Step 3** Grab the source files from Github.
 
-Build Slides
-------------
+## Build Slides
 
 To build rust-style html (in dist/_site)
 
@@ -44,16 +54,14 @@ To build reveal.js slides (in dist/_slides)
 
      $ stack exec -- make slides
 
-Edit Slides
------------
+## Edit Slides
 
 You can modify the following parameters:
 
 1. **Server URL**: change `liquidserver` in `assets/templates/preamble.lhs`
 2. **MathJax URL**: change the relevant link in `assets/templates/pagemeta.template`
 
-Outline
--------
+## Outline [25]
 
 + 01-intro         [3]
 + 02-refinements   [6]
@@ -62,8 +70,7 @@ Outline
 + 05-concl         [3]
 
 
-Misc Links
-----------
+## Misc Links
 
 WBL Heaps
 
@@ -80,3 +87,4 @@ Insert Sort
 [online]: http://ucsd-progsys.github.io/intro-refinement-types
 [local]:  https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197
 [vm]:     http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova
+[lh]:     https://github.com/ucsd-progsys/liquidhaskell
