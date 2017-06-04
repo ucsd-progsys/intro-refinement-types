@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>An Introduction to Refinement Types</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/code-format.css">
+    <link rel="stylesheet" type="text/css" href="./css/slideshow.css">
+    <style>
+      body {
+        text-align: center;
+      }
+      .mybreak {
+        line-height: 1em;
+      }
+      table {
+        margin-left: 150px;
+        margin-right: auto;
+      }
+    </style>
+
+    
+      <!-- JQUERY LOCAL
+
+        <script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+
+      -->
+
+     <!-- JQUERY MOBILE -->
+
+     <!-- Include the jQuery library -->
+     <script src="./js/jquery/jquery-1.11.3.min.js"></script>
+
+     <!-- SWIPE 
+       <script src="./js/jquery/init-mobile.js"></script>
+       <script src="./js/jquery/jquery.mobile-1.4.5.min.js"></script>
+     -->
+
+
+
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<!-- LOCAL 
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+-->
+
+</head>
+
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+
+
+  <div id="nav">
+
+        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-backward"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+
+        <button id="toggle-nav" class="toggle-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-forward"></span>
+        </button>
+
+  </div>
+
+<div id='toc' class='mobile-hidden'>
+<ul class='chapter'>
+<li><a href='01-intro.html'><b>1.</b>Follow Along Here</a></li>
+<ul class='section'>
+<li><a href='01-intro.html#whats-this'><b>1.1.</b> Whats this?</a></li>
+<li><a href='01-intro.html#the-first-bug'><b>1.2.</b> The First <em>Bug</em></a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day'><b>1.3.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day-1'><b>1.4.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day-2'><b>1.5.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#programming-languages-research'><b>1.6.</b> Programming Languages Research</a></li>
+<li><a href='01-intro.html#modern-languages'><b>1.7.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-1'><b>1.8.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-2'><b>1.9.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-3'><b>1.10.</b> Modern Languages?</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong'><b>1.11.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong-1'><b>1.12.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong-2'><b>1.13.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#goal-algorithmic-software-verification'><b>1.14.</b> Goal: Algorithmic Software Verification</a></li>
+<li><a href='01-intro.html#goal-algorithmic-software-verification-1'><b>1.15.</b> Goal: Algorithmic Software Verification</a></li>
+<li><a href='01-intro.html#outline'><b>1.16.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-1'><b>1.17.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-2'><b>1.18.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-3'><b>1.19.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-4'><b>1.20.</b> Outline</a></li>
+</ul>
+<li><a href='02-refinements.html'><b>2.</b>Simple Refinement Types</a></li>
+<ul class='section'>
+<li><a href='02-refinements.html#types'><b>2.1.</b> Types</a></li>
+<li><a href='02-refinements.html#types-1'><b>2.2.</b> Types</a></li>
+<li><a href='02-refinements.html#predicates'><b>2.3.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-1'><b>2.4.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-2'><b>2.5.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-3'><b>2.6.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-4'><b>2.7.</b> Predicates</a></li>
+<li><a href='02-refinements.html#example-singletons'><b>2.8.</b> Example: Singletons</a></li>
+<li><a href='02-refinements.html#example-natural-numbers'><b>2.9.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#a-term-can-have-many-types'><b>2.10.</b> A Term Can Have <em>Many</em> Types</a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs'><b>2.11.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs-1'><b>2.12.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs-2'><b>2.13.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#example-natural-numbers-1'><b>2.14.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#example-natural-numbers-2'><b>2.15.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls'><b>2.16.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-1'><b>2.17.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-2'><b>2.18.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-3'><b>2.19.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101'><b>2.20.</b> Recap: Refinement Types 101</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101-1'><b>2.21.</b> Recap: Refinement Types 101</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101-2'><b>2.22.</b> Recap: Refinement Types 101</a></li>
+</ul>
+<li><a href='03-examples.html'><b>3.</b>Refinement Types by Example</a></li>
+<ul class='section'>
+<li><a href='03-examples.html#refinement-types-by-example-1'><b>3.1.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-2'><b>3.2.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-3'><b>3.3.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#specifications-pre-conditions'><b>3.4.</b> Specifications: Pre-Conditions</a></li>
+<li><a href='03-examples.html#specifications-post-conditions'><b>3.5.</b> Specifications: Post-Conditions</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-4'><b>3.6.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#verification-vector-sum'><b>3.7.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#verification-vector-sum-1'><b>3.8.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#verification-vector-sum-2'><b>3.9.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-5'><b>3.10.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#inference'><b>3.11.</b> Inference</a></li>
+<li><a href='03-examples.html#inference-vector-sum'><b>3.12.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-1'><b>3.13.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-2'><b>3.14.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-3'><b>3.15.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-4'><b>3.16.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-5'><b>3.17.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-6'><b>3.18.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions'><b>3.19.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-1'><b>3.20.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-2'><b>3.21.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-3'><b>3.22.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-7'><b>3.23.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#example-list-average'><b>3.24.</b> Example: List <code>average</code></a></li>
+<li><a href='03-examples.html#refinements-for-datatypes'><b>3.25.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#measures-yield-refined-constructors'><b>3.26.</b> Measures Yield Refined Constructors</a></li>
+<li><a href='03-examples.html#example-map-over-lists'><b>3.27.</b> Example: <code>map</code> over Lists</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-1'><b>3.28.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-2'><b>3.29.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-3'><b>3.30.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-8'><b>3.31.</b> Refinement Types by Example</a></li>
+</ul>
+<li><a href='04-abstracting.html'><b>4.</b>Invariants In Constructors</a></li>
+<ul class='section'>
+<li><a href='04-abstracting.html#invariants-in-constructors-1'><b>4.1.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#invariants-in-constructors-2'><b>4.2.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#invariants-in-constructors-3'><b>4.3.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements'><b>4.4.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements-1'><b>4.5.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements-2'><b>4.6.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#using-abstract-refinements'><b>4.7.</b> Using Abstract Refinements</a></li>
+<li><a href='04-abstracting.html#recap'><b>4.8.</b> Recap</a></li>
+<li><a href='04-abstracting.html#recap-1'><b>4.9.</b> Recap</a></li>
+<li><a href='04-abstracting.html#bounded-refinements'><b>4.10.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-1'><b>4.11.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-2'><b>4.12.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-3'><b>4.13.</b> Bounded Refinements</a></li>
+</ul>
+<li><a href='05-concl.html'><b>5.</b>LiquidHaskell</a></li>
+<ul class='section'>
+<li><a href='05-concl.html#liquidhaskell-1'><b>5.1.</b> LiquidHaskell</a></li>
+<li><a href='05-concl.html#liquidhaskell-2'><b>5.2.</b> LiquidHaskell</a></li>
+<li><a href='05-concl.html#evaluation'><b>5.3.</b> Evaluation</a></li>
+<li><a href='05-concl.html#recap-refinement-types'><b>5.4.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-1'><b>5.5.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-2'><b>5.6.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-3'><b>5.7.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#many-friends-many-directions'><b>5.8.</b> Many Friends, Many Directions</a></li>
+<li><a href='05-concl.html#thank-you'><b>5.9.</b> Thank You!</a></li>
+</ul>
+</ul>
+
+</div>
+
+       <div id="checker-status">
+
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-click="jumpToProgPane(err)">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+
+
+<div id='page-wrapper'>
+<div id='page'>
+
+<div class="hidden">
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{-@ LIQUID "--no-termination" @-}
+{-@ LIQUID "--short-names"    @-}
+
+module Examples
+       ( sum
+       , sum'
+       , sum''
+       , average
+       )
+       where
+
+import Prelude hiding (foldr, map, sum, length, (!))
+
+data Vector a
+
+range :: Int -> Int -> [Int]
+
+at   :: Vector a -> Int -> a
+at = undefined
+
+size :: Vector a -> Int
+size = undefined</div>
+</div>
+
+</div>
+<div id="slide-0" class="slide">
+<h2 id="refinement-types-by-example">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p>Verification</p>
+<p>Inference</p>
+<p>Collections &amp; HOFs</p>
+<p>Refinements for Datatypes</p>
+</div>
+<div id="slide-1" class="slide">
+<h2 id="refinement-types-by-example-1">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Specifications</strong></p>
+<p>Verification</p>
+<p>Inference</p>
+<p>Collections &amp; HOFs</p>
+<p>Refinements for Datatypes</p>
+</div>
+<div id="slide-2" class="slide">
+<h2 id="refinement-types-by-example-2">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Property: In-bounds Array Access</strong></p>
+</div>
+<div id="slide-3" class="slide">
+<h2 id="refinement-types-by-example-3">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Property: In-bounds Array Access</strong></p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">{-@ measure vlen :: Vector a -> Int @-}</div>
+</div>
+
+</div>
+<div id="slide-4" class="slide">
+<h2 id="specifications-pre-conditions">Specifications: Pre-Conditions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>What does a function <strong>require</strong> for correct execution?</p>
+<div class="mybreak">
+<br>
+</div>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ at :: v:Vector a -> {i:Nat| i < vlen v} -> a @-}</div>
+</div>
+
+<div class="mybreak">
+<br>
+</div>
+<p>Refinement on the function's <strong>input type</strong></p>
+</div>
+<div id="slide-5" class="slide">
+<h2 id="specifications-post-conditions">Specifications: Post-Conditions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>What does a function <strong>ensure</strong> about its result?</p>
+<div class="mybreak">
+<br>
+</div>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">{-@ size :: v:Vector a -> {n:Int | n == vlen v} @-}</div>
+</div>
+
+<div class="mybreak">
+<br>
+</div>
+<p>Refinement on the function's <strong>output type</strong></p>
+</div>
+<div id="slide-6" class="slide">
+<h2 id="refinement-types-by-example-4">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p><strong>Verification</strong></p>
+<p>Inference</p>
+<p>Collections &amp; HOFs</p>
+<p>Refinements for Datatypes</p>
+</div>
+<div id="slide-7" class="slide">
+<h2 id="verification-vector-sum">Verification: Vector Sum</h2>
+<div class="mybreak">
+<br>
+</div>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">sum :: Vector Int -> Int
+sum v = loop 0
+  where
+    {-@ loop :: Nat -> Int @-}
+    loop i
+      | i <= size v = at v i + loop (i + 1)
+      | otherwise   = 0</div>
+</div>
+
+<div class="mybreak">
+<br>
+</div>
+<p>Oops! What gives?</p>
+</div>
+<div id="slide-8" class="slide">
+<h2 id="verification-vector-sum-1">Verification: Vector Sum</h2>
+<p><img src="img/sum-code-numbers.png" height=150px></p>
+</div>
+<div id="slide-9" class="slide">
+<h2 id="verification-vector-sum-2">Verification: Vector Sum</h2>
+<p><img src="img/sum-code-numbers.png" height=150px></p>
+<p><strong>Verification Conditions</strong></p>
+<p><span class="math display">\[\begin{array}{lll}
+\True
+  &amp; \Rightarrow v = 0
+  &amp; \Rightarrow 0 \leq v
+  &amp; \mbox{(A)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i + 1
+  &amp; \Rightarrow 0 \leq v
+  &amp; \mbox{(B)} \\
+0 \leq i \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i
+  &amp; \Rightarrow 0 \leq v &lt; \mathit{vlen}\ v
+  &amp; \mbox{(C)} \\
+\end{array}\]</span></p>
+</div>
+<div id="slide-10" class="slide">
+<h2 id="refinement-types-by-example-5">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p>Verification</p>
+<p><strong>Inference</strong></p>
+<p>Collections &amp; HOFs</p>
+<p>Refinements for Datatypes</p>
+</div>
+<div id="slide-11" class="slide">
+<h2 id="inference">Inference</h2>
+<p><br></p>
+<pre><code>The more interesting your types get,
+the less fun it is to write them down.
+                   -- Benjamin Pierce</code></pre>
+</div>
+<div id="slide-12" class="slide">
+<h2 id="inference-vector-sum">Inference: Vector Sum</h2>
+<div class="mybreak">
+<br>
+</div>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">sum' :: Vector Int -> Int
+sum' v = loop 0
+  where
+    {-@ loop :: _ -> _ @-}
+    loop i
+      | i < size v = at v i + loop (i + 1)
+      | otherwise  = 0</div>
+</div>
+
+</div>
+<div id="slide-13" class="slide">
+<h2 id="inference-vector-sum-1">Inference: Vector Sum</h2>
+<p><br></p>
+<p>Not magic, just <strong>Abstract Interpretation</strong></p>
+</div>
+<div id="slide-14" class="slide">
+<h2 id="inference-vector-sum-2">Inference: Vector Sum</h2>
+<p><br></p>
+<p>Not magic, just Abstract Interpretation</p>
+<p>Represent <strong>unknown refinements</strong> with <span class="math inline">\(\kvar{}{\cdot}\)</span> variables ...</p>
+<p>... Solve resulting <strong>Horn Constraints</strong></p>
+<p><br></p>
+<p><a href="http://dl.acm.org/citation.cfm?id=1375602">[PLDI 2008]</a></p>
+</div>
+<div id="slide-15" class="slide">
+<h2 id="inference-vector-sum-3">Inference: Vector Sum</h2>
+<p><img src="img/sum-code-infer.png" height=150px></p>
+</div>
+<div id="slide-16" class="slide">
+<h2 id="inference-vector-sum-4">Inference: Vector Sum</h2>
+<p><img src="img/sum-code-infer.png" height=150px></p>
+<p><strong>Horn Constraints</strong></p>
+<p><span class="math display">\[\begin{array}{lll}
+\True
+  &amp; \Rightarrow v = 0
+  &amp; \Rightarrow \kvar{}{v}
+  &amp; \mbox{(A)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i + 1
+  &amp; \Rightarrow \kvar{}{v}
+  &amp; \mbox{(B)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i
+  &amp; \Rightarrow 0 \leq v &lt; \mathit{vlen}\ v
+  &amp; \mbox{(C)} \\
+\end{array}\]</span></p>
+</div>
+<div id="slide-17" class="slide">
+<h2 id="inference-vector-sum-5">Inference: Vector Sum</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Horn Constraints</strong></p>
+<p><span class="math display">\[\begin{array}{lll}
+\True
+  &amp; \Rightarrow v = 0
+  &amp; \Rightarrow \kvar{}{v}
+  &amp; \mbox{(A)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i + 1
+  &amp; \Rightarrow \kvar{}{v}
+  &amp; \mbox{(B)} \\
+\kvar{}{i} \wedge n = \mathit{vlen}\ v \wedge i &lt; n
+  &amp; \Rightarrow v = i
+  &amp; \Rightarrow 0 \leq v &lt; \mathit{vlen}\ v
+  &amp; \mbox{(C)} \\
+\end{array}\]</span></p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Synthesized Solution</strong></p>
+<p><span class="math display">\[\kvar{}{v} = 0 \leq v\]</span></p>
+</div>
+<div id="slide-18" class="slide">
+<h2 id="refinement-types-by-example-6">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p>Verification</p>
+<p>Inference</p>
+<p><strong>Collections &amp; HOFs</strong></p>
+<p>Refinements for Datatypes</p>
+</div>
+<div id="slide-19" class="slide">
+<h2 id="collections-higher-order-functions">Collections &amp; Higher-Order Functions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Composition &gt;&gt; Recursion!</strong></p>
+</div>
+<div id="slide-20" class="slide">
+<h2 id="collections-higher-order-functions-1">Collections &amp; Higher-Order Functions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Generic Sequences</strong></p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">range lo hi
+  | lo < hi   = lo : range (lo + 1) hi
+  | otherwise = []</div>
+</div>
+
+<div class="mybreak">
+<br>
+</div>
+<p>(What's a good type for <code>range</code>?)</p>
+</div>
+<div id="slide-21" class="slide">
+<h2 id="collections-higher-order-functions-2">Collections &amp; Higher-Order Functions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Fold over Sequences</strong></p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr f b []     = b
+foldr f b (x:xs) = f x (foldr f b xs)</div>
+</div>
+
+</div>
+<div id="slide-22" class="slide">
+<h2 id="collections-higher-order-functions-3">Collections &amp; Higher-Order Functions</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>&quot;Wholemeal&quot; Vector Sum</strong></p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">sum''   :: Vector Int -> Int
+sum'' v = foldr add 0 is
+  where
+    add = \i n -> n + at v i
+    is  = range 0 (size v)</div>
+</div>
+
+<p>Types make refinement inference <em>&quot;just work&quot;</em> ...</p>
+</div>
+<div id="slide-23" class="slide">
+<h2 id="refinement-types-by-example-7">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p>Verification</p>
+<p>Inference</p>
+<p>Collections &amp; HOFs</p>
+<p><strong>Refinements for Datatypes</strong></p>
+</div>
+<div id="slide-24" class="slide">
+<h2 id="example-list-average">Example: List <code>average</code></h2>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ average :: [Int] -> Int @-}
+average xs  = total `div` n
+  where
+    total   = foldr (+) 0 xs
+    n       = length xs
+
+length        :: [a] -> Int
+length []     = 0
+length (_:xs) = 1 + length xs</div>
+</div>
+
+<p>Yikes! <code>average</code> requires <strong>non-empty</strong> lists!</p>
+</div>
+<div id="slide-25" class="slide">
+<h2 id="refinements-for-datatypes">Refinements for Datatypes</h2>
+<p><strong>Lift</strong> (some) functions into specification logic:</p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ measure length @-}</div>
+</div>
+
+<p>which lets us define a type alias</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ type ListNE a = {v:[a] | 0 < length v} @-}</div>
+</div>
+
+<div class="mybreak">
+<br>
+</div>
+<p>Now lets go back and <em>fix</em> <code>average</code> ...</p>
+</div>
+<div id="slide-26" class="slide">
+<h2 id="measures-yield-refined-constructors">Measures Yield Refined Constructors</h2>
+<p><strong>Lift</strong> (some) functions into specification logic:</p>
+<pre class="spec"><code>data [a] where
+  []  :: {v:[a] | length v = 0}
+  (:) :: a
+      -&gt; t:[a]
+      -&gt; {v:[a] | length v = 1 + length t}
+</code></pre>
+<p>Where <code>length</code> is <strong>uninterpreted</strong> in refinement Logic</p>
+</div>
+<div id="slide-27" class="slide">
+<h2 id="example-map-over-lists">Example: <code>map</code> over Lists</h2>
+<p>What's the problem here? (Lets fix it!)</p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ hwAverage :: ListNE (a, Int) -> Int @-}
+hwAverage nxs = average (map snd nxs)
+
+{-@ map :: (a -> b) -> [a] -> [b] @-}
+map f []     = []
+map f (x:xs) = f x : map f xs</div>
+</div>
+
+</div>
+<div id="slide-28" class="slide">
+<h2 id="refinements-for-datatypes-1">Refinements for Datatypes</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Measures</strong></p>
+<p>Specify properties as <em>functions over datatypes</em></p>
+</div>
+<div id="slide-29" class="slide">
+<h2 id="refinements-for-datatypes-2">Refinements for Datatypes</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Measures</strong></p>
+<p>Specify properties as <em>functions over datatypes</em></p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Refined Constructors</strong></p>
+<p>Instantiate constraints at <em>fold</em> (<code>C ...</code>) &amp; <em>unfold</em> (<code>case-of</code>)</p>
+</div>
+<div id="slide-30" class="slide">
+<h2 id="refinements-for-datatypes-3">Refinements for Datatypes</h2>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Measures</strong></p>
+<p>Specify properties as functions over datatypes</p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Refined Constructors</strong></p>
+<p>Instantiate constraints at <em>fold</em> (<code>C ...</code>) &amp; <em>unfold</em> (<code>case-of</code>)</p>
+<div class="mybreak">
+<br>
+</div>
+<p><strong>Automate verification of data types</strong></p>
+</div>
+<div id="slide-31" class="slide">
+<h2 id="refinement-types-by-example-8">Refinement Types by Example</h2>
+<div class="mybreak">
+<br>
+</div>
+<p>Specifications</p>
+<p>Verification</p>
+<p>Inference</p>
+<p>Collections &amp; HOFs</p>
+<p>Refinements for Datatypes</p>
+<p><a href="04-abstracting.html">[continue]</a></p>
+</div>
+
+</div>
+</div>
+
+<!--Site Meter
+<div class="hidden">
+  <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes"
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes"
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+</div>
+-->
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script>
+  <script src="./js/liquid/annot.js"></script>
+  <script src="./js/liquid/config.js"></script>
+  <script src="./js/liquid/slideshow.js"></script>
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "http://goto.ucsd.edu:8090/" ;
+  </script>
+
+  <!-- rust nav JS -->
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+
+ document.getElementById("toggle-nav").onclick = toggleNav;
+
+  function toggleNav() {
+    var toc         = document.getElementById("toc");
+    var pagewrapper = document.getElementById("page-wrapper");
+    var status      = document.getElementById("checker-status");
+
+    toggleClass(toc,         "mobile-hidden");
+    // toggleClass(status,      "mobile-hidden");
+    toggleClass(pagewrapper, "mobile-hidden");
+  };
+
+  function toggleClass(el, className) {
+     // from http://youmightnotneedjquery.com/
+     if (el.classList) {
+       el.classList.toggle(className);
+     } else {
+       var classes = el.className.split(' ');
+       var existingIndex = classes.indexOf(className);
+
+       if (existingIndex >= 0) {
+         classes.splice(existingIndex, 1);
+       } else {
+         classes.push(className);
+       }
+       el.className = classes.join(' ');
+     }
+  }
+});
+</script>
+
+
+
+
+</body>
+</html>

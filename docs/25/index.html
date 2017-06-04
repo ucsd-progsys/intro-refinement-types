@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>An Introduction to Refinement Types</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
+
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+</head>
+
+<body class="rustdoc">
+ 
+<div id='toc' class='mobile-hidden'>
+
+</div>
+
+<div id='page'>
+<h1 style="border-bottom:none">An Introduction to Refinement Types</b>
+<h2 style="border-bottom:none"></h2>
+<h4 style="border-bottom: 2px solid #ddd"><i>Ranjit Jhala</i></h4>
+<br>
+
+<p><a href="book.pdf">[PDF]</a></p>
+
+<ul class='chapter'>
+<li><a href='01-intro.html'><b>1.</b>Follow Along Here</a></li>
+<ul class='section'>
+<li><a href='01-intro.html#whats-this'><b>1.1.</b> Whats this?</a></li>
+<li><a href='01-intro.html#the-first-bug'><b>1.2.</b> The First <em>Bug</em></a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day'><b>1.3.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day-1'><b>1.4.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#fast-forward-to-present-day-2'><b>1.5.</b> Fast forward to Present Day</a></li>
+<li><a href='01-intro.html#programming-languages-research'><b>1.6.</b> Programming Languages Research</a></li>
+<li><a href='01-intro.html#modern-languages'><b>1.7.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-1'><b>1.8.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-2'><b>1.9.</b> Modern Languages</a></li>
+<li><a href='01-intro.html#modern-languages-3'><b>1.10.</b> Modern Languages?</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong'><b>1.11.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong-1'><b>1.12.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#well-typed-programs-can-go-very-wrong-2'><b>1.13.</b> Well-typed programs can go very wrong!</a></li>
+<li><a href='01-intro.html#goal-algorithmic-software-verification'><b>1.14.</b> Goal: Algorithmic Software Verification</a></li>
+<li><a href='01-intro.html#goal-algorithmic-software-verification-1'><b>1.15.</b> Goal: Algorithmic Software Verification</a></li>
+<li><a href='01-intro.html#outline'><b>1.16.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-1'><b>1.17.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-2'><b>1.18.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-3'><b>1.19.</b> Outline</a></li>
+<li><a href='01-intro.html#outline-4'><b>1.20.</b> Outline</a></li>
+</ul>
+<li><a href='02-refinements.html'><b>2.</b>Simple Refinement Types</a></li>
+<ul class='section'>
+<li><a href='02-refinements.html#types'><b>2.1.</b> Types</a></li>
+<li><a href='02-refinements.html#types-1'><b>2.2.</b> Types</a></li>
+<li><a href='02-refinements.html#predicates'><b>2.3.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-1'><b>2.4.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-2'><b>2.5.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-3'><b>2.6.</b> Predicates</a></li>
+<li><a href='02-refinements.html#predicates-4'><b>2.7.</b> Predicates</a></li>
+<li><a href='02-refinements.html#example-singletons'><b>2.8.</b> Example: Singletons</a></li>
+<li><a href='02-refinements.html#example-natural-numbers'><b>2.9.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#a-term-can-have-many-types'><b>2.10.</b> A Term Can Have <em>Many</em> Types</a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs'><b>2.11.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs-1'><b>2.12.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs-2'><b>2.13.</b> 1. Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
+<li><a href='02-refinements.html#example-natural-numbers-1'><b>2.14.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#example-natural-numbers-2'><b>2.15.</b> Example: Natural Numbers</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls'><b>2.16.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-1'><b>2.17.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-2'><b>2.18.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#typing-applications-function-calls-3'><b>2.19.</b> 2. Typing Applications (Function Calls)</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101'><b>2.20.</b> Recap: Refinement Types 101</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101-1'><b>2.21.</b> Recap: Refinement Types 101</a></li>
+<li><a href='02-refinements.html#recap-refinement-types-101-2'><b>2.22.</b> Recap: Refinement Types 101</a></li>
+</ul>
+<li><a href='03-examples.html'><b>3.</b>Refinement Types by Example</a></li>
+<ul class='section'>
+<li><a href='03-examples.html#refinement-types-by-example-1'><b>3.1.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-2'><b>3.2.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-3'><b>3.3.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#specifications-pre-conditions'><b>3.4.</b> Specifications: Pre-Conditions</a></li>
+<li><a href='03-examples.html#specifications-post-conditions'><b>3.5.</b> Specifications: Post-Conditions</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-4'><b>3.6.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#verification-vector-sum'><b>3.7.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#verification-vector-sum-1'><b>3.8.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#verification-vector-sum-2'><b>3.9.</b> Verification: Vector Sum</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-5'><b>3.10.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#inference'><b>3.11.</b> Inference</a></li>
+<li><a href='03-examples.html#inference-vector-sum'><b>3.12.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-1'><b>3.13.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-2'><b>3.14.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-3'><b>3.15.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-4'><b>3.16.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#inference-vector-sum-5'><b>3.17.</b> Inference: Vector Sum</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-6'><b>3.18.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions'><b>3.19.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-1'><b>3.20.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-2'><b>3.21.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#collections-higher-order-functions-3'><b>3.22.</b> Collections &amp; Higher-Order Functions</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-7'><b>3.23.</b> Refinement Types by Example</a></li>
+<li><a href='03-examples.html#example-list-average'><b>3.24.</b> Example: List <code>average</code></a></li>
+<li><a href='03-examples.html#refinements-for-datatypes'><b>3.25.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#measures-yield-refined-constructors'><b>3.26.</b> Measures Yield Refined Constructors</a></li>
+<li><a href='03-examples.html#example-map-over-lists'><b>3.27.</b> Example: <code>map</code> over Lists</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-1'><b>3.28.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-2'><b>3.29.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinements-for-datatypes-3'><b>3.30.</b> Refinements for Datatypes</a></li>
+<li><a href='03-examples.html#refinement-types-by-example-8'><b>3.31.</b> Refinement Types by Example</a></li>
+</ul>
+<li><a href='04-abstracting.html'><b>4.</b>Invariants In Constructors</a></li>
+<ul class='section'>
+<li><a href='04-abstracting.html#invariants-in-constructors-1'><b>4.1.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#invariants-in-constructors-2'><b>4.2.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#invariants-in-constructors-3'><b>4.3.</b> Invariants In Constructors</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements'><b>4.4.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements-1'><b>4.5.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#abstracting-refinements-2'><b>4.6.</b> Abstracting Refinements</a></li>
+<li><a href='04-abstracting.html#using-abstract-refinements'><b>4.7.</b> Using Abstract Refinements</a></li>
+<li><a href='04-abstracting.html#recap'><b>4.8.</b> Recap</a></li>
+<li><a href='04-abstracting.html#recap-1'><b>4.9.</b> Recap</a></li>
+<li><a href='04-abstracting.html#bounded-refinements'><b>4.10.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-1'><b>4.11.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-2'><b>4.12.</b> Bounded Refinements</a></li>
+<li><a href='04-abstracting.html#bounded-refinements-3'><b>4.13.</b> Bounded Refinements</a></li>
+</ul>
+<li><a href='05-concl.html'><b>5.</b>LiquidHaskell</a></li>
+<ul class='section'>
+<li><a href='05-concl.html#liquidhaskell-1'><b>5.1.</b> LiquidHaskell</a></li>
+<li><a href='05-concl.html#liquidhaskell-2'><b>5.2.</b> LiquidHaskell</a></li>
+<li><a href='05-concl.html#evaluation'><b>5.3.</b> Evaluation</a></li>
+<li><a href='05-concl.html#recap-refinement-types'><b>5.4.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-1'><b>5.5.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-2'><b>5.6.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#recap-refinement-types-3'><b>5.7.</b> Recap: Refinement Types</a></li>
+<li><a href='05-concl.html#many-friends-many-directions'><b>5.8.</b> Many Friends, Many Directions</a></li>
+<li><a href='05-concl.html#thank-you'><b>5.9.</b> Thank You!</a></li>
+</ul>
+</ul>
+
+
+</div>
+</body>
+</html>
