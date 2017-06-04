@@ -1,7 +1,7 @@
 README
 ======
 
-This repository has the materials for a 25 minute talk on Refinement Types,
+This repository has the materials for a [25 minute talk on Refinement Types][online],
 with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
 For longer versions, you may be interested in:
@@ -9,17 +9,12 @@ For longer versions, you may be interested in:
 + [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
 + [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
 
-
 Running LiquidHaskell
 ---------------------
 
 1. [Try Online][online]
 2. [VM Image][]
 3. [Build Locally][local]
-
-[online]: (http://ucsd-progsys.github.io/intro-refinement-types)
-[local]:(https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
-[vm]: http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova
 
 Virtual Machine
 ---------------
@@ -65,6 +60,8 @@ Outline
 + 03-examples      [9]
 + 04-abstracting   [4]
 + 05-concl         [3]
+
+
 Misc Links
 ----------
 
@@ -80,4 +77,6 @@ Insert Sort
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
 
-
+[online]: http://ucsd-progsys.github.io/intro-refinement-types
+[local]:  https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197
+[vm]:     http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova

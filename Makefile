@@ -1,6 +1,14 @@
+
+
+##############################################
+TALK=25
+##############################################
+SRC=src-$(TALK)
+##############################################
+
 # MATHJAX=http://cdn.mathjax.org/mathjax/latest
 MATHJAX=js/MathJax-2.6.0
-LIQUIDCLIENT=../liquid-client
+LIQUIDCLIENT=./liquid-client
 SLIDES=dist/_slides
 SITE=dist/_site
 DIST=dist/_build
@@ -53,15 +61,14 @@ REVEAL=$(PANDOC)\
 	   --variable reveal=js/reveal.js \
 	   --variable mathjax=$(MATHJAX)
 
-# LIQUID=liquid --short-names
-
+LIQUID=liquid --short-names
 ####################################################################
 
-lhsObjects   := $(wildcard src/*.lhs)
-texObjects   := $(patsubst %.lhs,%.tex,$(wildcard src/*.lhs))
-htmlObjects  := $(patsubst %.lhs,%.html,$(wildcard src/*.lhs))
-mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard src/*.lhs))
-slideObjects := $(patsubst %.lhs,%.lhs.slide.html,$(wildcard src/*.lhs))
+lhsObjects   := $(wildcard $(SRC)/*.lhs)
+texObjects   := $(patsubst %.lhs,%.tex,$(wildcard $(SRC)/*.lhs))
+htmlObjects  := $(patsubst %.lhs,%.html,$(wildcard $(SRC)/*.lhs))
+mdObjects    := $(patsubst %.lhs,%.lhs.markdown,$(wildcard $(SRC)/*.lhs))
+slideObjects := $(patsubst %.lhs,%.lhs.slide.html,$(wildcard $(SRC)/*.lhs))
 
 ####################################################################
 
@@ -70,7 +77,7 @@ all: html
 ################ rust style html ###################################
 
 html: indexhtml $(htmlObjects)
-	cp src/*.html               $(SITE)/
+	cp $(SRC)/*.html            $(SITE)/
 	cp -r $(IMG)                $(SITE)/
 	cp -r $(CSS)                $(SITE)/
 	cp -r $(LIQUIDCLIENT)/fonts $(SITE)/
@@ -84,38 +91,41 @@ indexhtml: $(INDEX)
 	$(PANDOC) --from=markdown+lhs --to=html5 --template=$(INDEX) $(PREAMBLE) -o $(SITE)/index.html
 
 $(INDEX):
-	$(INDEXER) src/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
+	$(INDEXER) $(SRC)/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
 
-src/%.html: src/%.lhs
+$(SRC)/%.html: $(SRC)/%.lhs
 	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? $(TEMPLATES)/bib.lhs -o $@
 
 ################ reveal slides html ###################################
 
 slides: $(slideObjects)
-	mv src/*.html $(SLIDES)/
+	mv $(SRC)/*.html $(SLIDES)/
 	cp -r $(IMG)  $(SLIDES)/
 	cp -r $(JS)   $(SLIDES)/
 	cp -r $(CSS)  $(SLIDES)/
 
 
-src/.liquid/%.lhs.markdown: src/%.lhs
+$(SRC)/.liquid/%.lhs.markdown: $(SRC)/%.lhs
 	-$(LIQUID) $?
 
-src/%.lhs.slide.html: src/.liquid/%.lhs.markdown
+$(SRC)/%.lhs.slide.html: $(SRC)/.liquid/%.lhs.markdown
 	$(REVEAL) $? -o $@
 
 ################ CLEAN and SYNC #######################################
 
 clean:
-	rm -rf $(DIST)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
-
+	rm -rf $(DIST)/* && rm -rf $(SRC)/*.tex && rm -rf $(SRC)/.liquid && rm -rf $(SRC)/*.html
 
 distclean:
-	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
+	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf $(SRC)/*.tex && rm -rf $(SRC)/.liquid && rm -rf $(SRC)/*.html
 
-upload: all 
-	cp -r $(SITE)/* $(GHPAGE)
-	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
+upload:
+	cp -r $(SITE)/* docs/$(TALK)/
+	cd docs/ && git add . && git commit -a -m "update page" && git push origin master
+
+# upload: all
+#	cp -r $(SITE)/* $(GHPAGE)
+#	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
 
 
 #clean:
