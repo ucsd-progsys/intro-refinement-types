@@ -349,27 +349,22 @@ Plan
 
 **Part I: Refinement Types**
 
-<div class="fragment"> [**Refinements**](02-refinements.html)</div>
-
-<div class="fragment"> [**Data Types**](03-datatypes.html)</div>
+[**Refinements**](02-refinements.html),
+[**Data Types**](03-datatypes.html)
 
 **Part II: Case Studies**
 
-<div class="fragment">[**Insertion Sort**](04-case-study-insertsort.html)</div>
-
-<div class="fragment">[**Well Scoped Evaluator**](05-case-study-eval.html)</div>
-
-<div class="fragment">[**Low-level Memory**](06-case-study-bytestring.html)</div>
-
-<div class="fragment">[**Termination**](09-termination.html)</div>
+[**Sorting**](04-case-study-insertsort.html),
+[**Scoping**](05-case-study-eval.html),
+[**Pointing**](06-case-study-bytestring.html),
+[**Terminating**](09-termination.html)
 
 **Part III: Abstract Refinements**
 
-<div class="fragment"> [**Abstract Refinements**](07-abstract-refinements.html)</div>
+[**Abstract Refinements**](07-abstract-refinements.html),
+[**Bounded Refinements**](08-bounded-refinements.html)
 
-<div class="fragment"> [**Bounded Refinements**](08-bounded-refinements.html)</div>
-
-**Part IV: Abstract Refinements**
+**Part IV: Reflection**
 
 
 Evaluation
@@ -433,29 +428,11 @@ Conclusion
 
 <br>
 
-<div class="fragment">
-
 -------------------       ------------------------------------------------
 **Properties:**           Predicates  *+ Types*
 **Proofs:**               SMT Solvers *+ Subtyping*
 **Inference:**            Abstract Interpretation *+ Hindley-Milner*
 -------------------       ------------------------------------------------
-
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -469,20 +446,6 @@ Current & Future Work
 + Easier Errors
 + Code Synthesis
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Thank You!
 ----------
@@ -492,16 +455,3 @@ Thank You!
 
 
 [`http://www.refinement-types.org`](http://www.refinement-types.org)
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
