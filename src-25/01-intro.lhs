@@ -32,7 +32,7 @@ Follow Along Here
 <br>
 <br>
 
-[http://ucsd-progsys.github.io/intro-refinement-types/](http://ucsd-progsys.github.io/intro-refinement-types/)
+[http://ucsd-progsys.github.io/intro-refinement-types/](http://ucsd-progsys.github.io/intro-refinement-types/25/)
 
 
 Whats this?
