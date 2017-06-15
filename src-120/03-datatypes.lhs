@@ -25,8 +25,8 @@ average     :: List Int -> Int
 
 infixr 9 :::
 
-{-@ data List [length] a = Emp | (:::) {hd :: a, tl :: List a } @-}
-{-@ invariant {v: List a | 0 <= length v} @-}
+{-@ data List [size] a = Emp | (:::) {hd :: a, tl :: List a } @-}
+{-@ invariant {v: List a | 0 <= size v} @-}
 
 {-@ type Nat      = {v:Int | v >= 0} @-}
 {-@ type Pos      = {v:Int | v >  0} @-}
@@ -38,7 +38,7 @@ impossible = error
 average xs = total `div` n
   where
     total   = foldr1 (+) xs
-    n       = length xs
+    n       = size xs
 \end{code}
 
 </div>
@@ -54,23 +54,6 @@ average xs = total `div` n
 Data Types
 ==========
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -91,21 +74,10 @@ data List a = Emp               -- Nil
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
-Specifying the Length of a List
+Specifying the size of a List
 -------------------------------
 
 <br>
@@ -119,28 +91,17 @@ Haskell function with *a single equation per constructor*
 <br>
 
 \begin{code}
-{-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
+{-@ measure size @-}
+size :: List a -> Int
+size Emp        = 0
+size (_ ::: xs) = 1 + size xs
 \end{code}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
-Specifying the Length of a List
+Specifying the size of a List
 -------------------------------
 
 
@@ -150,52 +111,24 @@ Specifying the Length of a List
 
 *Strengthens* type of data constructor
 
-<br>
-
 <div class="fragment">
 
 \begin{spec} <div/>
 data List a where
 
-  Emp   :: {v:List a | length v = 0}
+  Emp   :: {v:List a | size v = 0}
 
-  (:::) :: x:a -> xs:List a
-        -> {v:List a | length v = 1 + length xs}
+  (:::) :: x:a -> xs:List a -> {v:List a | size v = 1 + size xs}
 \end{spec}
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
 Using Measures
 ==============
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -224,17 +157,6 @@ tail _          = impossible "tail"
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Naming Non-Empty Lists
@@ -247,20 +169,9 @@ A convenient *type alias*
 <br>
 
 \begin{code}
-{-@ type ListNE a = {v:List a| 0 < length v} @-}
+{-@ type ListNE a = {v:List a| 0 < size v} @-}
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 <div class="slideonly">
@@ -285,17 +196,6 @@ tail _          = impossible "tail"
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -316,17 +216,6 @@ foldr f acc (x ::: xs) = f x (foldr f acc xs)
 \end{code}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 A Useful Partial Function: Fold / Reduce
 ----------------------------------------
@@ -344,17 +233,6 @@ foldr1 _ _          = impossible "foldr1"
 \end{code}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: `average`
@@ -367,24 +245,13 @@ Exercise: `average`
 average' xs = total `div` n
   where
     total   = foldr1 (+) xs
-    n       = length xs
+    n       = size xs
 \end{code}
 
 <br>
 
 **Q:** What is a safe input type for `average'`?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -398,17 +265,6 @@ Refining Data Types
 
 &nbsp; &nbsp; *Make illegal states unrepresentable*
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Example: Year is 12 Months
@@ -432,17 +288,6 @@ data Year a = Year (List a)
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Example: Year is 12 Months
@@ -460,7 +305,7 @@ Example: Year is 12 Months
 **Lists Of A Given Size**
 
 \begin{code}
-{-@ type ListN a N = {v: List a | length v == N} @-}
+{-@ type ListN a N = {v: List a | size v == N} @-}
 \end{code}
 
 
@@ -471,19 +316,6 @@ Example: Year is 12 Months
 badYear = Year (1 ::: Emp)
 \end{code}
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: `map`
@@ -510,19 +342,6 @@ tempAverage (Year ms) = average months
 \end{code}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Exercise: `init`
 ----------------
@@ -547,19 +366,6 @@ sanDiegoTemp :: Year Int
 sanDiegoTemp = Year (init (const 72) 12)
 \end{code}
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: `init'`
@@ -588,18 +394,6 @@ sanDiegoTemp' = Year (init' (const 72) 12)
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Recap
 -----
@@ -621,16 +415,4 @@ Recap
 + [Low-level Memory](06-case-study-bytestring.html)
 </div>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
