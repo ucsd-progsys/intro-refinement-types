@@ -381,11 +381,8 @@ init' f n = go 0
          | otherwise = Emp
 \end{code}
 
-<br>
-
 <div class="fragment">
 **Q:** For bonus points, fix `init'` so `sanDiegoTemp'`is accepted?
-
 
 \begin{code}
 sanDiegoTemp' :: Year Int
@@ -393,17 +390,16 @@ sanDiegoTemp' = Year (init' (const 72) 12)
 \end{code}
 </div>
 
-<br>
-
 Recap
 -----
 
 <br>
-<br>
 
-1. **Refinements:** Types + Predicates
-2. **Subtyping:** SMT Implication
-3. <div class="fragment">**Measures:** Specify Properties of Data</div>
+**Refinements:** Types + Predicates
+
+**Subtyping:** SMT Implication
+
+**Measures:** Specify Properties of Data
 
 <br>
 
