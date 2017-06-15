@@ -29,30 +29,6 @@ Simple Refinement Types
 =======================
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Simple Refinement Types
 ------------------
@@ -60,20 +36,6 @@ Simple Refinement Types
 <br>
 
 Refinement Types = *Types* + *Predicates*
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Types
@@ -94,20 +56,6 @@ p := ...         -- predicate in decidable logic
 \end{spec}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Predicates
 ----------
@@ -125,18 +73,6 @@ p := e           -- atom
 
 <br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Expressions
@@ -162,19 +98,6 @@ Quantifier-Free Logic of Uninterpreted Functions and Linear Arithmetic
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Example: Integers equal to `0`
 ------------------------------
 
@@ -195,18 +118,6 @@ Refinement types via special comments `{-@ ... @-}`
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Example: Natural Numbers
 ------------------------
@@ -222,18 +133,6 @@ nats     =  [0, 1, 2, 3]
 
 <br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Exercise: Positive Integers
 ---------------------------
@@ -258,39 +157,12 @@ poss     =  [0, 1, 2, 3]
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Refinement Type Checking
 ========================
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -301,27 +173,10 @@ A Term Can Have *Many* Types
 ----------------------------
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 A Term Can Have *Many* Types
 ----------------------------
-
-
 
 <br>
 
@@ -341,17 +196,6 @@ zero'     = zero
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
@@ -379,17 +223,6 @@ $$\Gamma \doteq \overline{\bindx{x_i}{P_i}}$$
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
@@ -411,17 +244,6 @@ $$
 $$
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -454,17 +276,6 @@ zero'     =  zero   -- zero :: Zero <: Nat
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -501,17 +312,6 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -528,37 +328,11 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Contracts: Function Types
 =========================
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -589,17 +363,6 @@ Program type-checks $\Rightarrow$ `impossible` **never called at run-time**
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Exercise: Pre-Conditions
 ------------------------
@@ -624,17 +387,7 @@ safeDiv x n = x `div` n
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 
 
 Precondition Checked at Call-Site
@@ -663,20 +416,6 @@ $$\inferrule{}{(v = 2) \Rightarrow (v \not = 0)}
 $$
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 Exercise: Check That Data
 -------------------------
 
@@ -699,18 +438,6 @@ calc = do
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Precondition Checked at Call-Site
 ---------------------------------
@@ -736,17 +463,6 @@ $$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 `size` returns positive values
 ------------------------------
@@ -766,17 +482,7 @@ size (_:xs) = 1 + size xs
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 
 
 Postconditions Checked at Return
@@ -803,17 +509,7 @@ $$\begin{array}{rll}
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 
 Verifying `avg`
 ---------------
@@ -837,17 +533,7 @@ $$(0 < n) \Rightarrow (v = n) \Rightarrow (v \not = 0)$$
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
 
 Recap
 -----
@@ -876,18 +562,6 @@ Via SMT based Predicate Subtyping
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Unfinished Business
@@ -911,17 +585,3 @@ size' _      = impossible "size"
 <div class="fragment">
 Next: How to **describe properties of** structures [[continue...]](03-datatypes.html)
 </div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>

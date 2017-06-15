@@ -23,6 +23,10 @@
         margin-left: 150px;
         margin-right: auto;
       }
+
+      ul {
+          list-style-type: none;
+        }
     </style>
 
     
