@@ -20,6 +20,7 @@ dummy = 7
 <br>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (UCSD)</i></h4>
+<h4 style="border-bottom:none"><i>Niki Vazou (UMD)</i></h4>
 </p>
 
 </div>
@@ -34,6 +35,11 @@ Follow Along Here
 
 [http://ucsd-progsys.github.io/intro-refinement-types/120/](http://ucsd-progsys.github.io/intro-refinement-types/120/)
 
+<br>
+
+**Navigation links** at bottom right
+
+**Double-click** to go forward
 
 Whats this?
 -----------

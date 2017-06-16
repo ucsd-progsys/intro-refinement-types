@@ -27,9 +27,24 @@
       ul {
           list-style-type: none;
         }
+
+      #slide-nav {
+          position: absolute;
+          bottom: 4%;
+          /* left: 40%; */
+          right: 4%;
+          z-index: 100;
+      }
+
+      #checker-status {
+          position: absolute;
+          top: 4%;
+          right: 2%;
+      }
+
     </style>
 
-    
+
       <!-- JQUERY LOCAL
 
         <script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
@@ -41,7 +56,7 @@
      <!-- Include the jQuery library -->
      <script src="./js/jquery/jquery-1.11.3.min.js"></script>
 
-     <!-- SWIPE 
+     <!-- SWIPE
        <script src="./js/jquery/init-mobile.js"></script>
        <script src="./js/jquery/jquery.mobile-1.4.5.min.js"></script>
      -->
@@ -76,7 +91,7 @@ MathJax.Hub.Config({
 <!-- GITHUB -->
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
-<!-- LOCAL 
+<!-- LOCAL
 
   <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
@@ -88,33 +103,17 @@ MathJax.Hub.Config({
 
 
 
+<div id='toc' class='mobile-hidden'>
   <div id="nav">
-
-        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-backward"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-        </button>
-
-        <button id="toggle-nav" class="toggle-nav">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-forward"></span>
-        </button>
-
+    <button id="toggle-nav-1" class="toggle-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </div>
 
-<div id='toc' class='mobile-hidden'>
+<b>Double-click to move forward</b> or use <b>navigation arrows at bottom-right</b>.
+
 $toc
 </div>
 
@@ -151,7 +150,35 @@ $toc
        </div>
 
 
+
 <div id='page-wrapper'>
+
+  <div id="slide-nav">
+        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-backward"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+
+        <button id="toggle-nav-2" class="toggle-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </button>
+
+        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
+          <span class="glyphicon glyphicon-forward"></span>
+        </button>
+  </div>
+
+
+
 <div id='page'>
 
 $$if(notitle)$$
@@ -201,7 +228,8 @@ $$body$$
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function(event) {
 
- document.getElementById("toggle-nav").onclick = toggleNav;
+ document.getElementById("toggle-nav-1").onclick = toggleNav;
+ document.getElementById("toggle-nav-2").onclick = toggleNav;
 
   function toggleNav() {
     var toc         = document.getElementById("toc");

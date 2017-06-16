@@ -6,11 +6,12 @@ body {
 }
 
 #toc {
+    margin-right: 0;
     position: absolute;
     left: 0px;
-    top: 0px;
+    top: 40px; /* RJ 0px */
     bottom: 0px;
-    width: 250px;
+    width: 100% /* RJ 250px */;
     overflow-y: auto;
     border-right: 1px solid rgba(0, 0, 0, 0.07);
     padding: 10px 10px;
@@ -20,10 +21,14 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+.mobile-hidden {
+    display: none;
+ }
+
 #page-wrapper {
     position: absolute;
     overflow-y: auto;
-    left: 260px;
+    left: 0px; /* RJ 260px; */
     right: 0px;
     top: 0px;
     bottom: 0px;
@@ -61,21 +66,21 @@ body {
     color: #000000;
 }
 
-@media only screen and (max-width: 1060px) {
+/* @media only screen and (max-width: 1060px) { */
     #toc {
         width: 100%;
         margin-right: 0;
         top: 40px;
     }
     #page-wrapper {
-        top: 40px;
-        left: 15px;
-        padding-right: 15px;
+        top: 10px;
+        left: 10px;
+        padding-right: 10px;
     }
     .mobile-hidden {
         display: none;
     }
-}
+/* } */
 
 
 .toggle-nav {
@@ -116,4 +121,3 @@ body {
 .right {
     float: right;
 }
-

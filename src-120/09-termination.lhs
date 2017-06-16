@@ -11,10 +11,10 @@ module Termination where
 
 import Prelude hiding (replicate, map, repeat)
 
-fib :: Int -> Int
+fib, fib' :: Int -> Int
 map :: (a -> b) -> [a] -> [b]
 
-isOdd, isEven :: Int -> Bool
+-- isOdd, isEven :: Int -> Bool
 ack :: Int -> Int -> Int
 range :: Int -> Int -> [Int]
 replicate :: a -> Int -> [a]
@@ -60,8 +60,8 @@ fib i | i == 0    = 0
 <br>
 **Q:** Why is there an error?
 
-Proving Termination I
-----------------------
+Proving Termination
+-------------------
 
 <br>
 
@@ -74,6 +74,23 @@ Some _well founded metric_ decreases at each recursive call.
 **Default Metric:**
 
 The _first_ `Int` parameter.
+
+Example: Termination of `fib`
+-----------------------------
+
+<br>
+<br>
+\begin{code}
+{-@ fib' :: Int -> Int  @-}
+fib' i | i <= 1    = 1
+       | otherwise = fib' (i-1) + fib' (i-2)
+\end{code}
+
+<br>
+<br>
+**Automatically Proved Terminating**
+
+
 
 User Specified Termination Metrics
 -----------------------------------
@@ -117,8 +134,11 @@ Some _well founded metric_ decreases at each recursive call.
 
 <br>
 
-- Either _first_ `Int` parameter (default)
-- Or User specified metric.
+Either _first_ `Int` parameter (default)
+
+or
+
+**User specified metric**
 
 
 Lexicographic Termination
@@ -127,11 +147,11 @@ Lexicographic Termination
 Why does [Ackermann Function](https://en.wikipedia.org/wiki/Ackermann_function) terminate?
 
 \begin{code}
-{-@ ack :: m:Int -> n:Int -> Int / [m, n] @-}
+{-@ ack :: m:Int -> n:Int -> Int @-}
 ack m n
   | m == 0    = n + 1
   | n == 0    = ack (m - 1) 1
-  | otherwise = ack (m - 1) (ack m (n-1))
+  | otherwise = ack (m - 1) (ack m (n - 1))
 \end{code}
 
 First argument `m` decreases **or** second argument `n` decreases.
