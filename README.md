@@ -70,27 +70,29 @@ Outline [25]
 Outline [120]
 -------------
 
-0. Hack in "random access" else really silly
-1. Choose subset from below
-2. Add snippets of termination, reflection, synthesis to 01-index
+**Part I: Basics**
 
 + 01-index
 + 02-refinements
 + 03-datatypes
 + 04-case-study-insertsort
-+ 05-case-study-eval
-+ 06-case-study-bytestring
 
-+ 07-abstract-refinements
-+ 08-bounded-refinements
+**Part II: Proofs**
+
 + 09-termination
-+ 10-abstract-refinements  [see 07]
-+ 11-bounded-refinements   [see 08]
 + 12-refinement-reflection
 + 13-structural-induction
 + 14-map-reduce
-+ 15-security
-+ Tagged.lhs
+
+
+**Extras**
+
+- 05-case-study-eval
+- 06-case-study-bytestring
+- 07-abstract-refinements
+- 08-bounded-refinements
+- 15-security
+- Tagged.lhs
 
 
 Misc Links

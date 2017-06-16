@@ -308,23 +308,4 @@ What properties can be expressed in the logic?
 
 **Next:** _Any_ Terminating Haskell Function
 
-[Refinement Reflection](05-refinement-reflection.html)
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+[Refinement Reflection](12-refinement-reflection.html)
