@@ -9,7 +9,7 @@
 
 module Termination where
 
-import Prelude hiding (map, repeat)
+import Prelude hiding (replicate, map, repeat)
 
 fib :: Int -> Int
 map :: (a -> b) -> [a] -> [b]
@@ -271,11 +271,18 @@ Termination is Easy in Practice
 
 <br>
 
-**`503` recursive functions**
+**`503` Recursive Functions**
 
-- `67%` automatic via default metrics
-- `30%` need *metrics* `/[...]`
-- `1`   metric per `100` lines of code
+<div align="center">
+
+|       |                                  |
+|------:|:---------------------------------|
+| `503` | Recursive functions              |
+| `67%` | automatic via default metrics    |
+| `30%` | need *metrics* `/[...]`          |
+| `1`   | metric per `100` lines of code   |
+
+</div>
 
 **`20` functions *not proven* to terminate**
 
