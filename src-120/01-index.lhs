@@ -298,7 +298,7 @@ Segmentation Faults
 HeartBleeds
 -----------
 
-<img src="../img/heartbleed.png" height=300px>
+<img src="img/heartbleed.png" height=300px>
 
 
 HeartBleeds
@@ -355,22 +355,19 @@ Plan
 
 **Part I: Refinement Types**
 
-[**Refinements**](02-refinements.html),
+[**Refinements**](02-refinements.html)
+
 [**Data Types**](03-datatypes.html)
-[**Case Study: Sorting**](04-case-study-insertsort.html),
 
-**Part II: Case Studies**
+[**Case Study: Sorting**](04-case-study-insertsort.html)
 
-[**Scoping**](05-case-study-eval.html),
-[**Pointing**](06-case-study-bytestring.html),
-[**Terminating**](09-termination.html)
+**Part II: Reflection**
 
-**Part III: Abstract Refinements**
+[**Termination**](05-termination.html)
 
-[**Abstract Refinements**](07-abstract-refinements.html),
-[**Bounded Refinements**](08-bounded-refinements.html)
+[**Reflection**](06-reflection.html)
 
-**Part IV: Reflection**
+[**Case Study: Map-Reduce**](07-map-reduce.html)
 
 
 Evaluation
@@ -420,9 +417,6 @@ Evaluation
 ---------------------------   ---------   -----------    ----------
 
 </div>
-
-
-
 
 
 Conclusion

@@ -1,14 +1,16 @@
 README
 ======
 
-This repository has the materials for a 25 minute talk on Refinement Types,
-with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
+This repository has the materials for a 120 minute tutorial
+on programming and proving with Refinement types with [LiquidHaskell][lh-github]
 
-For longer versions, you may be interested in:
++ [120 mins](http://ucsd-progsys.github.io/intro-refinement-types/120/)
 
+For other versions, you may be interested in:
+
++ [25 mins](http://ucsd-progsys.github.io/intro-refinement-types/25/)
 + [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
 + [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
-
 
 Running LiquidHaskell
 ---------------------
@@ -17,8 +19,9 @@ Running LiquidHaskell
 2. [VM Image][]
 3. [Build Locally][local]
 
-[online]: (http://ucsd-progsys.github.io/intro-refinement-types)
-[local]:(https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197)
+[lh-github]: https://github.com/ucsd-progsys/liquidhaskell
+[online]: http://ucsd-progsys.github.io/intro-refinement-types
+[local]: https://github.com/ucsd-progsys/liquidhaskell-tutorial/blob/master/src/01-intro.lhs#L170-L197
 [vm]: http://goto.ucsd.edu/~gridaphobe/LiquidHaskell.ova
 
 Virtual Machine
@@ -58,15 +61,6 @@ You can modify the following parameters:
 2. **MathJax URL**: change the relevant link in `assets/templates/pagemeta.template`
 3. **Talk**: change the `TALK` field in the `Makefile` which builds the src-$(TALK) directory.
 
-Outline [25]
--------
-
-+ 01-intro         [3]
-+ 02-refinements   [6]
-+ 03-examples      [9]
-+ 04-abstracting   [4]
-+ 05-concl         [3]
-
 Outline [120]
 -------------
 
@@ -79,13 +73,23 @@ Outline [120]
 
 **Part II: Proofs**
 
-+ 09-termination
-+ 12-refinement-reflection
-+ 13-structural-induction
-+ 14-map-reduce
++ 05-termination
++ 06-refinement-reflection
++ 07-map-reduce
 
+Outline [25]
+-------
 
-**Extras**
++ 01-intro         [3]
++ 02-refinements   [6]
++ 03-examples      [9]
++ 04-abstracting   [4]
++ 05-concl         [3]
+
+Misc Links
+----------
+
+**Extra**
 
 - 05-case-study-eval
 - 06-case-study-bytestring
@@ -94,9 +98,6 @@ Outline [120]
 - 15-security
 - Tagged.lhs
 
-
-Misc Links
-----------
 
 WBL Heaps
 
