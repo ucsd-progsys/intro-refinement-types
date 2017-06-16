@@ -1,3 +1,0 @@
-[submodule "liquid-client"]
-	path = liquid-client
-	url = git@github.com:ucsd-progsys/liquid-client.git

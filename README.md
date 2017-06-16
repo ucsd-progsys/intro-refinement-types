@@ -44,6 +44,10 @@ and for *Spacemacs* (a great Vim-Emacs hybrid) do:
 Build Slides
 ------------
 
+First
+
+     $ git clone https://github.com/ucsd-progsys/liquid-client.git 
+
 To build rust-style html (in dist/_site)
 
      $ stack exec -- make html
