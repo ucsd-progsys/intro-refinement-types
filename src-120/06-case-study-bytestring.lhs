@@ -25,27 +25,11 @@ import Language.Haskell.Liquid.Prelude
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
 
 Case Study: Low Level Memory
 ============================
 
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -62,17 +46,6 @@ Case Study: Low Level Memory
 Implementation errors could open up vulnerabilities
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -103,17 +76,6 @@ chop s n = s'
 \end{spec}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 "HeartBleed" in Haskell (2/3)
@@ -124,24 +86,12 @@ chop s n = s'
 Works if you use the **valid prefix** size
 
 \begin{spec}
-λ> let ex = "Ranjit Loves Burritos"
+λ> let ex = "Ranjit Loves Jamon"
 
 λ> heartBleed ex 10
 "Ranjit Lov"
 \end{spec}
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -153,25 +103,12 @@ Works if you use the **valid prefix** size
 Leaks *overflow buffer* if **invalid prefix** size!
 
 \begin{spec}
-λ> let ex = "Ranjit Loves Burritos"
+λ> let ex = "Ranjit Loves Jamon"
 
 λ> heartBleed ex 30
-"Ranjit Loves Burritos\NUL\201\&1j\DC3\SOH\NUL"
+"Ranjit Loves Jamon\NUL\201\&1j\DC3\SOH\NUL"
 \end{spec}
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Types Against Overflows
 -----------------------
@@ -191,20 +128,6 @@ Types Against Overflows
 <div class="fragment">Errors at *each* level are prevented by types at *lower* levels</div>
 
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 1. Low-level Pointer API
 ========================
 
@@ -222,18 +145,6 @@ Strategy: Specify and Verify Types for
 
 Errors at *each* level are prevented by types at *lower* levels
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 API: Types
@@ -257,18 +168,6 @@ data ForeignPtr a
 `ForeignPtr` wraps around `Ptr`; can be exported to/from C.
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 API: Operations (1/2)
 ---------------------
@@ -298,19 +197,6 @@ plusPtr  :: Ptr a -> Int -> Ptr b
 \end{spec}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 API: Operations (2/2)
 ---------------------
 
@@ -337,18 +223,6 @@ withForeignPtr :: ForeignPtr a     -- pointer
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Example
 -------
@@ -375,18 +249,6 @@ zero4 = do fp <- malloc 4
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Example
 -------
@@ -411,18 +273,6 @@ How to **prevent overflows** e.g. writing 5 or 50 zeros into 4-byte block ?
 *Track sizes* in pointer operations
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Refined API: Types
 ------------------
@@ -446,19 +296,6 @@ type PtrN a N        = {v:_ | plen v  = N}
 type ForeignPtrN a N = {v:_ | fplen v = N}
 \end{spec}
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Refined API: Ops (1/3)
 ----------------------
@@ -485,19 +322,6 @@ withForeignPtr :: fp:ForeignPtr a              -- pointer
 \end{spec}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Refined API: Ops (2/3)
 ----------------------
 
@@ -519,18 +343,6 @@ plusPtr :: p:Ptr a
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Refined API: Ops (3/3)
@@ -558,18 +370,6 @@ poke :: {v:Ptr a | 0 < plen v} -> a -> IO ()
 \end{spec}
 </div>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Example: Overflow Prevented
@@ -597,17 +397,6 @@ exBad = do fp <- malloc 4
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 2. ByteString API
 =================
@@ -626,18 +415,6 @@ Strategy: Specify and Verify Types for
 
 Errors at *each* level are prevented by types at *lower* levels
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 ByteString Type
@@ -656,18 +433,6 @@ data ByteString = PS {
 \end{code}
 
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Refined ByteString Type
@@ -685,18 +450,6 @@ Refined ByteString Type
     }                                       @-}
 \end{code}
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Refined ByteString Type
@@ -723,19 +476,6 @@ type ByteStringN N = {v:ByteString| bLen v = N}
 
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Legal Bytestrings
 -----------------
@@ -760,19 +500,6 @@ good2 = do fp <- malloc 5
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Illegal Bytestrings
 -----------------
 
@@ -793,18 +520,6 @@ Claimed length *exceeds* allocation ... **rejected** at compile time
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 API `create` : Allocate and Fill a `ByteString`
 -----------------------------------------------
@@ -845,18 +560,6 @@ Yikes, there is an error! How to fix?
 -->
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 API `pack` : Convert List of `Char` into `ByteString`
 ------------
@@ -886,19 +589,6 @@ pack str      = create n $ \p -> go p xs
 
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 API `unsafeTake` : Extract *prefix* of size `n`
 -----------------------------------------------
@@ -925,18 +615,6 @@ unsafeTake n (PS x s l) = PS x s n
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 API `unpack` : Convert `ByteString` into List of `Char`
 -------------------------------------------------------
@@ -974,20 +652,6 @@ unpack (PS ps s l)  = unsafePerformIO $ withForeignPtr ps $ \p ->
 \end{code}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 3. Application API
@@ -1007,20 +671,6 @@ Strategy: Specify and Verify Types for
 
 Errors at *each* level are prevented by types at *lower* levels
 
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Revisit "HeartBleed"
 --------------------
@@ -1052,19 +702,6 @@ chop s n =  s'
 </div>
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 "HeartBleed" no more
 --------------------
 
@@ -1082,20 +719,6 @@ demo     = [ex6, ex30]
 
 "Bleeding" `chop ex 30` *rejected* by compiler
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Recap: Types vs Overflows
 -------------------------
 
@@ -1112,30 +735,6 @@ Recap: Types vs Overflows
 <br>
 
 **Errors at *each* level are prevented by types at *lower* levels**
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-
-
-
-
 
 
 

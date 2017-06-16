@@ -45,32 +45,10 @@ addElemO x xs = S.singleton x `S.union` elemsO xs
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
 
 Case Study: Insertion Sort
 ==========================
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Insertion Sort {#asdisort}
@@ -92,17 +70,6 @@ insert x (y:::ys)
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -120,41 +87,11 @@ Goal: Verified Insertion Sort
 3. <div class="fragment">Is in increasing **order**.</div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Property 1: Size
 ================
 
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -176,18 +113,6 @@ insert x (y:::ys)
   | otherwise     = y ::: insert x ys
 \end{code}
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -196,17 +121,6 @@ Property 2: Elements
 ====================
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -218,17 +132,6 @@ Permutation
 
 Same size is all fine, how about **same elements** in output?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -253,18 +156,6 @@ import qualified Data.Set as S
 
 </div>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Specifying A `List`s Elements
@@ -290,17 +181,6 @@ addElem x xs = S.union (S.singleton x) (elems xs)
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Exercise: Verifying Permutation
 -------------------------------
@@ -324,17 +204,6 @@ insertE x (y:::ys)
 **Q:** Can you fix the type for `insertE` so `sortE` verifies?
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Property 3: Order
@@ -353,32 +222,10 @@ How to specify **ordered lists** ?
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Recall: Refined Data Types
 --------------------------
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -406,17 +253,6 @@ badPair = OP 4 2  -- illegal
 </div>
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: Ordered Pairs
@@ -435,18 +271,6 @@ okPair  = OP 2 4  -- legal
 badPair = OP 4 2  -- illegal
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Refined Data: CSV Tables
@@ -470,17 +294,6 @@ scores  = Csv {
 \end{code}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -508,17 +321,6 @@ scores' = Csv {
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Property 3: Ordered Lists
 -------------------------
@@ -527,17 +329,6 @@ Property 3: Ordered Lists
 
 **Refine** the `List` data type to enforce **ordering**!
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -557,17 +348,6 @@ data OList a =
             , oTl :: OList a }
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -591,19 +371,6 @@ Lets **refine** the type to enforce **order**
 
 Head `oHd` is **smaller than every value** `v` in tail `oTl`
 
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -625,17 +392,6 @@ badList = 1 :<: 3 :<: 2 :<: OEmp
 \end{code}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -660,37 +416,9 @@ insertO x (y :<: ys)
 insertO x _    = x :<: OEmp
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Multiple Measures
 =================
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Different Measures for `List`
@@ -705,18 +433,6 @@ We just wrote *two* measures for `List`
 + `length :: List a -> Nat`
 + `elems  :: List a -> Set a`
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Multiple Measures are Conjoined
 -------------------------------
@@ -767,61 +483,13 @@ Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Refinements vs. Full Dependent Types
-------------------------------------
-
-<br>
-
-+ *Limited* to **decidable logics** but ...
-
-+ *Offer* massive amounts of **automation**
-
-<br>
-
-<div class="fragment">
-
-Compare with `insertionSort` in:
-
-+ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
-+ [Idris](https://github.com/davidfstr/idris-insertion-sort/tree/master)
-+ [Coq](http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v)
-
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Continue
 --------
 
 <br>
 
 <div class="fragment">
-**Next: Case Studies**
+**Next: Other Case Studies**
 
 + [Insertion Sort](04-case-study-insertsort.html)
 + [Well Scoped Evaluator](05-case-study-eval.html)
@@ -831,15 +499,3 @@ Continue
 <br>
 
 [[Continue]](05-case-study-eval.html)
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>

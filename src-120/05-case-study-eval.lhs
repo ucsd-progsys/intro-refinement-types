@@ -34,29 +34,10 @@ member _  Emp = False
 \end{code}
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Case Study: Associative Maps & Evaluation
 =========================================
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Associative Maps
@@ -79,21 +60,6 @@ ghci> m ! "python"
 \end{spec}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
 
 Associative Maps & Evaluation
 -----------------------------
@@ -108,35 +74,10 @@ Next, lets see how to use:
 
 + Measures to create **well-scoped evaluators**
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Associative Maps
 ================
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -155,17 +96,6 @@ data Map k v = Emp
                deriving (Eq, Ord, Show)
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -190,19 +120,6 @@ lookup :: k:k -> {m: Map | has k m} -> v
 \end{spec}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 
 Specifying the Set of `keys`
@@ -221,17 +138,6 @@ keys Emp          = S.empty
 keys (Bind k _ m) = add k m
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -255,17 +161,6 @@ noKeys m = keys m == S.empty
 \end{code}
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Inserting a New Key-Value Binding
@@ -286,20 +181,6 @@ insert k v m = Bind k v m
 add :: (Ord k) => k -> Map k v -> S.Set k
 add k kvs = S.union (S.singleton k) (keys kvs)
 \end{code}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: Looking Up a Key's Value
@@ -361,39 +242,11 @@ test      = [ lookup hs langs   -- Ok
 \end{code}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 Well-Scoped Evaluators
 ======================
 
 
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Expressions
 -----------
@@ -413,20 +266,6 @@ data Expr = Val  Int
           | Let  Var  Expr Expr
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 Values
 ------
 
@@ -445,19 +284,6 @@ isVal (Val _) = True
 isVal _       = False
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Exercise: Operating on Values
@@ -474,18 +300,6 @@ plus (Val i) (Val j) = Val (i+j)
 plus _         _     = impossible "plus"
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 Environments
 ------------
@@ -499,20 +313,6 @@ An `Env`ironment maps `Var`iables to `Val`ues
 \begin{code}
 {-@ type Env = Map Var Val @-}
 \end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Evaluate Using Environments
@@ -539,20 +339,6 @@ eval g (Let x e1 e2) = eval gx e2
 
 **Yikes! `lookup` is rejected!** How to ensure that `x::Var` is in `g::Env`?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 
 Free vs Bound Variables
@@ -568,20 +354,6 @@ For example in `let x = 10 in x + y`
 <br>
 
 `eval` looks-up `Env` for values of [free variables](http://en.wikipedia.org/wiki/Free_variables_and_bound_variables)
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
@@ -607,19 +379,6 @@ free (Let x e1 e2) = S.union xs1 (S.difference xs2 xs)
         xs         = S.singleton x
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Free Variables: Example
 -----------------------
 
@@ -635,19 +394,6 @@ ghci> free e1
       S.Set (V "y")
 \end{spec}
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Well-scoped Expressions
@@ -667,18 +413,6 @@ wellScoped :: Env -> Expr -> Bool
 wellScoped g e = S.isSubsetOf (free e) (keys g)
 \end{code}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 Exercise: Well-Scoped `eval`
@@ -688,17 +422,6 @@ Exercise: Well-Scoped `eval`
 
 **Q:** Can you go back and fix the type of `eval` so it is safe?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Exercise: Top-level Evaluation
@@ -724,19 +447,6 @@ closed e = True -- EXERCISE
 \end{code}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Exercise: Checked Top-level Evaluation
 --------------------------------------
 
@@ -760,47 +470,6 @@ safeEval g e
 \end{code}
 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-Wrap Up: Associative Maps & Evaluation
---------------------------------------
-
-<br>
-<br>
-
-1. **Missing key** errors are everywhere (and annoying!)
-
-2. **Use sets** to refine associative map API
-
-3. **Use measures** to create well-scoped evaluators
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 Continue
 --------
 
@@ -818,17 +487,6 @@ Continue
 
 [[Continue]](06-case-study-bytestring.html)
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 <div class="hidden">

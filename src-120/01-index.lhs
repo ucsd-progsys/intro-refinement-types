@@ -351,10 +351,10 @@ Plan
 
 [**Refinements**](02-refinements.html),
 [**Data Types**](03-datatypes.html)
+[**Case Study: Sorting**](04-case-study-insertsort.html),
 
 **Part II: Case Studies**
 
-[**Sorting**](04-case-study-insertsort.html),
 [**Scoping**](05-case-study-eval.html),
 [**Pointing**](06-case-study-bytestring.html),
 [**Terminating**](09-termination.html)
