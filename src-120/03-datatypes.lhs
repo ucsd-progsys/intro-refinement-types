@@ -156,8 +156,6 @@ tail _          = impossible "tail"
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
 
-<br>
-
 
 Naming Non-Empty Lists
 ----------------------

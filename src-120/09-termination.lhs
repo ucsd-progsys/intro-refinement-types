@@ -124,8 +124,6 @@ Some _well founded metric_ decreases at each recursive call.
 Lexicographic Termination
 -------------------------
 
-<br>
-
 Why does [Ackermann Function](https://en.wikipedia.org/wiki/Ackermann_function) terminate?
 
 \begin{code}
@@ -136,13 +134,9 @@ ack m n
   | otherwise = ack (m - 1) (ack m (n-1))
 \end{code}
 
-<br>
+First argument `m` decreases **or** second argument `n` decreases.
 
-*Either* first argument `m` decreases *or* second argument `n` decreases.
-
-<br>
-
-**Specify lexicographically ordered sequence of termination metrics**
+**Specify lexicographically ordered sequence of termination metrics** `[m, n]`
 
 
 How About Data Types?
@@ -150,7 +144,7 @@ How About Data Types?
 
 <br>
 
-What does `map` terminate?
+Why does `map` terminate?
 
 \begin{code}
 {-@ map :: (a -> b) -> xs:[a] -> [b] / [len xs] @-}
@@ -158,11 +152,11 @@ map _ []     = []
 map f (x:xs) = f x : map f xs
 \end{code}
 
-<br>
-
 **Recursive Calls on Smaller Lists.**
 
-Use first parameter with _associated size_ as **default metric**.
+Use first parameter with _associated size_
+
+... as default metric.
 
 User specified metrics on ADTs
 ------------------------------
@@ -180,8 +174,6 @@ merge xs []         = xs
 merge [] ys         = ys
 \end{code}
 
-<br>
-
 **Exercise:** The default is insufficient here; can you fill in a suitable metric?
 
 <!-- RJ: the mutually recursive stuff is pure black magic hackery, CUT.
@@ -193,15 +185,15 @@ Mutually Recursive Functions
 
 Same idea generalizes to mutual recursion.
 
-\begin{code}
-{-@ isEven :: n:Nat -> Bool / [n, 0] @-}
-{-@ isOdd  :: m:Nat -> Bool / [m, 0] @-}
+\zbegin{code}
+{- isEven :: n:Nat -> Bool / [n, 0] @-}
+{- isOdd  :: m:Nat -> Bool / [m, 1] @-}
 
 isEven 0 = True
 isEven n = isOdd (n-1)
 
 isOdd m = not $ isEven m
-\end{code}
+\zend{code}
 <br>
 <br>
 
@@ -218,33 +210,28 @@ Diverging Functions
 
 <br>
 
-Some functions *do not* terminate.
+**Some functions *do not* terminate!**
 
-<br>
 
-`lazy` annotation deactivates termination checking.
-
-<br>
 \begin{code}
 {-@ lazy repeat @-}
 repeat x = x : repeat x
 \end{code}
 
+`lazy` annotation deactivates termination checking.
 
 Proving Termination
 -------------------
 
 <br>
 
-**Liquid Haskell Checks:**
+**Liquid Haskell Checks**
 
 Some _well founded metric_ decreases at each recursive call.
 
-<br>
-
-- First `Int` or _sized_ parameter (default),
-- Or user specified lexicographic metric,
-- Or the function is marked `lazy`.
+- First `Int` or _sized_ parameter (default), *or*
+- User specified lexicographic metric, *or*
+- The function is marked `lazy`.
 
 Termination is Easy in Practice
 -------------------------------
@@ -265,7 +252,6 @@ Termination is Easy in Practice
 
 </div>
 
-
 Termination is Easy in Practice
 -------------------------------
 
@@ -273,16 +259,10 @@ Termination is Easy in Practice
 
 **`503` Recursive Functions**
 
-<div align="center">
+- `67%` via default metrics
+- `30%` user given metrics
+-  `1`  metric per `100` LOC
 
-|       |                                  |
-|------:|:---------------------------------|
-| `503` | Recursive functions              |
-| `67%` | automatic via default metrics    |
-| `30%` | need *metrics* `/[...]`          |
-| `1`   | metric per `100` lines of code   |
-
-</div>
 
 **`20` functions *not proven* to terminate**
 
@@ -295,17 +275,19 @@ Recap
 
 <br>
 
-**Refinements:** Types + Predicates
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Subtyping:**      | SMT Implication                |
+| **Measures:**       | Specify Properties of Data     |
+| **Termination:**    | Well-founded Metrics           |
 
-**Subtyping:** SMT Implication
-
-**Measures:** Specify Properties of Data
-
-**Termination:** Well-founded Metrics
 
 
 What properties can be expressed in the logic?
 ----------------------------------------------
+
+<br>
 
 **Decidable SMT Theories**
 
@@ -313,6 +295,8 @@ What properties can be expressed in the logic?
 - Linear Arithmetic
 - Uninterpreted functions
 
-**Next:** _Any_ Terminating Haskell Function
+<br>
+
+**Next: _Any_ Terminating Haskell Function**
 
 [Refinement Reflection](12-refinement-reflection.html)
