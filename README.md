@@ -102,6 +102,7 @@ To edit locally,
 $ git clone https://github.com/ucsd-progsys/intro-refinement-types.git
 $ cd intro-refinement-types
 $ git clone https://github.com/ucsd-progsys/liquid-client.git
+$ stack install
 ```
 
 2. Edit `src-120/0X-file.lhs`
