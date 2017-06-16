@@ -184,6 +184,9 @@ merge [] ys         = ys
 
 **Exercise:** The default is insufficient here; can you fill in a suitable metric?
 
+<!-- RJ: the mutually recursive stuff is pure black magic hackery, CUT.
+     it ONLY makes sense with the GHOST (as in the README) and its not
+     discussed here. In short, super confusing, hence, CUTTING.
 
 Mutually Recursive Functions
 ----------------------------
@@ -208,110 +211,105 @@ Can you find the correct metric?
 
 Liquid Haskell does not even attempt to guess it...
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+-->
 
 Diverging Functions
 -------------------
 
 <br>
+
+Some functions *do not* terminate.
+
+<br>
+
 `lazy` annotation deactivates termination checking.
 
 <br>
 \begin{code}
 {-@ lazy repeat @-}
-
-repeat x = x:repeat x
+repeat x = x : repeat x
 \end{code}
-<br>
-<br>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Proving Termination
-----------------------
-
-For non `Lazy` specified functions,
-
-Liquid Haskell checks a _well founded_ metric decreases at each recursive call.
-
+-------------------
 
 <br>
-<br>
-_Well founded_ metrics:
 
- - user specified _lexocographic_ metrics,
- - the first integer or "sized" argument.
+**Liquid Haskell Checks:**
+
+Some _well founded metric_ decreases at each recursive call.
+
 <br>
+
+- First `Int` or _sized_ parameter (default),
+- Or user specified lexicographic metric,
+- Or the function is marked `lazy`.
+
+Termination is Easy in Practice
+-------------------------------
+
+<div align="center">
+
+**Library**                     **LOC**     **Specs**      **Time**
+---------------------------   ---------   -----------    ----------
+`XMonad.StackSet`                   256            74          27s
+`Data.List`                         814            46          26s
+`Data.Set.Splay`                    149            27          27s
+`Data.Vector.Algorithms`           1219            76          61s
+`Data.Map.Base`                    1396           125          68s
+`Data.Text`                        3128           305         231s
+`Data.Bytestring`                  3505           307         136s
+**Total**                     **11512**       **977**     **574s**
+---------------------------   ---------   -----------    ----------
+
+</div>
+
+
+Termination is Easy in Practice
+-------------------------------
+
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+**`503` recursive functions**
+
+- `67%` automatic via default metrics
+- `30%` need *metrics* `/[...]`
+- `1`   metric per `100` lines of code
+
+**`20` functions *not proven* to terminate**
+
+- `12`  *do not* terminate (e.g. top-level `IO` loops)
+- `8`   currently *outside scope* of LiquidHaskell
 
 
 Recap
 -----
 
 <br>
-<br>
 
-1. **Refinements:** Types + Predicates
-2. **Subtyping:** SMT Implication
-3. **Measures:** Specify Properties of Data
-4. <div class="fragment">**Termination:**</div> Use Logic to Prove Termination
+**Refinements:** Types + Predicates
 
-<br>
+**Subtyping:** SMT Implication
+
+**Measures:** Specify Properties of Data
+
+**Termination:** Well-founded Metrics
+
+
 What properties can be expressed in the logic?
-<br>
+----------------------------------------------
 
- - Linear Arithmetic, Booleans, Uninterpreted Functions, ... (SMT logic)
+**Decidable SMT Theories**
 
- - Terminating Haskell functions.
+- Boolean Propositions
+- Linear Arithmetic
+- Uninterpreted functions
 
-<br>
+**Next:** _Any_ Terminating Haskell Function
 
-<div class="fragment">
+[Refinement Reflection](05-refinement-reflection.html)
 
-**Next:** [Refinement Reflection](05-refinement-reflection.html)
-
-</div>
 
 
 <br>
