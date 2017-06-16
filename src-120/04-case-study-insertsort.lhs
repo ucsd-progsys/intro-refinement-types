@@ -491,11 +491,11 @@ Continue
 <div class="fragment">
 **Next: Other Case Studies**
 
-+ [Insertion Sort](04-case-study-insertsort.html)
-+ [Well Scoped Evaluator](05-case-study-eval.html)
-+ [Low-level Memory](06-case-study-bytestring.html)
++ [Well Scoped Evaluator](http://ucsd-progsys.github.io/lh-workshop/05-case-study-eval.html)
++ [Low-level Memory](http://ucsd-progsys.github.io/lh-workshop/06-case-study-bytestring.html)
+
 </div>
 
 <br>
 
-[[Continue]](05-case-study-eval.html)
+[[Part II : Proofs]](06-termination.html)
