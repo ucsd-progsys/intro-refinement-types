@@ -46,7 +46,7 @@ Build Slides
 
 First
 
-     $ git clone https://github.com/ucsd-progsys/liquid-client.git 
+     $ git clone https://github.com/ucsd-progsys/liquid-client.git
 
 To build rust-style html (in dist/_site)
 
@@ -89,6 +89,32 @@ Outline [25]
 + 03-examples      [9]
 + 04-abstracting   [4]
 + 05-concl         [3]
+
+
+Editing Notes
+-------------
+
+To edit locally,
+
+1. Clone repositories
+
+```
+$ git clone https://github.com/ucsd-progsys/intro-refinement-types.git
+$ cd intro-refinement-types
+$ git clone https://github.com/ucsd-progsys/liquid-client.git
+```
+
+2. Edit `src-120/0X-file.lhs`
+
+3. `stack exec -- make`
+
+4. `open dist/_site/*X-file.html`  
+
+To upload do,
+
+5. `make upload`
+
+
 
 Misc Links
 ----------
