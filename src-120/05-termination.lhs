@@ -249,9 +249,11 @@ Proving Termination
 
 Some _well founded metric_ decreases at each recursive call.
 
-- First `Int` or _sized_ parameter (default), *or*
-- User specified lexicographic metric, *or*
-- The function is marked `lazy`.
+First `Int` or _sized_ parameter (default), *or*
+
+User specified lexicographic metric, *or*
+
+The function is marked `lazy`.
 
 Termination is Easy in Practice
 -------------------------------
