@@ -14,42 +14,19 @@ import Prelude hiding (map, repeat)
 fib :: Int -> Int
 map :: (a -> b) -> [a] -> [b]
 
-isOdd, isEven :: Int -> Bool 
-ack :: Int -> Int -> Int 
+isOdd, isEven :: Int -> Bool
+ack :: Int -> Int -> Int
 range :: Int -> Int -> [Int]
-
+replicate :: a -> Int -> [a]
 \end{code}
 
 </div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
 
 
 
 Termination Checking
 ====================
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 
@@ -59,24 +36,12 @@ Why termination Checking?
 <br>
 <br>
 
-LiquidHaskell checks _by default_ that all your functions terminate!
+**By default, LH checks that functions terminate!**
 
-Why?
+Most functions _should_ terminate
 
-- It is the _expected_ case!
-- For soundness: [Refinement Types for Haskell](http://goto.ucsd.edu/~nvazou/refinement_types_for_haskell.pdf)
+For _soundness_ w.r.t. laziness [[ICFP 14]](http://dl.acm.org/citation.cfm?id=2628161)
 
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <br>
 
 Example: Termination of `fib`
@@ -86,228 +51,144 @@ Example: Termination of `fib`
 <br>
 \begin{code}
 {-@ fib :: i:Int -> Int  @-}
-fib i | i == 0    = 0 
-      | i == 1    = 1 
+fib i | i == 0    = 0
+      | i == 1    = 1
       | otherwise = fib (i-1) + fib (i-2)
 \end{code}
 
 <br>
 <br>
 **Q:** Why is there an error?
-<br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 Proving Termination I
 ----------------------
-<br>
-Liquid Haskell checks a _well founded_ metric decreases at each recursive call. 
-
 
 <br>
-<br>
-_Well founded_ metrics:
 
- - the first integer argument.
-<br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+**Liquid Haskell Checks:**
+
+Some _well founded metric_ decreases at each recursive call.
+
 <br>
 
+**Default Metric:**
 
+The _first_ `Int` parameter.
 
-User specified Termination Metrics
+User Specified Termination Metrics
 -----------------------------------
 
-The first integer is not always decreasing!
+<br>
+
+The first `Int` need not always be decreasing!
 
 \begin{code}
-{-@ range :: lo:Int -> hi:Int -> [Int] / [0] @-} 
+{-@ replicate :: a -> Int -> [a] @-}
+replicate _ 0 = []
+replicate x n = x : replicate x (n - 1)
+\end{code}
+
+**Specify metric as an expression over the inputs**
+
+User Specified Termination Metrics
+-----------------------------------
+
+<br>
+
+The first `Int` need not always be decreasing!
+
+\begin{code}
+{-@ range :: lo:Int -> hi:Int -> [Int] @-}
 range lo hi
- | lo < hi = lo : range (lo+1) hi
+ | lo < hi   = lo : range (lo+1) hi
  | otherwise = []
 \end{code}
-<br>
-<br>
 
-**Q:** Replace `0` with the decreasing metric!
+**Excercise:** Fill in metric that proves `range` terminates.
 
-<br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Proving Termination 
-----------------------
-
-Liquid Haskell checks a _well founded_ metric decreases at each recursive call. 
-
+Proving Termination
+-------------------
 
 <br>
-<br>
-_Well founded_ metrics:
 
- - user specified metrics, or
- - the first integer argument.
+**Liquid Haskell Checks:**
+
+Some _well founded metric_ decreases at each recursive call.
+
 <br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+- Either _first_ `Int` parameter (default)
+- Or User specified metric.
 
 
 Lexicographic Termination
------------------------------------
+-------------------------
+
+<br>
 
 Why does [Ackermann Function](https://en.wikipedia.org/wiki/Ackermann_function) terminate?
 
-
 \begin{code}
-{-@ ack :: m:Int -> n:Int -> Int / [0, 0] @-} 
+{-@ ack :: m:Int -> n:Int -> Int / [m, n] @-}
 ack m n
-  | m == 0 = n + 1
-  | n == 0 = ack (m-1) 1
-  | otherwise = ack (m-1) (ack m (n-1))
+  | m == 0    = n + 1
+  | n == 0    = ack (m - 1) 1
+  | otherwise = ack (m - 1) (ack m (n-1))
 \end{code}
-<br>
-<br>
-
-**Q:** Replace `0` with the decreasing _metrics_!
 
 <br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+*Either* first argument `m` decreases *or* second argument `n` decreases.
+
 <br>
 
+**Specify lexicographically ordered sequence of termination metrics**
 
-How about data types?
------------------------------------
 
-Map ADTs to integers using measures!
+How About Data Types?
+---------------------
+
+<br>
+
+What does `map` terminate?
 
 \begin{code}
-{-@ map :: (a -> b) -> xs:[a] -> [b] / [len xs]  @-}
+{-@ map :: (a -> b) -> xs:[a] -> [b] / [len xs] @-}
 map _ []     = []
-map f (x:xs) = f x : map f xs 
+map f (x:xs) = f x : map f xs
 \end{code}
 
 <br>
-<br>
 
-But Liquid Haskell knows that!
+**Recursive Calls on Smaller Lists.**
 
-<br>
-It will use `len` as the default metric to check `x:[a]` decreasing.
-
-<br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+Use first parameter with _associated size_ as **default metric**.
 
 User specified metrics on ADTs
------------------------------------
+------------------------------
 
 <br>
 
+What does `merge` terminate?
+
 \begin{code}
-{-@ merge :: xs:[a] -> ys:[a] -> [a] / [0] @-}
-merge xs []   = xs
-merge [] ys   = ys
-merge (x:xs) (y:ys) 
-  | x < y     = x:(merge xs (y:ys))
-  | otherwise = y:(merge ys (x:xs))
+{-@ merge :: xs:[a] -> ys:[a] -> [a] @-}
+merge (x:xs) (y:ys)
+  | x < y           = x:(merge xs (y:ys))
+  | otherwise       = y:(merge ys (x:xs))
+merge xs []         = xs
+merge [] ys         = ys
 \end{code}
 
 <br>
-<br>
 
-Does `merge` terminate?
-
-<br>
-
-Liquid Haskell cannot know that!
-
-<br>
-<br>
-<br> 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+**Exercise:** The default is insufficient here; can you fill in a suitable metric?
 
 
-Mutual Recursive Functions
------------------------------------
+Mutually Recursive Functions
+----------------------------
 
-Same idea generalizes to mutual recursion. 
+Same idea generalizes to mutual recursion.
 
 \begin{code}
 {-@ isEven :: n:Nat -> Bool / [n, 0] @-}
@@ -329,7 +210,7 @@ Liquid Haskell does not even attempt to guess it...
 
 <br>
 <br>
-<br> 
+<br>
 <br>
 <br>
 <br>
@@ -342,8 +223,8 @@ Liquid Haskell does not even attempt to guess it...
 <br>
 <br>
 
-Diverging Functions 
------------------------------------
+Diverging Functions
+-------------------
 
 <br>
 `lazy` annotation deactivates termination checking.
@@ -352,7 +233,7 @@ Diverging Functions
 \begin{code}
 {-@ lazy repeat @-}
 
-repeat x = x:repeat x 
+repeat x = x:repeat x
 \end{code}
 <br>
 <br>
@@ -360,7 +241,7 @@ repeat x = x:repeat x
 
 <br>
 <br>
-<br> 
+<br>
 <br>
 <br>
 <br>
@@ -375,12 +256,12 @@ repeat x = x:repeat x
 
 
 
-Proving Termination 
+Proving Termination
 ----------------------
 
 For non `Lazy` specified functions,
 
-Liquid Haskell checks a _well founded_ metric decreases at each recursive call. 
+Liquid Haskell checks a _well founded_ metric decreases at each recursive call.
 
 
 <br>
@@ -391,7 +272,7 @@ _Well founded_ metrics:
  - the first integer or "sized" argument.
 <br>
 <br>
-<br> 
+<br>
 <br>
 <br>
 <br>
@@ -414,14 +295,14 @@ Recap
 1. **Refinements:** Types + Predicates
 2. **Subtyping:** SMT Implication
 3. **Measures:** Specify Properties of Data
-4. <div class="fragment">**Termination:**</div> Use Logic to Prove Termination 
+4. <div class="fragment">**Termination:**</div> Use Logic to Prove Termination
 
 <br>
-What properties can be expressed in the logic? 
-<br> 
+What properties can be expressed in the logic?
+<br>
 
  - Linear Arithmetic, Booleans, Uninterpreted Functions, ... (SMT logic)
- 
+
  - Terminating Haskell functions.
 
 <br>
