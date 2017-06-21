@@ -428,11 +428,15 @@ Conclusion
 
 <br>
 
--------------------       ------------------------------------------------
-**Properties:**           Predicates  *+ Types*
-**Proofs:**               SMT Solvers *+ Subtyping*
-**Inference:**            Abstract Interpretation *+ Hindley-Milner*
--------------------       ------------------------------------------------
+
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Subtyping:**      | SMT Implication                |
+| **Measures:**       | Specify Properties of Data     |
+| **Termination:**    | Well-founded Metrics           |
+| **Reflection:**     | Haskell functions in Logic     |
+
 
 
 
@@ -441,10 +445,11 @@ Current & Future Work
 
 <br>
 
-+ GHC Integration
-+ Faster Checking
-+ Easier Errors
-+ Code Synthesis
+Faster Checking
+
+Easier Errors
+
+**Code Synthesis**
 
 
 Thank You!

@@ -132,6 +132,7 @@ sumEq n is = mRTheorem n          -- chunk size
 sumRightId xs = undefined
 \end{code}
 
+- Append-Assoc 
 
 - Distribution of `sum`
 \begin{code}

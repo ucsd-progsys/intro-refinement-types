@@ -18,7 +18,7 @@ map :: (a -> b) -> [a] -> [b]
 ack :: Int -> Int -> Int
 range :: Int -> Int -> [Int]
 replicate :: Int -> Int -> [Int]
-isEven, isOdd :: Int -> Bool 
+isEven, isOdd :: Int -> Bool
 \end{code}
 
 </div>
@@ -84,7 +84,7 @@ Example: Termination of `fib`
 \begin{code}
 {-@ fib' :: Int -> Int  @-}
 fib' i | i <= 0    = 1
-       | i == 1    = 1 
+       | i == 1    = 1
        | otherwise = fib' (i-1) + fib' (i-2)
 \end{code}
 
