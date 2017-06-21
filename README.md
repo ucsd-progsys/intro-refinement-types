@@ -4,7 +4,7 @@ README
 This repository has the materials for a 120 minute tutorial
 on programming and proving with Refinement types with [LiquidHaskell][lh-github]
 
-+ [120 mins](http://ucsd-progsys.github.io/intro-refinement-types/120/)
++ [120 mins](http://ucsd-progsys.github.io/intro-refinement-types/120/01-index.html)
 
 For other versions, you may be interested in:
 
