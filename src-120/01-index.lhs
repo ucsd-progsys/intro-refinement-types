@@ -438,8 +438,6 @@ Conclusion
 | **Reflection:**     | Haskell functions in Logic     |
 
 
-
-
 Current & Future Work
 ---------------------
 
