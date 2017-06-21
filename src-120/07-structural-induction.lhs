@@ -131,9 +131,54 @@ map :: f:(a->b) -> xs:L a
        }
 \end{spec}
 
---- CUT 
 
-Reflection of Non Recursive Functions
+Prove fancy lists properties
+--------------------------------
+<br>
+
+- Functor Laws
+    - Identity:     `map id == id`
+    - Distribution: `map (compose f g) == compose (map f) (map g)`
+
+<br>
+
+- Monoid Laws
+    - Left Identity: `append empty x == x`
+    - Right Identity: `append x empty == x`
+    - Associativity: `append xs (append ys zs) == append (append xs ys) zs`
+
+<br>
+
+- Monad Laws
+    - Left Identity: `bind (return x) f == f x`
+    - Right Identity: `bind x return == x`
+    - Associativity: `bind (bind m f) g == bind m (\x:a -> (bind (f x) g))`
+
+
+Recap
+-----
+
+
+
+<br>
+<br>
+
+|                          |                                  |
+|-------------------------:|:---------------------------------|
+| **Termination:**         | Well-founded Metrics             |
+| **Reflection:**          | Allow Haskell functions in Logic |
+| **tructural Induction:** | Proving Theorems on Lists        |
+
+<br>
+<br>
+
+<div class="fragment">
+**Next:** [Case Study: MapReduce](08-case-study-map-reduce.html): Program Properties that matter!
+</div>
+
+
+
+Appendix: Reflection of Non Recursive Functions
 -------------------------------------
 
 <br>
@@ -232,53 +277,8 @@ mapFusion f g xs = undefined
 **Exercise:** Can you prove map-fusion?
 
 
-Other fancy Lists  properties
---------------------------------
-<br>
 
-- Functor Laws
-    - Identity:     `map id == id`
-    - Distribution: `map (compose f g) == compose (map f) (map g)`
-
-<br>
-
-- Monoid Laws
-    - Left Identity: `append empty x == x`
-    - Right Identity: `append x empty == x`
-    - Associativity: `append xs (append ys zs) == append (append xs ys) zs`
-
-<br>
-
-- Monad Laws
-    - Left Identity: `bind (return x) f == f x`
-    - Right Identity: `bind x return == x`
-    - Associativity: `bind (bind m f) g == bind m (\x:a -> (bind (f x) g))`
-
-
-Recap
------
-
-
-
-<br>
-<br>
-
-|                          |                                  |
-|-------------------------:|:---------------------------------|
-| **Termination:**         | Well-founded Metrics             |
-| **Reflection:**          | Allow Haskell functions in Logic |
-| **tructural Induction:** | Proving Theorems on Lists        |
-
-<br>
-<br>
-
-<div class="fragment">
-**Next:** [Case Study: MapReduce](08-case-study-map-reduce.html): Program Properties that matter!
-</div>
-
-
-
-Appendix: Onto Monoid Laws
+Onto Monoid Laws
 ----------------
 <br>
 

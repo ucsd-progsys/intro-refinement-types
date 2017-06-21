@@ -18,7 +18,7 @@ import Language.Haskell.Liquid.ProofCombinators
 map :: (a -> b) -> List a -> List b
 sumEq :: Int -> List Int -> Proof
 
-sumRightId :: List Int -> Proof
+plusRightId :: List Int -> Proof
 sumDistr :: List Int -> List Int -> Proof
 
 mRTheorem :: Int -> (List a -> b) -> (b -> b -> b)
@@ -33,6 +33,8 @@ llen :: List a -> Int
 (++) :: List a -> List a -> List a
 drop :: Int -> List a -> List a
 take :: Int -> List a -> List a
+
+appendAssoc, appendAssocAuto :: List a -> List a -> List a -> Proof
 \end{code}
 
 </div>
@@ -57,7 +59,7 @@ Chunk input, map operation (in parallel), and reduce the results.
 MapReduce "Library"
 -------------------
 <br>
-Haskell definition and Reflection
+Haskell definition and reflection
 <br>
 
 \begin{code}
@@ -114,35 +116,32 @@ psum n is = mapReduce n sum plus is
 Proving Code Equivalence
 -------------------------
 
-- By application of HO Theorem
+- By application of Higher Order Theorem
+
 \begin{code}
 {-@ automatic-instances sumEq @-}
 {-@ sumEq :: n:Int -> is:List Int -> { sum is == psum n is } @-}
-sumEq n is = mRTheorem n          -- chunk size
-                       sum        -- ???
-                       plus       -- ???
-                       sumRightId -- sum has "right-identity"
-                       sumDistr   -- plus is "distributive"
-                       is
+sumEq n is = mRTheorem n             -- chunk size
+                         sum         -- function to map-reduce
+                         plus        -- reduction operator
+                         plusRightId -- plus has "right-identity"
+                         sumDistr    -- sum is "distributive"
+                         is          -- input list
 \end{code}
+
 
 - Right Identity of `plus`
-\begin{code}
-{-@ sumRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
-sumRightId xs = undefined
-\end{code}
 
-- Append-Assoc
+\begin{spec}
+{-@ plusRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
+\end{spec}
+
 
 - Distribution of `sum`
-\begin{code}
-{-@ automatic-instances sumDistr @-}
+
+\begin{spec}
 {-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
-sumDistr N ys        = trivial
-sumDistr (C x xs) ys = sumDistr xs ys
-\end{code}
-
-
+\end{spec}
 
 Higher Order Map Reduce Theorem
 -----------------------
@@ -165,6 +164,67 @@ If `f` is right-id and `op` distributes ...
 <br>
 Manual Proof (see Appendix)
 <br>
+
+
+
+Right Identity of `plus`
+-------------------------
+
+<br> 
+**Exercise:** Can you prove plus has right identity?
+<br>
+
+\begin{code}
+{-@ plusRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
+plusRightId xs = undefined
+\end{code}
+
+Warmup: Associativity of Append
+--------------------------------
+
+<br> 
+**Exercise:** Can you prove plus has right identity?
+<br>
+
+\begin{code}
+{-@ appendAssoc :: xs:List a -> ys:List a -> zs:List a 
+                -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
+appendAssoc xs ys zs = undefined
+\end{code}
+
+
+Proof Automation: Associativity of Append
+--------------------------------
+
+<br> 
+Proof Automation Flag
+<br>
+
+\begin{code}
+{-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}
+\end{code}
+
+\begin{code}
+{-@ automatic-instances appendAssocAuto @-}
+{-@ appendAssocAuto :: xs:List a -> ys:List a -> zs:List a 
+                -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
+appendAssocAuto N        _  _ = trivial
+appendAssocAuto (C _ xs) ys zs = appendAssocAuto xs ys zs
+\end{code}
+
+Distribution of `sum`
+-------------------------
+
+<br> 
+**Exercise:** Can you prove distribution of sum?
+<br>
+
+- Distribution of `sum`
+\begin{code}
+{-@ automatic-instances sumDistr @-}
+{-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
+sumDistr xs ys = undefined 
+\end{code}
 
 Recap
 -----
