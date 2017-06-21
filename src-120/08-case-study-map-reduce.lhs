@@ -132,7 +132,7 @@ sumEq n is = mRTheorem n          -- chunk size
 sumRightId xs = undefined
 \end{code}
 
-- Append-Assoc 
+- Append-Assoc
 
 - Distribution of `sum`
 \begin{code}
@@ -190,18 +190,21 @@ Recap
 -----
 
 <br>
+
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
+| **Measures:**       | Specify Properties of Data     |
+| **Termination:**    | Well-founded Metrics           |
+| **Reflection:**     | Haskell functions in Logic     |
+
 <br>
 
-1. **Refinements:** Types + Predicates
-2. **Measures:** Specify Properties of Data
-3. **Case Study:** Sorting
-4. **Termination:** Semantic Termination Checking
-5. **Reflection:** Allow Haskell functions in Logic!
-6. <div class="fragment">**Case Study:**</div> Prove Program Equivalence
+[Evaluation & Conclusion](01-index.html?slide=27)
 
-<br>
-<br>
-[Evaluation & Conclusion](file:///Users/niki/intro-refinement-types/dist/_site/01-index.html?slide=27)
+
 
 Appendix: Proof of `mRTheorem`
 -----------------------------

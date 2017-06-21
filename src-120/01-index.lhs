@@ -318,8 +318,6 @@ HeartBleeds
 HeartBleeds
 -----------
 
-<br>
-
 \begin{spec}
 λ> :m + Data.Text Data.Text.Unsafe
 λ> let t = pack "Barcelona"
@@ -355,19 +353,15 @@ Plan
 
 **Part I: Refinement Types**
 
-[**Refinements**](02-refinements.html)
-
-[**Data Types**](03-datatypes.html)
-
-[**Case Study: Sorting**](04-case-study-insertsort.html)
+- [**Refinements**](02-refinements.html)
+- [**Data Types**](03-datatypes.html)
+- [**Case Study: Sorting**](04-case-study-insertsort.html)
 
 **Part II: Reflection**
 
-[**Termination**](05-termination.html)
-
-[**Reflection**](06-reflection.html)
-
-[**Case Study: Map-Reduce**](07-map-reduce.html)
+- [**Termination**](05-termination.html)
+- [**Reflection**](06-reflection.html)
+- [**Case Study: Map-Reduce**](07-map-reduce.html)
 
 
 Evaluation
@@ -432,7 +426,8 @@ Conclusion
 |                     |                                |
 |--------------------:|:-------------------------------|
 | **Refinements:**    | Types + Predicates             |
-| **Subtyping:**      | SMT Implication                |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
 | **Measures:**       | Specify Properties of Data     |
 | **Termination:**    | Well-founded Metrics           |
 | **Reflection:**     | Haskell functions in Logic     |

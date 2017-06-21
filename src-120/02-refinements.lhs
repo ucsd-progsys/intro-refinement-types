@@ -9,6 +9,7 @@ module SimpleRefinements where
 import Prelude hiding (abs, max)
 
 nats, poss  :: [Int]
+zeroA, zeroB :: Int
 zero        :: Int
 zero'       :: Int
 four        :: Int
@@ -78,8 +79,6 @@ p := e           -- atom
 Expressions
 -----------
 
-<br>
-
 \begin{spec} <div/>
 e := x, y, z,...    -- variable
    | 0, 1, 2,...    -- constant
@@ -146,15 +145,9 @@ Exercise: Positive Integers
 poss     =  [0, 1, 2, 3]
 \end{code}
 
-<br>
-
 **Q:** First, can you fix `Pos` so `poss` is **rejected**?
 
-<br>
-
-<div class="fragment">
 **Q:** Next, can you modify `poss` so it is **accepted**?
-</div>
 
 
 
@@ -165,10 +158,6 @@ Refinement Type Checking
 <br>
 
 
-
-
-
-
 A Term Can Have *Many* Types
 ----------------------------
 
@@ -178,22 +167,17 @@ A Term Can Have *Many* Types
 A Term Can Have *Many* Types
 ----------------------------
 
-<br>
-
-<div class="fragment">
-What *is* the type of `0` ?
 
 <br>
 
-\begin{spec}
-{-@ zero  :: Zero @-}
-zero      = 0
+\begin{code}
+{-@ zeroA :: Zero @-}
+zeroA     = 0
 
-{-@ zero' :: Nat  @-}
-zero'     = zero
-\end{spec}
+{-@ zeroB :: Nat  @-}
+zeroB     = 0
+\end{code}
 
-</div>
 
 
 <br>
@@ -205,7 +189,6 @@ Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse9
 
 In **environment** $\Gamma$ the type $t_1$ is a **subtype** of the type $t_2$
 
-<br>
 
 $$\boxed{\Gamma \vdash t_1 \preceq t_2}$$
 
@@ -215,7 +198,6 @@ $$\boxed{\Gamma \vdash t_1 \preceq t_2}$$
 
 **Environment** $\Gamma$ is a sequence of binders
 
-<br>
 
 $$\Gamma \doteq \overline{\bindx{x_i}{P_i}}$$
 
@@ -263,7 +245,6 @@ $$
 $$
 </div>
 
-<br>
 
 <div class="fragment">
 
@@ -296,8 +277,6 @@ $$
 $$
 </div>
 
-<br>
-
 <div class="fragment">
 
 And so, we can type:
@@ -309,12 +288,6 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
     x = 3
 \end{code}
 </div>
-
-
-<br>
-
-
-
 
 
 [SMT](http://en.wikipedia.org/wiki/Satisfiability_modulo_theories) Automates Subtyping
@@ -355,8 +328,6 @@ impossible msg = error msg
 No value satisfies `false` $\Rightarrow$ **no valid inputs** for `impossible`
 </div>
 
-<br>
-
 <div class="fragment">
 Program type-checks $\Rightarrow$ `impossible` **never called at run-time**
 </div>
@@ -371,8 +342,6 @@ Exercise: Pre-Conditions
 
 Let's write a **safe division** function
 
-<br>
-
 \begin{code}
 {-@ safeDiv :: Int -> Int -> Int   @-}
 safeDiv _ 0 = impossible "divide-by-zero"
@@ -384,10 +353,6 @@ safeDiv x n = x `div` n
 <div class="fragment">
 **Q:** Yikes! Can you **fix the type** of `safeDiv` to banish the error?
 </div>
-
-
-<br>
-
 
 
 Precondition Checked at Call-Site
@@ -406,8 +371,6 @@ avg2 x y   = safeDiv (x + y) 2
 {-@ safeDiv :: n:Int -> d:NonZero -> Int @-}
 \end{spec}
 </div>
-
-<br>
 
 **Verifies As**
 
@@ -432,12 +395,8 @@ calc = do
   calc
 \end{code}
 
-<br>
-
 **Q:** Can you fix `calc` so it typechecks?
 
-
-<br>
 
 Precondition Checked at Call-Site
 ---------------------------------
@@ -452,17 +411,12 @@ avg xs     = safeDiv total n
     n      = length xs         -- returns a Nat
 \end{code}
 
-<br>
-
 <div class="fragment">
 **Rejected** as `n` can be *any* `Nat`
 
 $$0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)$$
-
 </div>
 
-
-<br>
 
 `size` returns positive values
 ------------------------------
@@ -480,11 +434,6 @@ size (_:xs) = 1 + size xs
 -- size _   = impossible "size"
 \end{code}
 
-
-<br>
-
-
-
 Postconditions Checked at Return
 --------------------------------
 
@@ -492,11 +441,9 @@ Postconditions Checked at Return
 
 \begin{spec} <div/>
 {-@ size    :: [a] -> Pos @-}
-size []     = 1                        -- (1)
+size [_]    = 1                        -- (1)
 size (_:xs) = 1 + n  where n = size xs -- (2)
 \end{spec}
-
-<br>
 
 <div class="fragment">
 **Verified As**
@@ -506,9 +453,6 @@ $$\begin{array}{rll}
 (0 < n) & \Rightarrow (v = 1 + n) & \Rightarrow (0 < v) & \qquad \mbox{at (2)} \\
 \end{array}$$
 </div>
-
-
-<br>
 
 
 Verifying `avg`
@@ -522,8 +466,6 @@ avg' xs    = safeDiv total n
     total  = sum  xs
     n      = size xs           -- returns a Pos
 \end{code}
-
-<br>
 
 <div class="fragment">
 **Verifies As**
@@ -540,12 +482,18 @@ Recap
 
 <br>
 
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
+
 <div class="fragment">
 **Refinement Types**
+
 Types + Predicates
 </div>
 
-<br>
 
 <div class="fragment">
 **Specify Properties**
@@ -553,7 +501,6 @@ Types + Predicates
 Via Refined Input- and Output- Types
 </div>
 
-<br>
 
 <div class="fragment">
 **Verify Properties**

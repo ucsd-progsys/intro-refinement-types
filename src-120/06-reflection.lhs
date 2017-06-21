@@ -344,7 +344,7 @@ Generalizing monotonicity proof
 -------------------------------
 
 <br>
-**Exercise:** Generalize the implementation of `fMono` proof below to any increasing function `f`. 
+**Exercise:** Generalize the implementation of `fMono` proof below to any increasing function `f`.
 <br>
 
 \begin{code}
@@ -384,12 +384,16 @@ Recap
 -----
 
 <br>
-<br>
 
-|                     |                                  |
-|--------------------:|:---------------------------------|
-| **Termination:**    | Well-founded Metrics             |
-| **Reflection:**     | Allow Terminating Haskell functions in Logic |
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
+| **Measures:**       | Specify Properties of Data     |
+| **Termination:**    | Well-founded Metrics           |
+| **Reflection:**     | Haskell functions in Logic     |
+
 
 <br>
 

@@ -393,11 +393,12 @@ Recap
 
 <br>
 
-**Refinements:** Types + Predicates
-
-**Subtyping:** SMT Implication
-
-**Measures:** Specify Properties of Data
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
+| **Measures:**       | Specify Properties of Data     |
 
 <br>
 

@@ -299,7 +299,8 @@ Recap
 |                     |                                |
 |--------------------:|:-------------------------------|
 | **Refinements:**    | Types + Predicates             |
-| **Subtyping:**      | SMT Implication                |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
 | **Measures:**       | Specify Properties of Data     |
 | **Termination:**    | Well-founded Metrics           |
 

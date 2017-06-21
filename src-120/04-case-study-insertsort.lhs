@@ -483,8 +483,15 @@ Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
 
 </div>
 
-Continue
---------
+Recap
+-----
+
+|                     |                                |
+|--------------------:|:-------------------------------|
+| **Refinements:**    | Types + Predicates             |
+| **Specification:**  | Refined Input/Output Types     |
+| **Verification:**   | SMT-based Predicate Subtyping  |
+| **Measures:**       | Specify Properties of Data     |
 
 <br>
 
