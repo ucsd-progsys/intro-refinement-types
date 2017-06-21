@@ -284,10 +284,10 @@ fibThree _
 Paper & Pencil style Proofs
 ---------------------------
 
+<br>
 `fib` is increasing
+<br>
 
-<br>
-<br>
 \begin{code}
 {-@ fibUp :: i:Nat -> {fib i <= fib (i+1)} @-}
 fibUp i
@@ -310,7 +310,9 @@ fibUp i
 Another "Paper & Pencil" Proof
 ------------------------------
 
+<br>
 **Exercise:** Lets fix the proof that `fib` is monotonic?
+<br>
 
 \begin{code}
 {-@ fibMonotonic :: x:Nat -> y:{Nat | x < y } -> {fib x <= fib y}  @-}
@@ -322,11 +324,13 @@ fibMonotonic x y
   *** QED
   | x < y - 1
   =   fib x
-  <=. fib (y-1)
+  <=. fib (y-1) ? trivial {- Inductive Hypothesis call goes here -}
   <=. fib y     ? fibUp (y-1)
   *** QED
 \end{code}
 
+
+**Exercise:** Can you replace `trivial` to fix the monotonicity proof?
 <br>
 
 Note: Totality checker should be on for valid proofs
@@ -339,8 +343,8 @@ Note: Totality checker should be on for valid proofs
 Generalizing monotonicity proof
 -------------------------------
 
-Increasing implies monotonic in general!
-
+<br>
+**Exercise:** Generalize the implementation of `fMono` proof below to any increasing function `f`. 
 <br>
 
 \begin{code}
@@ -348,18 +352,18 @@ Increasing implies monotonic in general!
           -> fUp:(z:Nat -> {f z <= f (z+1)})
           -> x:Nat
           -> y:{Nat|x < y}
-          -> {f x <= f y} / [y]
-  @-}
+          -> {f x <= f y} / [y] @-}
 fMono f fUp x y
-  | x + 1 == y
-  = f x   <=. f (x + 1) ? fUp x
-          ==. f y
-          *** QED
-
-  | x + 1 < y
-  = f x   <=. f (y-1)   ? fMono f fUp x (y-1)
-          <=. f y       ? fUp (y-1)
-          *** QED
+  | y == x + 1
+  =   fib x
+  <=. fib (x+1) ? fibUp x
+  <=. fib y
+  *** QED
+  | x < y - 1
+  =   fib x
+  <=. fib (y-1) ? fibMonotonic x (y-1)
+  <=. fib y     ? fibUp (y-1)
+  *** QED
 \end{code}
 
 Reusing Theorems by Application
@@ -380,17 +384,15 @@ Recap
 -----
 
 <br>
+<br>
 
 |                     |                                  |
 |--------------------:|:---------------------------------|
-| **Refinements:**    | Types + Predicates               |
-| **Subtyping:**      | SMT Implication                  |
-| **Measures:**       | Specify Properties of Data       |
 | **Termination:**    | Well-founded Metrics             |
-| **Reflection:**     | Allow Haskell functions in Logic |
+| **Reflection:**     | Allow Terminating Haskell functions in Logic |
 
 <br>
 
 <div class="fragment">
-**Next:** [Case Study: MapReduce](07-mapReduce.html): Program Properties that matter!
+**Next:** [Structural Induction](07-structural-induction.html): Program Properties about data types!
 </div>

@@ -17,7 +17,8 @@ map :: (a -> b) -> [a] -> [b]
 -- isOdd, isEven :: Int -> Bool
 ack :: Int -> Int -> Int
 range :: Int -> Int -> [Int]
-replicate :: a -> Int -> [a]
+replicate :: Int -> Int -> [Int]
+isEven, isOdd :: Int -> Bool 
 \end{code}
 
 </div>
@@ -82,7 +83,8 @@ Example: Termination of `fib`
 <br>
 \begin{code}
 {-@ fib' :: Int -> Int  @-}
-fib' i | i <= 1    = 1
+fib' i | i <= 0    = 1
+       | i == 1    = 1 
        | otherwise = fib' (i-1) + fib' (i-2)
 \end{code}
 
@@ -100,8 +102,8 @@ User Specified Termination Metrics
 The first `Int` need not always be decreasing!
 
 \begin{code}
-{-@ replicate :: a -> Int -> [a] @-}
-replicate _ 0 = []
+{-@ replicate :: Int -> Int -> [Int] @-}
+replicate _ n | n <= 0 = []
 replicate x n = x : replicate x (n - 1)
 \end{code}
 
@@ -199,31 +201,27 @@ merge [] ys         = ys
 <!-- RJ: the mutually recursive stuff is pure black magic hackery, CUT.
      it ONLY makes sense with the GHOST (as in the README) and its not
      discussed here. In short, super confusing, hence, CUTTING.
+-->
 
 Mutually Recursive Functions
 ----------------------------
 
 Same idea generalizes to mutual recursion.
 
-\zbegin{code}
-{- isEven :: n:Nat -> Bool / [n, 0] @-}
-{- isOdd  :: m:Nat -> Bool / [m, 1] @-}
+\begin{code}
+{-@ isEven :: n:Nat -> Bool  @-}
+{-@ isOdd  :: m:Nat -> Bool  @-}
 
 isEven 0 = True
 isEven n = isOdd (n-1)
 
 isOdd m = not $ isEven m
-\zend{code}
-<br>
-<br>
+\end{code}
 
-Can you find the correct metric?
-
-<br>
+**Exercise:** Can you find the correct metric?
 
 Liquid Haskell does not even attempt to guess it...
 
--->
 
 Diverging Functions
 -------------------
@@ -292,6 +290,7 @@ Termination is Easy in Practice
 - `8`   currently *outside scope* of LiquidHaskell
 
 
+
 Recap
 -----
 
@@ -303,7 +302,6 @@ Recap
 | **Subtyping:**      | SMT Implication                |
 | **Measures:**       | Specify Properties of Data     |
 | **Termination:**    | Well-founded Metrics           |
-
 
 
 What properties can be expressed in the logic?
@@ -321,4 +319,4 @@ What properties can be expressed in the logic?
 
 **Next: _Any_ Terminating Haskell Function**
 
-[Refinement Reflection](12-refinement-reflection.html)
+[Refinement Reflection](06-reflection.html)

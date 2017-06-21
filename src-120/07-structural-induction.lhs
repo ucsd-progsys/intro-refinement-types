@@ -4,7 +4,7 @@
 {-# LANGUAGE TupleSections    #-}
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--short-names"    @-}
-{-@ LIQUID "--diff"           @-}
+{-@ LIQUID "--betaequivalence" @-}
 
 
 -- Hidden code
@@ -29,7 +29,6 @@ appendAssoc :: L a -> L a -> L a -> Proof
 leftIdentity :: a -> (a -> L b) -> Proof
 rightIdentity :: L a -> Proof
 associativity :: L a -> (a -> L b) -> (b -> L c) -> Proof
-Î²equivalence :: (a -> L b) -> (b -> L c) -> a -> Proof
 
 \end{code}
 
@@ -83,8 +82,11 @@ length (C _ xs) = 1 + length xs
 
 Reflection of ADTs into the logic
 ----------------------------------
+
 <br>
+
 The Liquid pragma
+
 <br>
 
 \begin{code}
@@ -160,6 +162,11 @@ compose :: f:(b -> c) -> g:(a -> b) -> x:a
 Proving Map-Identity
 ----------------------
 
+<br>
+Optimization property: to `map` identity do not transverse the list!
+<br>
+
+
 \begin{code}
 {-@ mapId :: xs:L a -> { map id xs == id xs } @-}
 mapId N
@@ -177,10 +184,7 @@ mapId (C x xs)
   *** QED
 \end{code}
 
-Proof:
-
-  - Case splitting, and
-  - recursive call!
+Proof by case splitting and recursive call.
 
 
 Automation: Proving Map-Identity
@@ -198,13 +202,9 @@ Pretty Verbose Proof: Proof Automation!
 {-@ automatic-instances mapIdAuto @-}
 
 {-@ mapIdAuto :: xs:L a -> { map id xs == id xs } @-}
-mapIdAuto N
-  =  trivial
-mapIdAuto (C x xs)
-  =  mapIdAuto xs
+mapIdAuto N        = trivial
+mapIdAuto (C x xs) = mapIdAuto xs
 \end{code}
-
-<br>
 
 Proof Generation:
 
@@ -216,27 +216,37 @@ Proof Generation:
 Proving Map-Fusion
 --------------------------
 
-{-@ automatic-instances mapFusion @-}
+<br>
+Optimization property: transverse the list only once!
+<br>
+ 
+
 \begin{code}
+{-@ automatic-instances mapFusion @-}
 {-@ mapFusion :: f:(b -> c) -> g:(a -> b) -> xs:L a
-  -> { map  (compose f g) xs == (compose (map f) (map g)) (xs) } @-}
-mapFusion f g xs = trivial
+  -> { map  (compose f g) xs == (map f) (map g xs) } @-}
+mapFusion f g xs = undefined 
 \end{code}
 
 **Exercise:** Can you prove map-fusion?
 
 
-Lists satisfy various properties
+Other fancy Lists  properties
 --------------------------------
+<br>
 
 - Functor Laws
     - Identity:     `map id == id`
     - Distribution: `map (compose f g) == compose (map f) (map g)`
 
+<br>
+
 - Monoid Laws
     - Left Identity: `append empty x == x`
     - Right Identity: `append x empty == x`
     - Associativity: `append xs (append ys zs) == append (append xs ys) zs`
+
+<br>
 
 - Monad Laws
     - Left Identity: `bind (return x) f == f x`
@@ -247,23 +257,27 @@ Lists satisfy various properties
 Recap
 -----
 
+
+
 <br>
 <br>
 
-1. **Refinements:** Types + Predicates
-2. **Subtyping:** SMT Implication
-3. **Measures:** Specify Properties of Data
-4. **Termination:** Use Logic to Prove Termination
-5. **Reflection:** Allow Haskell functions in Logic.
-6. <div class="fragment">**Structural Induction:**</div> Proving Theorems on Lists!
+|                          |                                  |
+|-------------------------:|:---------------------------------|
+| **Termination:**         | Well-founded Metrics             |
+| **Reflection:**          | Allow Haskell functions in Logic |
+| **tructural Induction:** | Proving Theorems on Lists        |
 
+<br>
 <br>
 
 <div class="fragment">
 **Next:** [Case Study: MapReduce](08-case-study-map-reduce.html): Program Properties that matter!
 </div>
 
-Onto Monoid Laws
+
+
+Appendix: Onto Monoid Laws
 ----------------
 <br>
 
@@ -308,12 +322,13 @@ Lets prove the right identity monoid law!
 \begin{code}
 {-@ automatic-instances emptyRight @-}
 {-@ emptyRight :: x:L a -> { append x empty == x }  @-}
-emptyRight x        = trivial
+emptyRight N        = trivial 
 emptyRight (C x xs) = emptyRight xs
 \end{code}
 
 Monoid Laws: Associativity
 ---------------------------------------------
+
 <br>
 Lets prove the associativity monoid law!
 <br>
@@ -324,15 +339,15 @@ Lets prove the associativity monoid law!
 {-@ appendAssoc :: xs:L a -> ys:L a -> zs:L a
   -> {append xs (append ys zs) == append (append xs ys) zs } @-}
 appendAssoc N _ _          = trivial
-appendAssoc (C x xs) ys zs = appendAssoc xs ys zs\end{code}
+appendAssoc (C x xs) ys zs = appendAssoc xs ys zs
+\end{code}
 
 
 Onto Monad Laws!
 ----------------
+
 <br>
-
 Define monad list operators
-
 <br>
 
 \begin{code}
@@ -345,23 +360,6 @@ bind :: L a -> (a -> L b) -> L b
 bind N _ = N
 bind (C x xs) f = append (f x) (bind xs f)
 \end{code}
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 Monoid Laws: Left Identity
 ---------------------------------------------
 <br>
@@ -369,7 +367,7 @@ Lets prove the left identity monad law!
 <br>
 
 \begin{code}
-{- automatic-instances leftIdentity @-}
+{-@ automatic-instances leftIdentity @-}
 
 {-@ leftIdentity :: x:a -> f:(a -> L b)
   -> { bind (return x) f == f x } @-}
@@ -386,10 +384,10 @@ Lets prove the right identity monad law!
 {-@ automatic-instances rightIdentity @-}
 
 {-@ rightIdentity :: x:L a -> { bind x return == x } @-}
-rightIdentity N 
+rightIdentity N        
   = trivial 
 rightIdentity (C x xs) 
-  = rightIdentity xs
+  =   rightIdentity xs 
   &&& emptyLeft xs
 \end{code}
 
@@ -431,23 +429,7 @@ associativity (C x xs) f g
   =   bindAppend (f x) (bind xs f) g
   &&& associativity xs f g
 \end{code}
-Proving the Beta Equivalence Lemma
------------------------------------
-- Explicit Proof requires assumptions for Î²-equivalence ...
 
-
-\begin{code}
-{-@ Î²equivalence :: f:(a -> L b) -> g:(b -> L c) -> x:a ->
-     {bind (f x) g == (\y:a -> bind (f y) g) (x)}  @-}
-Î²equivalence f g x = trivial
-\end{code}
-<br>
- ... so, we teach SMT Î²-equivalence via Liquid pragma.
-
-<br>
-\begin{code}
-{-@ LIQUID "--betaequivalence"  @-}
-\end{code}
 
 
 
