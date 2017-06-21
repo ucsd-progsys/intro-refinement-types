@@ -54,9 +54,9 @@ Chunk input, map operation (in parallel), and reduce the results.
 
 
 
-Implementation
----------------
-<br> 
+MapReduce "Library"
+-------------------
+<br>
 Haskell definition and Reflection
 <br>
 
@@ -80,8 +80,8 @@ chunk :: Int -> List a -> List (List a)
 \end{code}
 
 
-Use Case: Summing List
-----------------------
+MapReduce "Client": Summing List
+--------------------------------
 
 - Standard List Summing
 \begin{code}
@@ -118,21 +118,26 @@ Proving Code Equivalence
 \begin{code}
 {-@ automatic-instances sumEq @-}
 {-@ sumEq :: n:Int -> is:List Int -> { sum is == psum n is } @-}
-sumEq n is = mRTheorem n sum plus sumRightId sumDistr is
-\end{code}
-
-- Distribution of `sum` 
-\begin{code}
-{-@ automatic-instances sumRightId @-}
-{-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
-sumRightId xs = trivial 
+sumEq n is = mRTheorem n          -- chunk size
+                       sum        -- ???
+                       plus       -- ???
+                       sumRightId -- sum has "right-identity"
+                       sumDistr   -- plus is "distributive"
+                       is
 \end{code}
 
 - Right Identity of `plus`
 \begin{code}
 {-@ sumRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
+sumRightId xs = undefined
+\end{code}
+
+
+- Distribution of `sum`
+\begin{code}
 {-@ automatic-instances sumDistr @-}
-sumDistr N ys        = trivial 
+{-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
+sumDistr N ys        = trivial
 sumDistr (C x xs) ys = sumDistr xs ys
 \end{code}
 
@@ -142,7 +147,7 @@ Higher Order Map Reduce Theorem
 -----------------------
 <br>
 If `f` is right-id and `op` distributes ...
-<br> 
+<br>
 ... then it is OK to map-reduce
 <br>
 
@@ -197,7 +202,7 @@ Recap
 <br>
 [Evaluation & Conclusion](file:///Users/niki/intro-refinement-types/dist/_site/01-index.html?slide=27)
 
-Appendix: Proof of `mRTheorem` 
+Appendix: Proof of `mRTheorem`
 -----------------------------
 
 \begin{code}
@@ -315,4 +320,3 @@ take i (C x xs)
 N ++        ys = ys
 (C x xs) ++ ys = x `C` (xs ++ ys)
 \end{code}
-

@@ -131,6 +131,7 @@ map :: f:(a->b) -> xs:L a
        }
 \end{spec}
 
+--- CUT 
 
 Reflection of Non Recursive Functions
 -------------------------------------
@@ -219,13 +220,13 @@ Proving Map-Fusion
 <br>
 Optimization property: transverse the list only once!
 <br>
- 
+
 
 \begin{code}
 {-@ automatic-instances mapFusion @-}
 {-@ mapFusion :: f:(b -> c) -> g:(a -> b) -> xs:L a
   -> { map  (compose f g) xs == (map f) (map g xs) } @-}
-mapFusion f g xs = undefined 
+mapFusion f g xs = undefined
 \end{code}
 
 **Exercise:** Can you prove map-fusion?
@@ -322,7 +323,7 @@ Lets prove the right identity monoid law!
 \begin{code}
 {-@ automatic-instances emptyRight @-}
 {-@ emptyRight :: x:L a -> { append x empty == x }  @-}
-emptyRight N        = trivial 
+emptyRight N        = trivial
 emptyRight (C x xs) = emptyRight xs
 \end{code}
 
@@ -384,10 +385,10 @@ Lets prove the right identity monad law!
 {-@ automatic-instances rightIdentity @-}
 
 {-@ rightIdentity :: x:L a -> { bind x return == x } @-}
-rightIdentity N        
-  = trivial 
-rightIdentity (C x xs) 
-  =   rightIdentity xs 
+rightIdentity N
+  = trivial
+rightIdentity (C x xs)
+  =   rightIdentity xs
   &&& emptyLeft xs
 \end{code}
 
@@ -429,10 +430,3 @@ associativity (C x xs) f g
   =   bindAppend (f x) (bind xs f) g
   &&& associativity xs f g
 \end{code}
-
-
-
-
-
-
-
