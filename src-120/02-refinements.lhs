@@ -488,28 +488,6 @@ Recap
 | **Specification:**  | Refined Input/Output Types     |
 | **Verification:**   | SMT-based Predicate Subtyping  |
 
-<div class="fragment">
-**Refinement Types**
-
-Types + Predicates
-</div>
-
-
-<div class="fragment">
-**Specify Properties**
-
-Via Refined Input- and Output- Types
-</div>
-
-
-<div class="fragment">
-**Verify Properties**
-
-Via SMT based Predicate Subtyping
-</div>
-
-
-
 
 Unfinished Business
 -------------------
@@ -517,8 +495,6 @@ Unfinished Business
 <br>
 
 How to prevent calling `size` with **empty lists**?
-
-<br>
 
 \begin{code}
 {-@ size'    :: [a] -> Pos @-}

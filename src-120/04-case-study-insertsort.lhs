@@ -82,11 +82,12 @@ Goal: Verified Insertion Sort
 
 <br>
 
-1. <div class="fragment">Is the same **size** as the input,</div>
-2. <div class="fragment">Has the same **elements** as the input,</div>
-3. <div class="fragment">Is in increasing **order**.</div>
+Is the same **size** as the input,
 
-<br>
+Has the same **elements** as the input,
+
+Is in increasing **order**.
+
 
 
 Property 1: Size
@@ -98,6 +99,8 @@ Property 1: Size
 
 Exercise: `insert`
 ------------------
+
+<br>
 
 **Q:** Can you fix the type of `insert` so `sort` checks?
 
@@ -174,13 +177,10 @@ addElem :: (Ord a) => a -> List a -> S.Set a
 addElem x xs = S.union (S.singleton x) (elems xs)
 \end{code}
 
-<br>
-
 <div class="fragment">
 `inline` lets us reuse Haskell terms in refinements.
 </div>
 
-<br>
 
 Exercise: Verifying Permutation
 -------------------------------
@@ -202,9 +202,6 @@ insertE x (y:::ys)
 \end{code}
 
 **Q:** Can you fix the type for `insertE` so `sortE` verifies?
-
-<br>
-
 
 Property 3: Order
 =================
@@ -252,8 +249,6 @@ badPair = OP 4 2  -- illegal
 \end{spec}
 </div>
 
-<br>
-
 
 Exercise: Ordered Pairs
 -----------------------
@@ -294,13 +289,9 @@ scores  = Csv {
 \end{code}
 
 
-<br>
-
 
 Exercise: Valid CSV Tables
 --------------------------
-
-<br>
 
 **Q:** Can you refine `Csv` so `scores'` is rejected?
 
@@ -318,9 +309,6 @@ scores' = Csv {
       ::: Emp
  }
 \end{code}
-
-
-<br>
 
 Property 3: Ordered Lists
 -------------------------
@@ -358,8 +346,6 @@ Ordered Lists
 
 Lets **refine** the type to enforce **order**
 
-<br>
-
 \begin{code}
 {-@ data OList a =
       OEmp
@@ -370,8 +356,6 @@ Lets **refine** the type to enforce **order**
 <br>
 
 Head `oHd` is **smaller than every value** `v` in tail `oTl`
-
-<br>
 
 
 Ordered Lists
@@ -392,17 +376,12 @@ badList = 1 :<: 3 :<: 2 :<: OEmp
 \end{code}
 
 
-<br>
-
-
 Exercise: Insertion Sort
 ------------------------
 
 <br>
 
 **Q:** Oops. There's a problem! Can you fix it?
-
-<br>
 
 \begin{code}
 {-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
@@ -441,8 +420,6 @@ Multiple Measures are Conjoined
 
 Data constructor refinements are **conjoined**
 
-<br>
-
 \begin{spec}
 data List a where
   Emp   :: {v:List a |  length v = 0
@@ -453,38 +430,11 @@ data List a where
                      && elems v  = addElem x  xs }
 \end{spec}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Measures vs. Indexed Types
---------------------------
-
-<br>
-
-Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
-
-<br>
-
-<div class="fragment">
-
-+ **Decouple** properties from data type
-
-+ **Reuse** same data type with different invariants
-
-</div>
-
 Recap
 -----
+
+<br>
+
 
 |                     |                                |
 |--------------------:|:-------------------------------|
@@ -493,16 +443,19 @@ Recap
 | **Verification:**   | SMT-based Predicate Subtyping  |
 | **Measures:**       | Specify Properties of Data     |
 
+
 <br>
 
-<div class="fragment">
-**Next: Other Case Studies**
+Continue
+--------
+
+<br>
+
+**Other Case Studies**
 
 + [Well Scoped Evaluator](http://ucsd-progsys.github.io/lh-workshop/05-case-study-eval.html)
 + [Low-level Memory](http://ucsd-progsys.github.io/lh-workshop/06-case-study-bytestring.html)
 
-</div>
-
 <br>
 
-[[Part II : Proofs]](05-termination.html)
+**Continue:** [[Part II : Proofs]](05-termination.html)

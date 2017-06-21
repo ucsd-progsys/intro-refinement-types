@@ -43,12 +43,6 @@ average xs = total `div` n
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 
 Data Types
@@ -73,9 +67,6 @@ data List a = Emp               -- Nil
 \end{code}
 </div>
 
-<br>
-
-
 
 Specifying the size of a List
 -------------------------------
@@ -88,8 +79,6 @@ Specifying the size of a List
 Haskell function with *a single equation per constructor*
 </div>
 
-<br>
-
 \begin{code}
 {-@ measure size @-}
 size :: List a -> Int
@@ -97,15 +86,10 @@ size Emp        = 0
 size (_ ::: xs) = 1 + size xs
 \end{code}
 
-<br>
-
 
 
 Specifying the size of a List
 -------------------------------
-
-
-<br>
 
 **Measure**
 
@@ -115,15 +99,10 @@ Specifying the size of a List
 
 \begin{spec} <div/>
 data List a where
-
   Emp   :: {v:List a | size v = 0}
-
-  (:::) :: x:a -> xs:List a -> {v:List a | size v = 1 + size xs}
+  (:::) :: x:a -> xs:List a -> {v:List a|size v = 1 + size xs}
 \end{spec}
-
 </div>
-
-<br>
 
 
 Using Measures
@@ -225,12 +204,14 @@ A Useful Partial Function: Fold / Reduce
 <br>
 
 \begin{code}
-{-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
+{-@ foldr1 :: (a -> a -> a) -> List a -> a @-}
 foldr1 f (x ::: xs) = foldr f x xs
 foldr1 _ _          = impossible "foldr1"
 \end{code}
 
 <br>
+
+**Q:** How shall we fix `foldr1`?
 
 
 Exercise: `average`
@@ -357,8 +338,6 @@ init f n = f n ::: init f (n-1)
 <div class="fragment">
 **Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted?
 
-<br>
-
 \begin{code}
 sanDiegoTemp :: Year Int
 sanDiegoTemp = Year (init (const 72) 12)
@@ -403,11 +382,8 @@ Recap
 <br>
 
 <div class="fragment">
-**Next: Case Studies**
+**Case Study:**  [Insertion Sort](04-case-study-insertsort.html)
 
-+ [Insertion Sort](04-case-study-insertsort.html)
 + [Well Scoped Evaluator](05-case-study-eval.html)
 + [Low-level Memory](06-case-study-bytestring.html)
 </div>
-
-<br>
