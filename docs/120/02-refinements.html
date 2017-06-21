@@ -364,6 +364,7 @@ module SimpleRefinements where
 import Prelude hiding (abs, max)
 
 nats, poss  :: [Int]
+zeroA, zeroB :: Int
 zero        :: Int
 zero'       :: Int
 four        :: Int
@@ -409,7 +410,6 @@ p := ...         -- predicate in decidable logic
 </div>
 <div id="slide-4" class="slide">
 <h2 id="expressions">Expressions</h2>
-<p><br></p>
 <pre class="spec"><code>e := x, y, z,...    -- variable
    | 0, 1, 2,...    -- constant
    | (e + e)        -- addition
@@ -476,9 +476,7 @@ nats     =  [0, 1, 2, 3]</div>
 poss     =  [0, 1, 2, 3]</div>
 </div>
 
-<p><br></p>
 <p><strong>Q:</strong> First, can you fix <code>Pos</code> so <code>poss</code> is <strong>rejected</strong>?</p>
-<p><br></p>
 <p><strong>Q:</strong> Next, can you modify <code>poss</code> so it is <strong>accepted</strong>?</p>
 </div>
 <div id="slide-8" class="slide">
@@ -492,25 +490,30 @@ poss     =  [0, 1, 2, 3]</div>
 <div id="slide-10" class="slide">
 <h2 id="a-term-can-have-many-types-1">A Term Can Have <em>Many</em> Types</h2>
 <p><br></p>
-<p>What <em>is</em> the type of <code>0</code> ?</p>
-<p><br></p>
-<pre class="spec"><code>{-@ zero  :: Zero @-}
-zero      = 0
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
-{-@ zero&#39; :: Nat  @-}
-zero&#39;     = zero
-</code></pre>
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ zeroA :: Zero @-}
+zeroA     = 0
+
+{-@ zeroB :: Nat  @-}
+zeroB     = 0</div>
+</div>
+
 <p><br></p>
 </div>
 <div id="slide-11" class="slide">
 <h2 id="predicate-subtyping-nuprl-pvs">Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></h2>
 <p><br></p>
 <p>In <strong>environment</strong> <span class="math inline">\(\Gamma\)</span> the type <span class="math inline">\(t_1\)</span> is a <strong>subtype</strong> of the type <span class="math inline">\(t_2\)</span></p>
-<p><br></p>
 <p><span class="math display">\[\boxed{\Gamma \vdash t_1 \preceq t_2}\]</span></p>
 <p><br></p>
 <p><strong>Environment</strong> <span class="math inline">\(\Gamma\)</span> is a sequence of binders</p>
-<p><br></p>
 <p><span class="math display">\[\Gamma \doteq \overline{\bindx{x_i}{P_i}}\]</span></p>
 <p><br></p>
 </div>
@@ -538,9 +541,8 @@ zero&#39;     = zero
 \mathbf{So:}            &amp; \emptyset &amp; \vdash      &amp; \Zero    &amp; \preceq     &amp; \Nat      &amp;   \\
 \end{array}
 \]</span></p>
-<p><br></p>
 <p>And so, we can type:</p>
-<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -548,7 +550,7 @@ zero&#39;     = zero
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">{-@ zero' :: Nat @-}
+  <div id="program-5" class="programbox">{-@ zero' :: Nat @-}
 zero'     =  zero   -- zero :: Zero <: Nat</div>
 </div>
 
@@ -564,9 +566,8 @@ zero'     =  zero   -- zero :: Zero <: Nat</div>
 \mathbf{So:}            &amp; x = 3 &amp; \vdash      &amp; \Zero      &amp; \preceq     &amp; \Nat      &amp;   \\
 \end{array}
 \]</span></p>
-<p><br></p>
 <p>And so, we can type:</p>
-<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
   <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
@@ -574,13 +575,12 @@ zero'     =  zero   -- zero :: Zero <: Nat</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ four :: Nat @-}
+  <div id="program-6" class="programbox">{-@ four :: Nat @-}
 four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
   where
     x = 3</div>
 </div>
 
-<p><br></p>
 </div>
 <div id="slide-15" class="slide">
 <h2 id="smt-automates-subtyping"><a href="http://en.wikipedia.org/wiki/Satisfiability_modulo_theories">SMT</a> Automates Subtyping</h2>
@@ -596,29 +596,6 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
 <div id="slide-17" class="slide">
 <h2 id="pre-conditions">Pre-Conditions</h2>
 <p><br></p>
-<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-6" class="programbox">{-@ impossible :: {v:_ | false} -> a @-}
-impossible msg = error msg</div>
-</div>
-
-<p><br></p>
-<p>No value satisfies <code>false</code> <span class="math inline">\(\Rightarrow\)</span> <strong>no valid inputs</strong> for <code>impossible</code></p>
-<p><br></p>
-<p>Program type-checks <span class="math inline">\(\Rightarrow\)</span> <code>impossible</code> <strong>never called at run-time</strong></p>
-<p><br></p>
-</div>
-<div id="slide-18" class="slide">
-<h2 id="exercise-pre-conditions">Exercise: Pre-Conditions</h2>
-<p><br></p>
-<p>Let's write a <strong>safe division</strong> function</p>
-<p><br></p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -627,18 +604,19 @@ impossible msg = error msg</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ safeDiv :: Int -> Int -> Int   @-}
-safeDiv _ 0 = impossible "divide-by-zero"
-safeDiv x n = x `div` n</div>
+  <div id="program-7" class="programbox">{-@ impossible :: {v:_ | false} -> a @-}
+impossible msg = error msg</div>
 </div>
 
 <p><br></p>
-<p><strong>Q:</strong> Yikes! Can you <strong>fix the type</strong> of <code>safeDiv</code> to banish the error?</p>
+<p>No value satisfies <code>false</code> <span class="math inline">\(\Rightarrow\)</span> <strong>no valid inputs</strong> for <code>impossible</code></p>
+<p>Program type-checks <span class="math inline">\(\Rightarrow\)</span> <code>impossible</code> <strong>never called at run-time</strong></p>
 <p><br></p>
 </div>
-<div id="slide-19" class="slide">
-<h2 id="precondition-checked-at-call-site">Precondition Checked at Call-Site</h2>
+<div id="slide-18" class="slide">
+<h2 id="exercise-pre-conditions">Exercise: Pre-Conditions</h2>
 <p><br></p>
+<p>Let's write a <strong>safe division</strong> function</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -647,20 +625,16 @@ safeDiv x n = x `div` n</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">avg2 x y   = safeDiv (x + y) 2</div>
+  <div id="program-8" class="programbox">{-@ safeDiv :: Int -> Int -> Int   @-}
+safeDiv _ 0 = impossible "divide-by-zero"
+safeDiv x n = x `div` n</div>
 </div>
 
-<p><strong>Precondition</strong></p>
-<pre class="spec"><code>{-@ safeDiv :: n:Int -&gt; d:NonZero -&gt; Int @-}
-</code></pre>
 <p><br></p>
-<p><strong>Verifies As</strong></p>
-<p><span class="math display">\[\inferrule{}{(v = 2) \Rightarrow (v \not = 0)}
-            {\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \preceq \reftx{v}{v \not = 0}}
-\]</span></p>
+<p><strong>Q:</strong> Yikes! Can you <strong>fix the type</strong> of <code>safeDiv</code> to banish the error?</p>
 </div>
-<div id="slide-20" class="slide">
-<h2 id="exercise-check-that-data">Exercise: Check That Data</h2>
+<div id="slide-19" class="slide">
+<h2 id="precondition-checked-at-call-site">Precondition Checked at Call-Site</h2>
 <p><br></p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
@@ -670,22 +644,19 @@ safeDiv x n = x `div` n</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">calc :: IO ()
-calc = do
-  putStrLn "Enter numerator"
-  n <- readLn
-  putStrLn "Enter denominator"
-  d <- readLn
-  putStrLn ("Result = " ++ show (safeDiv n d))
-  calc</div>
+  <div id="program-9" class="programbox">avg2 x y   = safeDiv (x + y) 2</div>
 </div>
 
-<p><br></p>
-<p><strong>Q:</strong> Can you fix <code>calc</code> so it typechecks?</p>
-<p><br></p>
+<p><strong>Precondition</strong></p>
+<pre class="spec"><code>{-@ safeDiv :: n:Int -&gt; d:NonZero -&gt; Int @-}
+</code></pre>
+<p><strong>Verifies As</strong></p>
+<p><span class="math display">\[\inferrule{}{(v = 2) \Rightarrow (v \not = 0)}
+            {\bindx{x}{\Int}, \bindx{y}{\Int} \vdash \reftx{v}{v = 2} \preceq \reftx{v}{v \not = 0}}
+\]</span></p>
 </div>
-<div id="slide-21" class="slide">
-<h2 id="precondition-checked-at-call-site-1">Precondition Checked at Call-Site</h2>
+<div id="slide-20" class="slide">
+<h2 id="exercise-check-that-data">Exercise: Check That Data</h2>
 <p><br></p>
 <div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
@@ -695,22 +666,20 @@ calc = do
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">avg        :: [Int] -> Int
-avg xs     = safeDiv total n
-  where
-    total  = sum    xs
-    n      = length xs         -- returns a Nat</div>
+  <div id="program-10" class="programbox">calc :: IO ()
+calc = do
+  putStrLn "Enter numerator"
+  n <- readLn
+  putStrLn "Enter denominator"
+  d <- readLn
+  putStrLn ("Result = " ++ show (safeDiv n d))
+  calc</div>
 </div>
 
-<p><br></p>
-<p><strong>Rejected</strong> as <code>n</code> can be <em>any</em> <code>Nat</code></p>
-<p><span class="math display">\[0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)\]</span></p>
-<p><br></p>
+<p><strong>Q:</strong> Can you fix <code>calc</code> so it typechecks?</p>
 </div>
-<div id="slide-22" class="slide">
-<h2 id="size-returns-positive-values"><code>size</code> returns positive values</h2>
-<p><br></p>
-<p>Specify <strong>post-condition</strong> as <strong>output type</strong></p>
+<div id="slide-21" class="slide">
+<h2 id="precondition-checked-at-call-site-1">Precondition Checked at Call-Site</h2>
 <p><br></p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
@@ -720,31 +689,20 @@ avg xs     = safeDiv total n
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">{-@ size :: [a] -> Pos @-}
-size [_]    = 1
-size (_:xs) = 1 + size xs
--- size _   = impossible "size"</div>
+  <div id="program-11" class="programbox">avg        :: [Int] -> Int
+avg xs     = safeDiv total n
+  where
+    total  = sum    xs
+    n      = length xs         -- returns a Nat</div>
 </div>
 
-<p><br></p>
+<p><strong>Rejected</strong> as <code>n</code> can be <em>any</em> <code>Nat</code></p>
+<p><span class="math display">\[0 \leq n \Rightarrow (v = n) \not \Rightarrow (v \not = 0)\]</span></p>
 </div>
-<div id="slide-23" class="slide">
-<h2 id="postconditions-checked-at-return">Postconditions Checked at Return</h2>
+<div id="slide-22" class="slide">
+<h2 id="size-returns-positive-values"><code>size</code> returns positive values</h2>
 <p><br></p>
-<pre class="spec"><code>{-@ size    :: [a] -&gt; Pos @-}
-size []     = 1                        -- (1)
-size (_:xs) = 1 + n  where n = size xs -- (2)
-</code></pre>
-<p><br></p>
-<p><strong>Verified As</strong></p>
-<p><span class="math display">\[\begin{array}{rll}
-\True   &amp; \Rightarrow (v = 1)     &amp; \Rightarrow (0 &lt; v) &amp; \qquad \mbox{at (1)} \\
-(0 &lt; n) &amp; \Rightarrow (v = 1 + n) &amp; \Rightarrow (0 &lt; v) &amp; \qquad \mbox{at (2)} \\
-\end{array}\]</span></p>
-<p><br></p>
-</div>
-<div id="slide-24" class="slide">
-<h2 id="verifying-avg">Verifying <code>avg</code></h2>
+<p>Specify <strong>post-condition</strong> as <strong>output type</strong></p>
 <p><br></p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
@@ -754,32 +712,28 @@ size (_:xs) = 1 + n  where n = size xs -- (2)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-12" class="programbox">avg' xs    = safeDiv total n
-  where
-    total  = sum  xs
-    n      = size xs           -- returns a Pos</div>
+  <div id="program-12" class="programbox">{-@ size :: [a] -> Pos @-}
+size [_]    = 1
+size (_:xs) = 1 + size xs
+-- size _   = impossible "size"</div>
 </div>
 
-<p><br></p>
-<p><strong>Verifies As</strong></p>
-<p><span class="math display">\[(0 &lt; n) \Rightarrow (v = n) \Rightarrow (v \not = 0)\]</span></p>
-<p><br></p>
 </div>
-<div id="slide-25" class="slide">
-<h2 id="recap">Recap</h2>
+<div id="slide-23" class="slide">
+<h2 id="postconditions-checked-at-return">Postconditions Checked at Return</h2>
 <p><br></p>
-<p><strong>Refinement Types</strong> Types + Predicates</p>
-<p><br></p>
-<p><strong>Specify Properties</strong></p>
-<p>Via Refined Input- and Output- Types</p>
-<p><br></p>
-<p><strong>Verify Properties</strong></p>
-<p>Via SMT based Predicate Subtyping</p>
+<pre class="spec"><code>{-@ size    :: [a] -&gt; Pos @-}
+size [_]    = 1                        -- (1)
+size (_:xs) = 1 + n  where n = size xs -- (2)
+</code></pre>
+<p><strong>Verified As</strong></p>
+<p><span class="math display">\[\begin{array}{rll}
+\True   &amp; \Rightarrow (v = 1)     &amp; \Rightarrow (0 &lt; v) &amp; \qquad \mbox{at (1)} \\
+(0 &lt; n) &amp; \Rightarrow (v = 1 + n) &amp; \Rightarrow (0 &lt; v) &amp; \qquad \mbox{at (2)} \\
+\end{array}\]</span></p>
 </div>
-<div id="slide-26" class="slide">
-<h2 id="unfinished-business">Unfinished Business</h2>
-<p><br></p>
-<p>How to prevent calling <code>size</code> with <strong>empty lists</strong>?</p>
+<div id="slide-24" class="slide">
+<h2 id="verifying-avg">Verifying <code>avg</code></h2>
 <p><br></p>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
@@ -789,7 +743,49 @@ size (_:xs) = 1 + n  where n = size xs -- (2)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-13" class="programbox">{-@ size'    :: [a] -> Pos @-}
+  <div id="program-13" class="programbox">avg' xs    = safeDiv total n
+  where
+    total  = sum  xs
+    n      = size xs           -- returns a Pos</div>
+</div>
+
+<p><strong>Verifies As</strong></p>
+<p><span class="math display">\[(0 &lt; n) \Rightarrow (v = n) \Rightarrow (v \not = 0)\]</span></p>
+<p><br></p>
+</div>
+<div id="slide-25" class="slide">
+<h2 id="recap">Recap</h2>
+<p><br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Refinements:</strong></td>
+<td style="text-align: left;">Types + Predicates</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="slide-26" class="slide">
+<h2 id="unfinished-business">Unfinished Business</h2>
+<p><br></p>
+<p>How to prevent calling <code>size</code> with <strong>empty lists</strong>?</p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{-@ size'    :: [a] -> Pos @-}
 size' [_]    = 1
 size' (_:xs) = 1 + size' xs
 size' _      = impossible "size"</div>

@@ -622,8 +622,7 @@ fibThree _
 </div>
 <div id="slide-14" class="slide">
 <h2 id="paper-pencil-style-proofs">Paper &amp; Pencil style Proofs</h2>
-<p><code>fib</code> is increasing</p>
-<br> <br>
+<p><br> <code>fib</code> is increasing <br></p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -652,7 +651,7 @@ fibUp i
 </div>
 <div id="slide-15" class="slide">
 <h2 id="another-paper-pencil-proof">Another &quot;Paper &amp; Pencil&quot; Proof</h2>
-<p><strong>Exercise:</strong> Lets fix the proof that <code>fib</code> is monotonic?</p>
+<p><br> <strong>Exercise:</strong> Lets fix the proof that <code>fib</code> is monotonic? <br></p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -670,12 +669,12 @@ fibMonotonic x y
   *** QED
   | x < y - 1
   =   fib x
-  <=. fib (y-1)
+  <=. fib (y-1) ? trivial {- Inductive Hypothesis call goes here -}
   <=. fib y     ? fibUp (y-1)
   *** QED</div>
 </div>
 
-<p><br></p>
+<p><strong>Exercise:</strong> Can you replace <code>trivial</code> to fix the monotonicity proof? <br></p>
 <p>Note: Totality checker should be on for valid proofs</p>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
@@ -691,8 +690,7 @@ fibMonotonic x y
 </div>
 <div id="slide-16" class="slide">
 <h2 id="generalizing-monotonicity-proof">Generalizing monotonicity proof</h2>
-<p>Increasing implies monotonic in general!</p>
-<p><br></p>
+<p><br> <strong>Exercise:</strong> Generalize the implementation of <code>fMono</code> proof below to any increasing function <code>f</code>. <br></p>
 <div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -705,18 +703,18 @@ fibMonotonic x y
           -> fUp:(z:Nat -> {f z <= f (z+1)})
           -> x:Nat
           -> y:{Nat|x < y}
-          -> {f x <= f y} / [y]
-  @-}
+          -> {f x <= f y} / [y] @-}
 fMono f fUp x y
-  | x + 1 == y
-  = f x   <=. f (x + 1) ? fUp x
-          ==. f y
-          *** QED
-
-  | x + 1 < y
-  = f x   <=. f (y-1)   ? fMono f fUp x (y-1)
-          <=. f y       ? fUp (y-1)
-          *** QED</div>
+  | y == x + 1
+  =   fib x
+  <=. fib (x+1) ? fibUp x
+  <=. fib y
+  *** QED
+  | x < y - 1
+  =   fib x
+  <=. fib (y-1) ? fibMonotonic x (y-1)
+  <=. fib y     ? fibUp (y-1)
+  *** QED</div>
 </div>
 
 </div>
@@ -748,25 +746,29 @@ fibMono     = fMono fib fibUp</div>
 <td style="text-align: left;">Types + Predicates</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;"><strong>Subtyping:</strong></td>
-<td style="text-align: left;">SMT Implication</td>
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+<tr class="even">
 <td style="text-align: right;"><strong>Measures:</strong></td>
 <td style="text-align: left;">Specify Properties of Data</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;"><strong>Termination:</strong></td>
 <td style="text-align: left;">Well-founded Metrics</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;"><strong>Reflection:</strong></td>
-<td style="text-align: left;">Allow Haskell functions in Logic</td>
+<td style="text-align: left;">Haskell functions in Logic</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
-<p><strong>Next:</strong> <a href="07-mapReduce.html">Case Study: MapReduce</a>: Program Properties that matter!</p>
+<p><strong>Next:</strong> <a href="07-structural-induction.html">Structural Induction</a>: Program Properties about data types!</p>
 </div>
 
 </div>

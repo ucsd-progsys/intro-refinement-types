@@ -356,85 +356,45 @@ MathJax.Hub.Config({
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-0" class="programbox">{-@ LIQUID "--short-names"    @-}
+  <div id="program-0" class="programbox">{-# LANGUAGE TupleSections    #-}
 {-@ LIQUID "--no-warnings"    @-}
-{-@ LIQUID "--no-termination" @-}
-
-module InsertSort where
-
-import Prelude hiding (sum, length, map, filter, foldr, foldr1)
-import qualified Data.Set as S -- hiding (elems, insert)
-
-insert, insertE :: (Ord a) => a -> List a -> List a
-sort, sortE     :: (Ord a) => List a -> List a
-
-{-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
+{-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--betaequivalence" @-}
 
 
-data List a  = Emp
-             | (:::) { hd :: a, tl :: List a }
-             deriving (Eq, Ord, Show)
+-- Hidden code
+{-@ LIQUID "--higherorder"     @-}
+{-@ LIQUID "--totality"        @-}
 
-infixr 9 :::
+module StructuralInduction where
 
-infixr 9 :<:
+import Prelude hiding (map, id, length, return)
+import Language.Haskell.Liquid.ProofCombinators
 
--- | Lists of a given size N
-{-@ type ListN a N = {v:List a | length v == N } @-}
 
-{-@ type OListE a S = {v:OList a | elemsO v = S} @-}
+length :: L a -> Int
 
-{-@ measure elemsO @-}
-elemsO :: (Ord a) => OList a -> S.Set a
-elemsO OEmp       = S.empty
-elemsO (x :<: xs) = addElemO x xs
+mapFusion :: (b -> c) -> (a -> b) -> L a -> Proof
 
-{-@ inline addElemO @-}
-addElemO :: (Ord a) => a -> OList a -> S.Set a
-addElemO x xs = S.singleton x `S.union` elemsO xs</div>
+mapId :: L a -> Proof
+mapIdAuto :: L a -> Proof
+emptyLeft :: L a -> Proof
+emptyRight :: L a -> Proof
+appendAssoc :: L a -> L a -> L a -> Proof
+leftIdentity :: a -> (a -> L b) -> Proof
+rightIdentity :: L a -> Proof
+associativity :: L a -> (a -> L b) -> (b -> L c) -> Proof</div>
 </div>
 
 </div>
-<p><br></p>
+<p><br> <br> <br> <br> <br></p>
 <div id="slide-0" class="slide">
-<h1 id="case-study-insertion-sort">Case Study: Insertion Sort</h1>
-<p><br></p>
+<h1 id="structural-induction">Structural Induction</h1>
+<p><br> <br> How we <em>express</em> and <em>prove</em> properties on data types? <br></p>
 </div>
 <div id="slide-1" class="slide">
-<h2 id="asdisort">Insertion Sort</h2>
-<p><br></p>
-<pre class="spec"><code>sort :: (Ord a) =&gt; List a -&gt; List a
-sort []           = Emp
-sort (x:xs)       = insert x (sort xs)
-
-insert :: (Ord a) =&gt; a -&gt; List a -&gt; List a
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x &lt;= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys
-</code></pre>
-<p><br></p>
-</div>
-<div id="slide-2" class="slide">
-<h2 id="goal-verified-insertion-sort">Goal: Verified Insertion Sort</h2>
-<p><br></p>
-<p><strong>Goal:</strong> specify &amp; verify that output:</p>
-<p><br></p>
-<p>Is the same <strong>size</strong> as the input,</p>
-<p>Has the same <strong>elements</strong> as the input,</p>
-<p>Is in increasing <strong>order</strong>.</p>
-</div>
-<div id="slide-3" class="slide">
-<h1 id="property-1-size">Property 1: Size</h1>
-<p><br></p>
-</div>
-<div id="slide-4" class="slide">
-<h2 id="exercise-insert">Exercise: <code>insert</code></h2>
-<p><br></p>
-<p><strong>Q:</strong> Can you fix the type of <code>insert</code> so <code>sort</code> checks?</p>
+<h2 id="the-list-data-type">The list data type</h2>
+<p><br> A user defined list, <br></p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -443,43 +403,14 @@ insert x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">{-@ sort :: (Ord a) => xs:List a -> ListN a {length xs} @-}
-sort Emp          = Emp
-sort (x:::xs)     = insert x (sort xs)
+  <div id="program-1" class="programbox">data L a = N | C a (L a)
 
-{-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys</div>
+{-@ data L [length] a =
+      N | C { hd :: a, tl :: L a}
+  @-}</div>
 </div>
 
-<p><br></p>
-</div>
-<div id="slide-5" class="slide">
-<h1 id="property-2-elements">Property 2: Elements</h1>
-<p><br></p>
-</div>
-<div id="slide-6" class="slide">
-<h2 id="permutation">Permutation</h2>
-<p><br></p>
-<p>Same size is all fine, how about <strong>same elements</strong> in output?</p>
-<p><br></p>
-</div>
-<div id="slide-7" class="slide">
-<h2 id="smt-solvers-reason-about-sets">SMT Solvers Reason About Sets</h2>
-<p><br></p>
-<p>Hence, we can write <em>Set-valued</em> measures</p>
-<p><br></p>
-<p>Using the <code>Data.Set</code> API for convenience</p>
-<p><br></p>
-<pre class="spec"><code>import qualified Data.Set as S
-</code></pre>
-<p><br></p>
-</div>
-<div id="slide-8" class="slide">
-<h2 id="specifying-a-lists-elements">Specifying A <code>List</code>s Elements</h2>
-<p><br></p>
+<p><br> with its anchored size function. <br></p>
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -488,21 +419,18 @@ insert x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">{-@ measure elems @-}
-elems :: (Ord a) => List a -> S.Set a
-elems Emp      = S.empty
-elems (x:::xs) = addElem x xs
-
-{-@ inline addElem @-}
-addElem :: (Ord a) => a -> List a -> S.Set a
-addElem x xs = S.union (S.singleton x) (elems xs)</div>
+  <div id="program-2" class="programbox">{-@ measure length @-}
+{-@ length :: L a -> Nat @-}
+length N        = 0
+length (C _ xs) = 1 + length xs</div>
 </div>
 
-<p><code>inline</code> lets us reuse Haskell terms in refinements.</p>
 </div>
-<div id="slide-9" class="slide">
-<h2 id="exercise-verifying-permutation">Exercise: Verifying Permutation</h2>
-<p>Lets verify that <code>sortE</code> returns the same set of elements:</p>
+<div id="slide-2" class="slide">
+<h2 id="reflection-of-adts-into-the-logic">Reflection of ADTs into the logic</h2>
+<p><br></p>
+<p>The Liquid pragma</p>
+<p><br></p>
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -511,37 +439,21 @@ addElem x xs = S.union (S.singleton x) (elems xs)</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">{-@ type ListE a S = {v:List a | elems v = S} @-}
-
-{-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
-sortE Emp         = Emp
-sortE (x:::xs)    = insertE x (sortE xs)
-
-{-@ insertE :: (Ord a) => x:a -> xs:List a -> List a @-}
-insertE x Emp     = x ::: Emp
-insertE x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insertE x ys</div>
+  <div id="program-3" class="programbox">{-@ LIQUID "--exact-data-cons" @-}</div>
 </div>
 
-<p><strong>Q:</strong> Can you fix the type for <code>insertE</code> so <code>sortE</code> verifies?</p>
+<p><br> Automatically creates checker and selector <em>measures</em>: <br></p>
+<pre class="spec"><code>isN :: L a -&gt; Bool
+isC :: L a -&gt; Bool
+
+select_C_1 :: L a -&gt; a
+select_C_2 :: L a -&gt; L a
+</code></pre>
+<p><br> <strong>Question:</strong> Do these function types look familiar? <br></p>
 </div>
-<div id="slide-10" class="slide">
-<h1 id="property-3-order">Property 3: Order</h1>
-<p><br></p>
-<p>Yes, yes, but does <code>sort</code> actually <strong>sort</strong> ?</p>
-<p><br></p>
-<p>How to specify <strong>ordered lists</strong> ?</p>
-<p><br></p>
-</div>
-<div id="slide-11" class="slide">
-<h2 id="recall-refined-data-types">Recall: Refined Data Types</h2>
-<p><br></p>
-</div>
-<div id="slide-12" class="slide">
-<h2 id="refined-data-ordered-pairs">Refined Data: Ordered Pairs</h2>
-<p><br></p>
-<p>Lets write a type for <strong>ordered pairs</strong></p>
+<div id="slide-3" class="slide">
+<h2 id="reflection-of-structural-inductive-functions">Reflection of Structural Inductive Functions</h2>
+<br> With the above measures, <code>map</code> reflects into logic! <br>
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -550,20 +462,25 @@ insertE x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">data OrdPair = OP {opX :: Int, opY :: Int}</div>
+  <div id="program-4" class="programbox">{-@ reflect map @-}
+map :: (a -> b) -> L a -> L b
+map f N        = N
+map f (C x xs) = f x `C` map f xs</div>
 </div>
 
-<p><br></p>
-<p><strong>Legal Values</strong> value of <code>opX &lt; opY</code></p>
-<pre class="spec"><code>okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal
+<br> The body of <code>map</code> reflects in its result type <br>
+<pre class="spec"><code>map :: f:(a-&gt;b) -&gt; xs:L a
+    -&gt; {v:L a | v == map f xs
+             &amp;&amp; v == if isN xs then N else
+                     C (f (select_C_1 xs)
+                       (map f (select_C_2 xs))
+       }
 </code></pre>
+<p>--- CUT</p>
 </div>
-<div id="slide-13" class="slide">
-<h2 id="exercise-ordered-pairs">Exercise: Ordered Pairs</h2>
-<p><br></p>
-<p><strong>Q:</strong> Can you refine the data type to <em>legal</em> values only?</p>
-<p><br></p>
+<div id="slide-4" class="slide">
+<h2 id="reflection-of-non-recursive-functions">Reflection of Non Recursive Functions</h2>
+<p><br> Non-recursive functions reflect too! <br></p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -572,17 +489,25 @@ badPair = OP 4 2  -- illegal
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ data OrdPair = OP { opX :: Int, opY :: Int} @-}
+  <div id="program-5" class="programbox">{-@ reflect id @-}
+id :: a -> a
+id x = x
 
-okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal</div>
+{-@ reflect compose @-}
+compose :: (b -> c) -> (a -> b) -> a -> c
+compose f g x = f (g x)</div>
 </div>
 
-<p><br></p>
+<p>Get automatically the &quot;singleton&quot; Liquid Types:</p>
+<pre class="spec"><code>id :: x:a -&gt; {v:a | v == id x &amp;&amp; v == x}
+
+compose :: f:(b -&gt; c) -&gt; g:(a -&gt; b) -&gt; x:a
+        -&gt; {v:c | v == compose f g x &amp;&amp; v == f (g x)}
+</code></pre>
 </div>
-<div id="slide-14" class="slide">
-<h2 id="refined-data-csv-tables">Refined Data: CSV Tables</h2>
-<p><br></p>
+<div id="slide-5" class="slide">
+<h2 id="proving-map-identity">Proving Map-Identity</h2>
+<p><br> Optimization property: to <code>map</code> identity do not transverse the list! <br></p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -591,24 +516,27 @@ badPair = OP 4 2  -- illegal</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">data Csv = Csv {
-   hdrs :: List String
- , vals :: List (List Int)
- }
-
-scores  = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::       27  :::      83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }</div>
+  <div id="program-6" class="programbox">{-@ mapId :: xs:L a -> { map id xs == id xs } @-}
+mapId N
+  =   map id N
+  ==. N
+  ==. id N
+  *** QED
+mapId (C x xs)
+  =   map id (C x xs)
+  ==. id x `C` map id xs
+  ==. x `C` map id xs
+  ==. x `C` id xs         ? mapId xs
+  ==. x `C` xs
+  ==. id (x `C` xs)
+  *** QED</div>
 </div>
 
+<p>Proof by case splitting and recursive call.</p>
 </div>
-<div id="slide-15" class="slide">
-<h2 id="exercise-valid-csv-tables">Exercise: Valid CSV Tables</h2>
-<p><strong>Q:</strong> Can you refine <code>Csv</code> so <code>scores'</code> is rejected?</p>
+<div id="slide-6" class="slide">
+<h2 id="automation-proving-map-identity">Automation: Proving Map-Identity</h2>
+<p><br> Pretty Verbose Proof: Proof Automation! <br></p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -617,32 +545,9 @@ scores  = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ data Csv = Csv {
-      hdrs :: List String
-    , vals :: List (List Int)
-    }                                          @-}
-
-scores' = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::                    83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }</div>
+  <div id="program-7" class="programbox">{-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}</div>
 </div>
 
-</div>
-<div id="slide-16" class="slide">
-<h2 id="property-3-ordered-lists">Property 3: Ordered Lists</h2>
-<p><br></p>
-<p><strong>Refine</strong> the <code>List</code> data type to enforce <strong>ordering</strong>!</p>
-<p><br></p>
-</div>
-<div id="slide-17" class="slide">
-<h2 id="lists">Lists</h2>
-<p><br></p>
-<p>Lets <strong>define</strong> a type for ordered lists</p>
-<p><br></p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -651,18 +556,22 @@ scores' = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList a }</div>
+  <div id="program-8" class="programbox">{-@ automatic-instances mapIdAuto @-}
+
+{-@ mapIdAuto :: xs:L a -> { map id xs == id xs } @-}
+mapIdAuto N        = trivial
+mapIdAuto (C x xs) = mapIdAuto xs</div>
 </div>
 
-<p><br></p>
+<p>Proof Generation:</p>
+<ul>
+<li>Automatic Unfolding, but</li>
+<li>Manual case splitting.</li>
+</ul>
 </div>
-<div id="slide-18" class="slide">
-<h2 id="ordered-lists">Ordered Lists</h2>
-<p><br></p>
-<p>Lets <strong>refine</strong> the type to enforce <strong>order</strong></p>
+<div id="slide-7" class="slide">
+<h2 id="proving-map-fusion">Proving Map-Fusion</h2>
+<p><br> Optimization property: transverse the list only once! <br></p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -671,19 +580,69 @@ scores' = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-9" class="programbox">{-@ data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList {v:a | oHd <= v}} @-}</div>
+  <div id="program-9" class="programbox">{-@ automatic-instances mapFusion @-}
+{-@ mapFusion :: f:(b -> c) -> g:(a -> b) -> xs:L a
+  -> { map  (compose f g) xs == (map f) (map g xs) } @-}
+mapFusion f g xs = undefined</div>
 </div>
 
-<p><br></p>
-<p>Head <code>oHd</code> is <strong>smaller than every value</strong> <code>v</code> in tail <code>oTl</code></p>
+<p><strong>Exercise:</strong> Can you prove map-fusion?</p>
 </div>
-<div id="slide-19" class="slide">
-<h2 id="ordered-lists-1">Ordered Lists</h2>
+<div id="slide-8" class="slide">
+<h2 id="other-fancy-lists-properties">Other fancy Lists properties</h2>
 <p><br></p>
-<p><em>Illegal values unrepresentable</em></p>
+<ul>
+<li>Functor Laws
+<ul>
+<li>Identity: <code>map id == id</code></li>
+<li>Distribution: <code>map (compose f g) == compose (map f) (map g)</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monoid Laws
+<ul>
+<li>Left Identity: <code>append empty x == x</code></li>
+<li>Right Identity: <code>append x empty == x</code></li>
+<li>Associativity: <code>append xs (append ys zs) == append (append xs ys) zs</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monad Laws
+<ul>
+<li>Left Identity: <code>bind (return x) f == f x</code></li>
+<li>Right Identity: <code>bind x return == x</code></li>
+<li>Associativity: <code>bind (bind m f) g == bind m (\x:a -&gt; (bind (f x) g))</code></li>
+</ul></li>
+</ul>
+</div>
+<div id="slide-9" class="slide">
+<h2 id="recap">Recap</h2>
+<p><br> <br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Termination:</strong></td>
+<td style="text-align: left;">Well-founded Metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Reflection:</strong></td>
+<td style="text-align: left;">Allow Haskell functions in Logic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>tructural Induction:</strong></td>
+<td style="text-align: left;">Proving Theorems on Lists</td>
+</tr>
+</tbody>
+</table>
+<p><br> <br></p>
+<p><strong>Next:</strong> <a href="08-case-study-map-reduce.html">Case Study: MapReduce</a>: Program Properties that matter!</p>
+</div>
+<div id="slide-10" class="slide">
+<h2 id="appendix-onto-monoid-laws">Appendix: Onto Monoid Laws</h2>
+<p><br></p>
+<p>Reflect the monoid list operators</p>
 <p><br></p>
 <div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
 
@@ -693,18 +652,20 @@ scores' = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-10" class="programbox">okList :: OList Int
-okList = 1 :<: 2 :<: 3 :<: OEmp
+  <div id="program-10" class="programbox">{-@ reflect append @-}
+append :: L a -> L a -> L a
+append N ys        = ys
+append (C x xs) ys = x `C` append xs ys
 
-badList :: OList Int
-badList = 1 :<: 3 :<: 2 :<: OEmp</div>
+{-@ reflect empty @-}
+empty :: L a
+empty = N</div>
 </div>
 
 </div>
-<div id="slide-20" class="slide">
-<h2 id="exercise-insertion-sort">Exercise: Insertion Sort</h2>
-<p><br></p>
-<p><strong>Q:</strong> Oops. There's a problem! Can you fix it?</p>
+<div id="slide-11" class="slide">
+<h2 id="monoid-laws-left-identity">Monoid Laws: Left Identity</h2>
+<p><br> Lets prove the left identity monoid law! <br></p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -713,79 +674,160 @@ badList = 1 :<: 3 :<: 2 :<: OEmp</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-11" class="programbox">{-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
-sortO Emp      = OEmp
-sortO (x:::xs) = insertO x (sortO xs)
+  <div id="program-11" class="programbox">{-@ automatic-instances emptyLeft @-}
 
-{-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
-insertO x (y :<: ys)
-  | x <= y     = y :<: x :<: ys
-  | otherwise  = y :<: insertO x ys
-insertO x _    = x :<: OEmp</div>
+{-@ emptyLeft :: x:L a -> { append empty x == x }  @-}
+emptyLeft x = trivial</div>
 </div>
 
 </div>
-<div id="slide-21" class="slide">
-<h1 id="multiple-measures">Multiple Measures</h1>
+<div id="slide-12" class="slide">
+<h2 id="monoid-laws-right-identity">Monoid Laws: Right Identity</h2>
+<p><br> Lets prove the right identity monoid law! <br></p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ automatic-instances emptyRight @-}
+{-@ emptyRight :: x:L a -> { append x empty == x }  @-}
+emptyRight N        = trivial
+emptyRight (C x xs) = emptyRight xs</div>
 </div>
-<div id="slide-22" class="slide">
-<h2 id="different-measures-for-list">Different Measures for <code>List</code></h2>
-<p><br></p>
-<p>We just wrote <em>two</em> measures for <code>List</code></p>
-<p><br></p>
+
+</div>
+<div id="slide-13" class="slide">
+<h2 id="monoid-laws-associativity">Monoid Laws: Associativity</h2>
+<p><br> Lets prove the associativity monoid law! <br></p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ automatic-instances appendAssoc @-}
+
+{-@ appendAssoc :: xs:L a -> ys:L a -> zs:L a
+  -> {append xs (append ys zs) == append (append xs ys) zs } @-}
+appendAssoc N _ _          = trivial
+appendAssoc (C x xs) ys zs = appendAssoc xs ys zs</div>
+</div>
+
+</div>
+<div id="slide-14" class="slide">
+<h2 id="onto-monad-laws">Onto Monad Laws!</h2>
+<p><br> Define monad list operators <br></p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{-@ reflect return @-}
+return :: a -> L a
+return x = C x N
+
+{-@ reflect bind @-}
+bind :: L a -> (a -> L b) -> L b
+bind N _ = N
+bind (C x xs) f = append (f x) (bind xs f)</div>
+</div>
+
+</div>
+<div id="slide-15" class="slide">
+<h2 id="monoid-laws-left-identity-1">Monoid Laws: Left Identity</h2>
+<p><br> Lets prove the left identity monad law! <br></p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">{-@ automatic-instances leftIdentity @-}
+
+{-@ leftIdentity :: x:a -> f:(a -> L b)
+  -> { bind (return x) f == f x } @-}
+leftIdentity x f = emptyRight (f x)</div>
+</div>
+
+</div>
+<div id="slide-16" class="slide">
+<h2 id="monoid-laws-right-identity-1">Monoid Laws: Right Identity</h2>
+<p><br> Lets prove the right identity monad law! <br></p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">{-@ automatic-instances rightIdentity @-}
+
+{-@ rightIdentity :: x:L a -> { bind x return == x } @-}
+rightIdentity N
+  = trivial
+rightIdentity (C x xs)
+  =   rightIdentity xs
+  &&& emptyLeft xs</div>
+</div>
+
+</div>
+<div id="slide-17" class="slide">
+<h2 id="monoid-laws-associativity-1">Monoid Laws: Associativity</h2>
+<p><br> To prove associativity, lets assume a helper lemma! <br></p>
 <ul>
-<li><code>length :: List a -&gt; Nat</code></li>
-<li><code>elems  :: List a -&gt; Set a</code></li>
+<li>Bind distribution</li>
 </ul>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ automatic-instances bindAppend @-}
+{-@ bindAppend :: xs:L a -> ys:L a -> f:(a -> L b)
+     -> { bind (append xs ys) f == append (bind xs f) (bind ys f) } @-}
+bindAppend N _ _
+  = trivial
+bindAppend (C x xs) ys f
+  = appendAssoc (f x) (bind xs f) (bind ys f)
+  &&& bindAppend xs ys f</div>
 </div>
-<div id="slide-23" class="slide">
-<h2 id="multiple-measures-are-conjoined">Multiple Measures are Conjoined</h2>
-<p><br></p>
-<p>Data constructor refinements are <strong>conjoined</strong></p>
-<pre class="spec"><code>data List a where
-  Emp   :: {v:List a |  length v = 0
-                     &amp;&amp; elems v  = empty}
-  (:::) :: x:a
-        -&gt; xs:List a
-        -&gt; {v:List a |  length v = 1 + length xs
-                     &amp;&amp; elems v  = addElem x  xs }
-</code></pre>
+
 </div>
-<div id="slide-24" class="slide">
-<h2 id="recap">Recap</h2>
-<p><br></p>
-<table>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;"><strong>Refinements:</strong></td>
-<td style="text-align: left;">Types + Predicates</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><strong>Specification:</strong></td>
-<td style="text-align: left;">Refined Input/Output Types</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><strong>Verification:</strong></td>
-<td style="text-align: left;">SMT-based Predicate Subtyping</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><strong>Measures:</strong></td>
-<td style="text-align: left;">Specify Properties of Data</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
+<div id="slide-18" class="slide">
+<h2 id="monoid-laws-associativity-2">Monoid Laws: Associativity</h2>
+<p><br> Lets prove the associativity monad law! <br></p>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">{-@ automatic-instances associativity @-}
+{-@ associativity :: m:L a -> f: (a -> L b) -> g:(b -> L c)
+  -> {bind (bind m f) g == bind m (\x:a -> (bind (f x) g)) } @-}
+associativity N f g
+  =   trivial
+associativity (C x xs) f g
+  =   bindAppend (f x) (bind xs f) g
+  &&& associativity xs f g</div>
 </div>
-<div id="slide-25" class="slide">
-<h2 id="continue">Continue</h2>
-<p><br></p>
-<p><strong>Other Case Studies</strong></p>
-<ul>
-<li><a href="http://ucsd-progsys.github.io/lh-workshop/05-case-study-eval.html">Well Scoped Evaluator</a></li>
-<li><a href="http://ucsd-progsys.github.io/lh-workshop/06-case-study-bytestring.html">Low-level Memory</a></li>
-</ul>
-<p><br></p>
-<p><strong>Continue:</strong> <a href="05-termination.html">[Part II : Proofs]</a></p>
+
 </div>
 
 </div>

@@ -356,85 +356,51 @@ MathJax.Hub.Config({
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-0" class="programbox">{-@ LIQUID "--short-names"    @-}
+  <div id="program-0" class="programbox">{-# LANGUAGE TupleSections    #-}
+
 {-@ LIQUID "--no-warnings"    @-}
-{-@ LIQUID "--no-termination" @-}
+{-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--higherorder"    @-}
+{-@ LIQUID "--totality"       @-}
+{-@ LIQUID "--exactdc"        @-}
+{-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}
 
-module InsertSort where
+module MapReduce where
 
-import Prelude hiding (sum, length, map, filter, foldr, foldr1)
-import qualified Data.Set as S -- hiding (elems, insert)
+import Prelude hiding (mconcat, map, split, take, drop, sum, (++))
+import Language.Haskell.Liquid.ProofCombinators
 
-insert, insertE :: (Ord a) => a -> List a -> List a
-sort, sortE     :: (Ord a) => List a -> List a
+map :: (a -> b) -> List a -> List b
+sumEq :: Int -> List Int -> Proof
 
-{-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
+sumRightId :: List Int -> Proof
+sumDistr :: List Int -> List Int -> Proof
 
+mRTheorem :: Int -> (List a -> b) -> (b -> b -> b)
+          -> (List a -> Proof)
+          -> (List a -> List a -> Proof)
+          -> List a -> Proof
 
-data List a  = Emp
-             | (:::) { hd :: a, tl :: List a }
-             deriving (Eq, Ord, Show)
+appendTakeDrop :: Int -> List a -> Proof
 
-infixr 9 :::
-
-infixr 9 :<:
-
--- | Lists of a given size N
-{-@ type ListN a N = {v:List a | length v == N } @-}
-
-{-@ type OListE a S = {v:OList a | elemsO v = S} @-}
-
-{-@ measure elemsO @-}
-elemsO :: (Ord a) => OList a -> S.Set a
-elemsO OEmp       = S.empty
-elemsO (x :<: xs) = addElemO x xs
-
-{-@ inline addElemO @-}
-addElemO :: (Ord a) => a -> OList a -> S.Set a
-addElemO x xs = S.singleton x `S.union` elemsO xs</div>
+llen :: List a -> Int
+{-@ infix ++ @-}
+(++) :: List a -> List a -> List a
+drop :: Int -> List a -> List a
+take :: Int -> List a -> List a</div>
 </div>
 
 </div>
-<p><br></p>
 <div id="slide-0" class="slide">
-<h1 id="case-study-insertion-sort">Case Study: Insertion Sort</h1>
-<p><br></p>
+<h1 id="case-study-mapreduce">Case Study: MapReduce</h1>
+<p><br> Chunk input, map operation (in parallel), and reduce the results. <br> <br></p>
+<p align="center">
+<img src="img/map-reduce.jpg" height=350px/>
+</p>
 </div>
 <div id="slide-1" class="slide">
-<h2 id="asdisort">Insertion Sort</h2>
-<p><br></p>
-<pre class="spec"><code>sort :: (Ord a) =&gt; List a -&gt; List a
-sort []           = Emp
-sort (x:xs)       = insert x (sort xs)
-
-insert :: (Ord a) =&gt; a -&gt; List a -&gt; List a
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x &lt;= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys
-</code></pre>
-<p><br></p>
-</div>
-<div id="slide-2" class="slide">
-<h2 id="goal-verified-insertion-sort">Goal: Verified Insertion Sort</h2>
-<p><br></p>
-<p><strong>Goal:</strong> specify &amp; verify that output:</p>
-<p><br></p>
-<p>Is the same <strong>size</strong> as the input,</p>
-<p>Has the same <strong>elements</strong> as the input,</p>
-<p>Is in increasing <strong>order</strong>.</p>
-</div>
-<div id="slide-3" class="slide">
-<h1 id="property-1-size">Property 1: Size</h1>
-<p><br></p>
-</div>
-<div id="slide-4" class="slide">
-<h2 id="exercise-insert">Exercise: <code>insert</code></h2>
-<p><br></p>
-<p><strong>Q:</strong> Can you fix the type of <code>insert</code> so <code>sort</code> checks?</p>
+<h2 id="mapreduce-library">MapReduce &quot;Library&quot;</h2>
+<p><br> Haskell definition and Reflection <br></p>
 <div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -443,43 +409,29 @@ insert x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-1" class="programbox">{-@ sort :: (Ord a) => xs:List a -> ListN a {length xs} @-}
-sort Emp          = Emp
-sort (x:::xs)     = insert x (sort xs)
+  <div id="program-1" class="programbox">{-@ reflect mapReduce @-}
+mapReduce :: Int -> (List a -> b) -> (b -> b -> b) -> List a -> b
+mapReduce n f op is = reduce op (f N) (map f (chunk n is))
 
-{-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys</div>
+{-@ reflect reduce @-}
+reduce :: (a -> a -> a) -> a -> List a -> a
+reduce op b N        = b
+reduce op b (C x xs) = op x (reduce op b xs)
+
+{-@ reflect map @-}
+{-@ map :: (a -> b) -> xs:List a -> {v:List b | llen v == llen xs } @-}
+map _  N       = N
+map f (C x xs) = f x `C` map f xs
+
+{-@ reflect chunk @-}
+chunk :: Int -> List a -> List (List a)</div>
 </div>
 
-<p><br></p>
 </div>
-<div id="slide-5" class="slide">
-<h1 id="property-2-elements">Property 2: Elements</h1>
-<p><br></p>
-</div>
-<div id="slide-6" class="slide">
-<h2 id="permutation">Permutation</h2>
-<p><br></p>
-<p>Same size is all fine, how about <strong>same elements</strong> in output?</p>
-<p><br></p>
-</div>
-<div id="slide-7" class="slide">
-<h2 id="smt-solvers-reason-about-sets">SMT Solvers Reason About Sets</h2>
-<p><br></p>
-<p>Hence, we can write <em>Set-valued</em> measures</p>
-<p><br></p>
-<p>Using the <code>Data.Set</code> API for convenience</p>
-<p><br></p>
-<pre class="spec"><code>import qualified Data.Set as S
-</code></pre>
-<p><br></p>
-</div>
-<div id="slide-8" class="slide">
-<h2 id="specifying-a-lists-elements">Specifying A <code>List</code>s Elements</h2>
-<p><br></p>
+<div id="slide-2" class="slide">
+<h2 id="mapreduce-client-summing-list">MapReduce &quot;Client&quot;: Summing List</h2>
+<ul>
+<li>Standard List Summing
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -488,21 +440,13 @@ insert x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-2" class="programbox">{-@ measure elems @-}
-elems :: (Ord a) => List a -> S.Set a
-elems Emp      = S.empty
-elems (x:::xs) = addElem x xs
-
-{-@ inline addElem @-}
-addElem :: (Ord a) => a -> List a -> S.Set a
-addElem x xs = S.union (S.singleton x) (elems xs)</div>
+  <div id="program-2" class="programbox">{-@ reflect sum @-}
+sum  :: List Int -> Int
+sum N        = 0
+sum (C x xs) = x `plus` sum xs</div>
 </div>
-
-<p><code>inline</code> lets us reuse Haskell terms in refinements.</p>
-</div>
-<div id="slide-9" class="slide">
-<h2 id="exercise-verifying-permutation">Exercise: Verifying Permutation</h2>
-<p>Lets verify that <code>sortE</code> returns the same set of elements:</p>
+</li>
+<li>Reduction Operation
 <div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -511,37 +455,12 @@ addElem x xs = S.union (S.singleton x) (elems xs)</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">{-@ type ListE a S = {v:List a | elems v = S} @-}
-
-{-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
-sortE Emp         = Emp
-sortE (x:::xs)    = insertE x (sortE xs)
-
-{-@ insertE :: (Ord a) => x:a -> xs:List a -> List a @-}
-insertE x Emp     = x ::: Emp
-insertE x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insertE x ys</div>
+  <div id="program-3" class="programbox">{-@ reflect plus @-}
+plus :: Int -> Int -> Int
+plus x y = x + y</div>
 </div>
-
-<p><strong>Q:</strong> Can you fix the type for <code>insertE</code> so <code>sortE</code> verifies?</p>
-</div>
-<div id="slide-10" class="slide">
-<h1 id="property-3-order">Property 3: Order</h1>
-<p><br></p>
-<p>Yes, yes, but does <code>sort</code> actually <strong>sort</strong> ?</p>
-<p><br></p>
-<p>How to specify <strong>ordered lists</strong> ?</p>
-<p><br></p>
-</div>
-<div id="slide-11" class="slide">
-<h2 id="recall-refined-data-types">Recall: Refined Data Types</h2>
-<p><br></p>
-</div>
-<div id="slide-12" class="slide">
-<h2 id="refined-data-ordered-pairs">Refined Data: Ordered Pairs</h2>
-<p><br></p>
-<p>Lets write a type for <strong>ordered pairs</strong></p>
+</li>
+<li>MapReduce List Summing
 <div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -550,20 +469,18 @@ insertE x (y:::ys)
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-4" class="programbox">data OrdPair = OP {opX :: Int, opY :: Int}</div>
+  <div id="program-4" class="programbox">{-@ reflect psum @-}
+psum :: Int -> List Int -> Int
+psum n is = mapReduce n sum plus is</div>
 </div>
-
-<p><br></p>
-<p><strong>Legal Values</strong> value of <code>opX &lt; opY</code></p>
-<pre class="spec"><code>okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal
-</code></pre>
+</li>
+</ul>
+<p><br> <strong>Question:</strong> Is <code>psum</code> equivalent to <code>sum</code>? <br></p>
 </div>
-<div id="slide-13" class="slide">
-<h2 id="exercise-ordered-pairs">Exercise: Ordered Pairs</h2>
-<p><br></p>
-<p><strong>Q:</strong> Can you refine the data type to <em>legal</em> values only?</p>
-<p><br></p>
+<div id="slide-3" class="slide">
+<h2 id="proving-code-equivalence">Proving Code Equivalence</h2>
+<ul>
+<li>By application of HO Theorem
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -572,17 +489,17 @@ badPair = OP 4 2  -- illegal
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-5" class="programbox">{-@ data OrdPair = OP { opX :: Int, opY :: Int} @-}
-
-okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal</div>
+  <div id="program-5" class="programbox">{-@ automatic-instances sumEq @-}
+{-@ sumEq :: n:Int -> is:List Int -> { sum is == psum n is } @-}
+sumEq n is = mRTheorem n          -- chunk size
+                   sum        -- ???
+                   plus       -- ???
+                   sumRightId -- sum has "right-identity"
+                   sumDistr   -- plus is "distributive"
+                   is</div>
 </div>
-
-<p><br></p>
-</div>
-<div id="slide-14" class="slide">
-<h2 id="refined-data-csv-tables">Refined Data: CSV Tables</h2>
-<p><br></p>
+</li>
+<li>Right Identity of <code>plus</code>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -591,24 +508,12 @@ badPair = OP 4 2  -- illegal</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">data Csv = Csv {
-   hdrs :: List String
- , vals :: List (List Int)
- }
-
-scores  = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::       27  :::      83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }</div>
+  <div id="program-6" class="programbox">{-@ sumRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
+sumRightId xs = undefined</div>
 </div>
-
-</div>
-<div id="slide-15" class="slide">
-<h2 id="exercise-valid-csv-tables">Exercise: Valid CSV Tables</h2>
-<p><strong>Q:</strong> Can you refine <code>Csv</code> so <code>scores'</code> is rejected?</p>
+</li>
+<li><p>Append-Assoc</p></li>
+<li>Distribution of <code>sum</code>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -617,32 +522,17 @@ scores  = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-7" class="programbox">{-@ data Csv = Csv {
-      hdrs :: List String
-    , vals :: List (List Int)
-    }                                          @-}
-
-scores' = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::                    83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }</div>
+  <div id="program-7" class="programbox">{-@ automatic-instances sumDistr @-}
+{-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
+sumDistr N ys        = trivial
+sumDistr (C x xs) ys = sumDistr xs ys</div>
 </div>
-
+</li>
+</ul>
 </div>
-<div id="slide-16" class="slide">
-<h2 id="property-3-ordered-lists">Property 3: Ordered Lists</h2>
-<p><br></p>
-<p><strong>Refine</strong> the <code>List</code> data type to enforce <strong>ordering</strong>!</p>
-<p><br></p>
-</div>
-<div id="slide-17" class="slide">
-<h2 id="lists">Lists</h2>
-<p><br></p>
-<p>Lets <strong>define</strong> a type for ordered lists</p>
-<p><br></p>
+<div id="slide-4" class="slide">
+<h2 id="higher-order-map-reduce-theorem">Higher Order Map Reduce Theorem</h2>
+<p><br> If <code>f</code> is right-id and <code>op</code> distributes ... <br> ... then it is OK to map-reduce <br></p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -651,108 +541,32 @@ scores' = Csv {
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList a }</div>
+  <div id="program-8" class="programbox">{-@ mRTheorem :: n:Int -> f:(List a -> b) -> op:(b -> b -> b)
+     -> rightId:(xs:List a -> {op (f xs) (f N) == f xs } )
+     -> distrib:(xs:List a -> ys:List a -> {f (xs ++ ys) == op (f xs) (f ys)} )
+     -> is:List a
+     -> { mapReduce n f op is == f is }
+     / [llen is]
+  @-}</div>
 </div>
 
-<p><br></p>
+<p><br> Manual Proof (see Appendix) <br></p>
 </div>
-<div id="slide-18" class="slide">
-<h2 id="ordered-lists">Ordered Lists</h2>
-<p><br></p>
-<p>Lets <strong>refine</strong> the type to enforce <strong>order</strong></p>
-<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-9" class="programbox">{-@ data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList {v:a | oHd <= v}} @-}</div>
-</div>
-
-<p><br></p>
-<p>Head <code>oHd</code> is <strong>smaller than every value</strong> <code>v</code> in tail <code>oTl</code></p>
-</div>
-<div id="slide-19" class="slide">
-<h2 id="ordered-lists-1">Ordered Lists</h2>
-<p><br></p>
-<p><em>Illegal values unrepresentable</em></p>
-<p><br></p>
-<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-10" class="programbox">okList :: OList Int
-okList = 1 :<: 2 :<: 3 :<: OEmp
-
-badList :: OList Int
-badList = 1 :<: 3 :<: 2 :<: OEmp</div>
-</div>
-
-</div>
-<div id="slide-20" class="slide">
-<h2 id="exercise-insertion-sort">Exercise: Insertion Sort</h2>
-<p><br></p>
-<p><strong>Q:</strong> Oops. There's a problem! Can you fix it?</p>
-<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
-
-  <!-- Verify Source -->
-  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
-          ng-show="isUnknown" ng-click="verifySource()">
-    <span class="glyphicon glyphicon-play"></span>
-  </button>
- 
-  <div id="program-11" class="programbox">{-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
-sortO Emp      = OEmp
-sortO (x:::xs) = insertO x (sortO xs)
-
-{-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
-insertO x (y :<: ys)
-  | x <= y     = y :<: x :<: ys
-  | otherwise  = y :<: insertO x ys
-insertO x _    = x :<: OEmp</div>
-</div>
-
-</div>
-<div id="slide-21" class="slide">
-<h1 id="multiple-measures">Multiple Measures</h1>
-</div>
-<div id="slide-22" class="slide">
-<h2 id="different-measures-for-list">Different Measures for <code>List</code></h2>
-<p><br></p>
-<p>We just wrote <em>two</em> measures for <code>List</code></p>
-<p><br></p>
-<ul>
-<li><code>length :: List a -&gt; Nat</code></li>
-<li><code>elems  :: List a -&gt; Set a</code></li>
-</ul>
-</div>
-<div id="slide-23" class="slide">
-<h2 id="multiple-measures-are-conjoined">Multiple Measures are Conjoined</h2>
-<p><br></p>
-<p>Data constructor refinements are <strong>conjoined</strong></p>
-<pre class="spec"><code>data List a where
-  Emp   :: {v:List a |  length v = 0
-                     &amp;&amp; elems v  = empty}
-  (:::) :: x:a
-        -&gt; xs:List a
-        -&gt; {v:List a |  length v = 1 + length xs
-                     &amp;&amp; elems v  = addElem x  xs }
-</code></pre>
-</div>
-<div id="slide-24" class="slide">
+<div id="slide-5" class="slide">
 <h2 id="recap">Recap</h2>
+<p><br> <br></p>
+<ul>
+<li><strong>Refinement Reflection:</strong> Allow Haskell functions in Logic</li>
+<li><strong>Case Study:</strong>
+Prove Program Equivalence</li>
+</ul>
+<p><br> <br></p>
+<p>Prove crucial properties <strong>for</strong> Haskell <strong>in</strong> Haskell!</p>
+<p><br></p>
+<p>where Haskell = a general purpose programming language.</p>
+</div>
+<div id="slide-6" class="slide">
+<h2 id="recap-1">Recap</h2>
 <p><br></p>
 <table>
 <tbody>
@@ -772,20 +586,161 @@ insertO x _    = x :<: OEmp</div>
 <td style="text-align: right;"><strong>Measures:</strong></td>
 <td style="text-align: left;">Specify Properties of Data</td>
 </tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>Termination:</strong></td>
+<td style="text-align: left;">Well-founded Metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Reflection:</strong></td>
+<td style="text-align: left;">Haskell functions in Logic</td>
+</tr>
 </tbody>
 </table>
 <p><br></p>
+<p><a href="01-index.html?slide=27">Evaluation &amp; Conclusion</a></p>
 </div>
-<div id="slide-25" class="slide">
-<h2 id="continue">Continue</h2>
-<p><br></p>
-<p><strong>Other Case Studies</strong></p>
-<ul>
-<li><a href="http://ucsd-progsys.github.io/lh-workshop/05-case-study-eval.html">Well Scoped Evaluator</a></li>
-<li><a href="http://ucsd-progsys.github.io/lh-workshop/06-case-study-bytestring.html">Low-level Memory</a></li>
-</ul>
-<p><br></p>
-<p><strong>Continue:</strong> <a href="05-termination.html">[Part II : Proofs]</a></p>
+<div id="slide-7" class="slide">
+<h2 id="appendix-proof-of-mrtheorem">Appendix: Proof of <code>mRTheorem</code></h2>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">mRTheorem n f op rightId _ N
+  =   mapReduce n f op N
+  ==. reduce op (f N) (map f (chunk n N))
+  ==. reduce op (f N) (map f (C N N))
+  ==. reduce op (f N) (f N `C` map f N )
+  ==. reduce op (f N) (f N `C` N)
+  ==. op (f N) (reduce op (f N) N)
+  ==. op (f N) (f N)
+       ? rightId N
+  ==. f N
+  *** QED
+
+mRTheorem n f op rightId _ is@(C _ _)
+  | n <= 1 || llen is <= n
+  =   mapReduce n f op is
+  ==. reduce op (f N) (map f (chunk n is))
+  ==. reduce op (f N) (map f (C is N))
+  ==. reduce op (f N) (f is `C` map f N)
+  ==. reduce op (f N) (f is `C` N)
+  ==. op (f is) (reduce op (f N) N)
+  ==. op (f is) (f N)
+  ==. f is
+       ? rightId is
+  *** QED
+
+mRTheorem n f op rightId distrib is
+  =   mapReduce n f op is
+  ==. reduce op (f N) (map f (chunk n is))
+  ==. reduce op (f N) (map f (C (take n is) (chunk n (drop n is))))
+  ==. reduce op (f N) (C (f (take n is)) (map f (chunk n (drop n is))))
+  ==. op (f (take n is)) (reduce op (f N) (map f (chunk n (drop n is))))
+  ==. op (f (take n is)) (mapReduce n f op (drop n is))
+  ==. op (f (take n is)) (f (drop n is))
+      ? mRTheorem n f op rightId distrib (drop n is)
+  ==. f ((take n is) ++ (drop n is))
+      ? distrib (take n is) (drop n is)
+  ==. f is
+      ? appendTakeDrop n is
+  *** QED</div>
+</div>
+
+</div>
+<div id="slide-8" class="slide">
+<h2 id="append-of-take-and-drop">Append of Take and Drop</h2>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ automatic-instances appendTakeDrop @-}
+{-@ appendTakeDrop :: i:Nat -> xs:{List a | i <= llen xs} ->
+     {xs == (take i xs) ++ (drop i xs) }  @-}
+appendTakeDrop i N
+  = trivial
+appendTakeDrop i (C x xs)
+  | i == 0
+  = trivial
+appendTakeDrop i (C x xs)
+  = appendTakeDrop (i-1) xs</div>
+</div>
+
+</div>
+<div id="slide-9" class="slide">
+<h2 id="list-definition">List Definition</h2>
+<p>Built-in Lists are not supported for now.</p>
+<p>(So does imports...)</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ data List [llen] a = N | C {lhead :: a, ltail :: List a} @-}
+data List a = N | C a (List a)
+
+{-@ measure llen @-}
+{-@ llen :: List a -> Nat @-}
+llen N        = 0
+llen (C _ xs) = 1 + llen xs</div>
+</div>
+
+</div>
+<div id="slide-10" class="slide">
+<h2 id="list-manipulation">List Manipulation</h2>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ chunk :: i:Int -> xs:List a
+    -> {v:List (List a) | if (i <= 1 || llen xs <= i) then (llen v == 1) else (llen v < llen xs) }
+  / [llen xs] @-}
+chunk i xs
+  | i <= 1
+  = C xs N
+  | llen xs <= i
+  = C xs N
+  | otherwise
+  = C (take i xs) (chunk i (drop i xs))
+
+{-@ reflect drop @-}
+{-@ drop :: i:Nat -> xs:{List a | i <= llen xs } -> {v:List a | llen v == llen xs - i } @-}
+drop i N = N
+drop i (C x xs)
+  | i == 0
+  = C x xs
+  | otherwise
+  = drop (i-1) xs
+
+{-@ reflect take @-}
+{-@ take :: i:Nat -> xs:{List a | i <= llen xs } -> {v:List a | llen v == i} @-}
+take i N = N
+take i (C x xs)
+  | i == 0
+  = N
+  | otherwise
+  = C x (take (i-1) xs)
+
+
+{-@ reflect ++  @-}
+N ++        ys = ys
+(C x xs) ++ ys = x `C` (xs ++ ys)</div>
+</div>
+
 </div>
 
 </div>

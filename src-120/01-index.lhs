@@ -15,12 +15,14 @@ dummy = 7
 
 
 <p align=center>
-<h1 style="border-bottom:none">An Introduction to Refinement Types</h1>
+<h1 style="border-bottom:none">Verification and Synthesis with Refinement Types</h1>
 
 <br>
 
 <h4 style="border-bottom:none"><i>Ranjit Jhala (UCSD)</i></h4>
 <h4 style="border-bottom:none"><i>Niki Vazou (UMD)</i></h4>
+<h4 style="border-bottom:none"><i>Nadia Polikarpova (MIT)</i></h4>
+
 </p>
 
 </div>
@@ -38,8 +40,6 @@ Follow Along Here
 <br>
 
 **Navigation links** at bottom right
-
-**Double-click** to go forward
 
 Whats this?
 -----------

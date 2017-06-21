@@ -397,7 +397,6 @@ average xs = total `div` n
 </div>
 
 </div>
-<p><br> <br> <br> <br> <br></p>
 <div id="slide-0" class="slide">
 <h1 id="data-types">Data Types</h1>
 <p><br></p>
@@ -419,14 +418,12 @@ average xs = total `div` n
             | (:::) a (List a)  -- Cons</div>
 </div>
 
-<p><br></p>
 </div>
 <div id="slide-2" class="slide">
 <h2 id="specifying-the-size-of-a-list">Specifying the size of a List</h2>
 <p><br></p>
 <p><strong>Measure</strong></p>
 <p>Haskell function with <em>a single equation per constructor</em></p>
-<p><br></p>
 <div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -441,20 +438,15 @@ size Emp        = 0
 size (_ ::: xs) = 1 + size xs</div>
 </div>
 
-<p><br></p>
 </div>
 <div id="slide-3" class="slide">
 <h2 id="specifying-the-size-of-a-list-1">Specifying the size of a List</h2>
-<p><br></p>
 <p><strong>Measure</strong></p>
 <p><em>Strengthens</em> type of data constructor</p>
 <pre class="spec"><code>data List a where
-
   Emp   :: {v:List a | size v = 0}
-
-  (:::) :: x:a -&gt; xs:List a -&gt; {v:List a | size v = 1 + size xs}
+  (:::) :: x:a -&gt; xs:List a -&gt; {v:List a|size v = 1 + size xs}
 </code></pre>
-<p><br></p>
 </div>
 <div id="slide-4" class="slide">
 <h1 id="using-measures">Using Measures</h1>
@@ -535,12 +527,13 @@ foldr f acc (x ::: xs) = f x (foldr f acc xs)</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-6" class="programbox">{-@ foldr1 :: (a -> a -> a) -> ListNE a -> a @-}
+  <div id="program-6" class="programbox">{-@ foldr1 :: (a -> a -> a) -> List a -> a @-}
 foldr1 f (x ::: xs) = foldr f x xs
 foldr1 _ _          = impossible "foldr1"</div>
 </div>
 
 <p><br></p>
+<p><strong>Q:</strong> How shall we fix <code>foldr1</code>?</p>
 </div>
 <div id="slide-9" class="slide">
 <h2 id="exercise-average">Exercise: <code>average</code></h2>
@@ -682,7 +675,6 @@ init f n = f n ::: init f (n-1)</div>
 
 <p><br></p>
 <p><strong>Q:</strong> Can you fix the type of <code>init</code> so that <code>sanDiegoTemp</code> is accepted?</p>
-<p><br></p>
 <div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -731,17 +723,32 @@ sanDiegoTemp' = Year (init' (const 72) 12)</div>
 <div id="slide-16" class="slide">
 <h2 id="recap">Recap</h2>
 <p><br></p>
-<p><strong>Refinements:</strong> Types + Predicates</p>
-<p><strong>Subtyping:</strong> SMT Implication</p>
-<p><strong>Measures:</strong> Specify Properties of Data</p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Refinements:</strong></td>
+<td style="text-align: left;">Types + Predicates</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Measures:</strong></td>
+<td style="text-align: left;">Specify Properties of Data</td>
+</tr>
+</tbody>
+</table>
 <p><br></p>
-<p><strong>Next: Case Studies</strong></p>
+<p><strong>Case Study:</strong> <a href="04-case-study-insertsort.html">Insertion Sort</a></p>
 <ul>
-<li><a href="04-case-study-insertsort.html">Insertion Sort</a></li>
 <li><a href="05-case-study-eval.html">Well Scoped Evaluator</a></li>
 <li><a href="06-case-study-bytestring.html">Low-level Memory</a></li>
 </ul>
-<p><br></p>
 </div>
 
 </div>

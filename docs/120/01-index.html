@@ -367,7 +367,7 @@ dummy = 7</div>
 <p><br> <br> <br></p>
 <p align="center">
 <h1 style="border-bottom:none">
-An Introduction to Refinement Types
+Verification and Synthesis with Refinement Types
 </h1>
 <p><br></p>
 <h4 style="border-bottom:none">
@@ -375,6 +375,9 @@ An Introduction to Refinement Types
 </h4>
 <h4 style="border-bottom:none">
 <i>Niki Vazou (UMD)</i>
+</h4>
+<h4 style="border-bottom:none">
+<i>Nadia Polikarpova (MIT)</i>
 </h4>
 </p>
 </div>
@@ -384,7 +387,6 @@ An Introduction to Refinement Types
 <p><a href="http://ucsd-progsys.github.io/intro-refinement-types/120/" class="uri">http://ucsd-progsys.github.io/intro-refinement-types/120/</a></p>
 <p><br></p>
 <p><strong>Navigation links</strong> at bottom right</p>
-<p><strong>Double-click</strong> to go forward</p>
 </div>
 <div id="slide-1" class="slide">
 <h2 id="whats-this">Whats this?</h2>
@@ -575,7 +577,6 @@ A <em>dead moth</em> removed from the device
 </div>
 <div id="slide-23" class="slide">
 <h2 id="heartbleeds-2">HeartBleeds</h2>
-<p><br></p>
 <pre class="spec"><code>λ&gt; :m + Data.Text Data.Text.Unsafe
 λ&gt; let t = pack &quot;Barcelona&quot;
 
@@ -597,13 +598,17 @@ A <em>dead moth</em> removed from the device
 <div id="slide-25" class="slide">
 <h2 id="plan">Plan</h2>
 <p><strong>Part I: Refinement Types</strong></p>
-<p><a href="02-refinements.html"><strong>Refinements</strong></a></p>
-<p><a href="03-datatypes.html"><strong>Data Types</strong></a></p>
-<p><a href="04-case-study-insertsort.html"><strong>Case Study: Sorting</strong></a></p>
+<ul>
+<li><a href="02-refinements.html"><strong>Refinements</strong></a></li>
+<li><a href="03-datatypes.html"><strong>Data Types</strong></a></li>
+<li><a href="04-case-study-insertsort.html"><strong>Case Study: Sorting</strong></a></li>
+</ul>
 <p><strong>Part II: Reflection</strong></p>
-<p><a href="05-termination.html"><strong>Termination</strong></a></p>
-<p><a href="06-reflection.html"><strong>Reflection</strong></a></p>
-<p><a href="07-map-reduce.html"><strong>Case Study: Map-Reduce</strong></a></p>
+<ul>
+<li><a href="05-termination.html"><strong>Termination</strong></a></li>
+<li><a href="06-reflection.html"><strong>Reflection</strong></a></li>
+<li><a href="07-map-reduce.html"><strong>Case Study: Map-Reduce</strong></a></li>
+</ul>
 </div>
 <div id="slide-26" class="slide">
 <h2 id="evaluation">Evaluation</h2>
@@ -695,16 +700,28 @@ A <em>dead moth</em> removed from the device
 <table>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Properties:</strong></td>
-<td style="text-align: left;">Predicates <em>+ Types</em></td>
+<td style="text-align: right;"><strong>Refinements:</strong></td>
+<td style="text-align: left;">Types + Predicates</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Proofs:</strong></td>
-<td style="text-align: left;">SMT Solvers <em>+ Subtyping</em></td>
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;"><strong>Inference:</strong></td>
-<td style="text-align: left;">Abstract Interpretation <em>+ Hindley-Milner</em></td>
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Measures:</strong></td>
+<td style="text-align: left;">Specify Properties of Data</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>Termination:</strong></td>
+<td style="text-align: left;">Well-founded Metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Reflection:</strong></td>
+<td style="text-align: left;">Haskell functions in Logic</td>
 </tr>
 </tbody>
 </table>
@@ -712,12 +729,9 @@ A <em>dead moth</em> removed from the device
 <div id="slide-29" class="slide">
 <h2 id="current-future-work">Current &amp; Future Work</h2>
 <p><br></p>
-<ul>
-<li>GHC Integration</li>
-<li>Faster Checking</li>
-<li>Easier Errors</li>
-<li>Code Synthesis</li>
-</ul>
+<p>Faster Checking</p>
+<p>Easier Errors</p>
+<p><strong>Code Synthesis</strong></p>
 </div>
 <div id="slide-30" class="slide">
 <h2 id="thank-you">Thank You!</h2>

@@ -372,7 +372,8 @@ map :: (a -> b) -> [a] -> [b]
 -- isOdd, isEven :: Int -> Bool
 ack :: Int -> Int -> Int
 range :: Int -> Int -> [Int]
-replicate :: a -> Int -> [a]</div>
+replicate :: Int -> Int -> [Int]
+isEven, isOdd :: Int -> Bool</div>
 </div>
 
 </div>
@@ -428,7 +429,8 @@ fib i | i == 0    = 0
   </button>
  
   <div id="program-2" class="programbox">{-@ fib' :: Int -> Int  @-}
-fib' i | i <= 1    = 1
+fib' i | i <= 0    = 1
+       | i == 1    = 1
        | otherwise = fib' (i-1) + fib' (i-2)</div>
 </div>
 
@@ -446,8 +448,8 @@ fib' i | i <= 1    = 1
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-3" class="programbox">{-@ replicate :: a -> Int -> [a] @-}
-replicate _ 0 = []
+  <div id="program-3" class="programbox">{-@ replicate :: Int -> Int -> [Int] @-}
+replicate _ n | n <= 0 = []
 replicate x n = x : replicate x (n - 1)</div>
 </div>
 
@@ -549,36 +551,11 @@ merge [] ys         = ys</div>
 <!-- RJ: the mutually recursive stuff is pure black magic hackery, CUT.
      it ONLY makes sense with the GHOST (as in the README) and its not
      discussed here. In short, super confusing, hence, CUTTING.
-
-Mutually Recursive Functions
-----------------------------
-
-Same idea generalizes to mutual recursion.
-
-\zbegin{code}
-{- isEven :: n:Nat -> Bool / [n, 0] @-}
-{- isOdd  :: m:Nat -> Bool / [m, 1] @-}
-
-isEven 0 = True
-isEven n = isOdd (n-1)
-
-isOdd m = not $ isEven m
-\zend{code}
-<br>
-<br>
-
-Can you find the correct metric?
-
-<br>
-
-Liquid Haskell does not even attempt to guess it...
-
 -->
 </div>
 <div id="slide-11" class="slide">
-<h2 id="diverging-functions">Diverging Functions</h2>
-<p><br></p>
-<p><strong>Some functions <em>do not</em> terminate!</strong></p>
+<h2 id="mutually-recursive-functions">Mutually Recursive Functions</h2>
+<p>Same idea generalizes to mutual recursion.</p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -587,13 +564,37 @@ Liquid Haskell does not even attempt to guess it...
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ lazy repeat @-}
+  <div id="program-8" class="programbox">{-@ isEven :: n:Nat -> Bool  @-}
+{-@ isOdd  :: m:Nat -> Bool  @-}
+
+isEven 0 = True
+isEven n = isOdd (n-1)
+
+isOdd m = not $ isEven m</div>
+</div>
+
+<p><strong>Exercise:</strong> Can you find the correct metric?</p>
+<p>Liquid Haskell does not even attempt to guess it...</p>
+</div>
+<div id="slide-12" class="slide">
+<h2 id="diverging-functions">Diverging Functions</h2>
+<p><br></p>
+<p><strong>Some functions <em>do not</em> terminate!</strong></p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ lazy repeat @-}
 repeat x = x : repeat x</div>
 </div>
 
 <p><code>lazy</code> annotation deactivates termination checking.</p>
 </div>
-<div id="slide-12" class="slide">
+<div id="slide-13" class="slide">
 <h2 id="proving-termination-2">Proving Termination</h2>
 <p><br></p>
 <p><strong>Liquid Haskell Checks</strong></p>
@@ -602,7 +603,7 @@ repeat x = x : repeat x</div>
 <p>User specified lexicographic metric, <em>or</em></p>
 <p>The function is marked <code>lazy</code>.</p>
 </div>
-<div id="slide-13" class="slide">
+<div id="slide-14" class="slide">
 <h2 id="termination-is-easy-in-practice">Termination is Easy in Practice</h2>
 <div align="center">
 <table>
@@ -667,7 +668,7 @@ repeat x = x : repeat x</div>
 </table>
 </div>
 </div>
-<div id="slide-14" class="slide">
+<div id="slide-15" class="slide">
 <h2 id="termination-is-easy-in-practice-1">Termination is Easy in Practice</h2>
 <p><br></p>
 <p><strong><code>503</code> Recursive Functions</strong></p>
@@ -682,7 +683,7 @@ repeat x = x : repeat x</div>
 <li><code>8</code> currently <em>outside scope</em> of LiquidHaskell</li>
 </ul>
 </div>
-<div id="slide-15" class="slide">
+<div id="slide-16" class="slide">
 <h2 id="recap">Recap</h2>
 <p><br></p>
 <table>
@@ -692,21 +693,25 @@ repeat x = x : repeat x</div>
 <td style="text-align: left;">Types + Predicates</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;"><strong>Subtyping:</strong></td>
-<td style="text-align: left;">SMT Implication</td>
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
 </tr>
 <tr class="odd">
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+<tr class="even">
 <td style="text-align: right;"><strong>Measures:</strong></td>
 <td style="text-align: left;">Specify Properties of Data</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: right;"><strong>Termination:</strong></td>
 <td style="text-align: left;">Well-founded Metrics</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="slide-16" class="slide">
+<div id="slide-17" class="slide">
 <h2 id="what-properties-can-be-expressed-in-the-logic">What properties can be expressed in the logic?</h2>
 <p><br></p>
 <p><strong>Decidable SMT Theories</strong></p>
@@ -717,7 +722,7 @@ repeat x = x : repeat x</div>
 </ul>
 <p><br></p>
 <p><strong>Next: <em>Any</em> Terminating Haskell Function</strong></p>
-<p><a href="12-refinement-reflection.html">Refinement Reflection</a></p>
+<p><a href="06-reflection.html">Refinement Reflection</a></p>
 </div>
 
 </div>
