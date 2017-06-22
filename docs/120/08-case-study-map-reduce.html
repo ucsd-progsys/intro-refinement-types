@@ -494,7 +494,7 @@ psum n is = mapReduce n sum plus is</div>
  
   <div id="program-5" class="programbox">{-@ automatic-instances sumEq @-}
 {-@ sumEq :: n:Int -> is:List Int -> { sum is == psum n is } @-}
-sumEq n is = mRTheorem n             -- chunk size
+sumEq n is = mRTheorem   n           -- chunk size
                          sum         -- function to map-reduce
                          plus        -- reduction operator
                          plusRightId -- plus has "right-identity"

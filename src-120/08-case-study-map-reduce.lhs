@@ -120,7 +120,7 @@ Proving Code Equivalence
 \begin{code}
 {-@ automatic-instances sumEq @-}
 {-@ sumEq :: n:Int -> is:List Int -> { sum is == psum n is } @-}
-sumEq n is = mRTheorem n             -- chunk size
+sumEq n is = mRTheorem   n           -- chunk size
                          sum         -- function to map-reduce
                          plus        -- reduction operator
                          plusRightId -- plus has "right-identity"
