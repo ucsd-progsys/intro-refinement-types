@@ -361,7 +361,8 @@ Plan
 
 - [**Termination**](05-termination.html)
 - [**Reflection**](06-reflection.html)
-- [**Case Study: Map-Reduce**](07-map-reduce.html)
+- [**Reflection**](07-structural-induction.html)
+- [**Case Study: Map-Reduce**](08-case-study-map-reduce.html)
 
 
 Evaluation

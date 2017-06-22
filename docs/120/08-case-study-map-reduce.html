@@ -477,7 +477,7 @@ psum n is = mapReduce n sum plus is</div>
 </div>
 </li>
 </ul>
-<p><br> <strong>Question:</strong> Is <code>psum</code> equivalent to <code>sum</code>? <br></p>
+<p><br> <strong>Question:</strong> Is <code>psum</code> equivalent to <code>sum</code>?</p>
 </div>
 <div id="slide-3" class="slide">
 <h2 id="proving-code-equivalence">Proving Code Equivalence</h2>
@@ -502,20 +502,24 @@ sumEq n is = mRTheorem n             -- chunk size
                          is          -- input list</div>
 </div>
 
-<ul>
-<li>Right Identity of <code>plus</code></li>
-</ul>
-<pre class="spec"><code>{-@ plusRightId :: xs:List Int -&gt; {plus (sum xs) (sum N) == sum xs} @-}
-</code></pre>
-<ul>
-<li>Distribution of <code>sum</code></li>
-</ul>
-<pre class="spec"><code>{-@ sumDistr :: xs:List Int -&gt; ys:List Int -&gt; {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
-</code></pre>
 </div>
 <div id="slide-4" class="slide">
+<h2 id="right-identity-of-plus">Right Identity of <code>plus</code></h2>
+<p><br></p>
+<pre class="spec"><code>  plusRightId :: xs:List Int -&gt;
+                   {plus (sum xs) (sum N) == sum xs}
+</code></pre>
+</div>
+<div id="slide-5" class="slide">
+<h2 id="distributivity-of-sum">Distributivity of <code>sum</code></h2>
+<p><br></p>
+<pre class="spec"><code>  sumDistr :: xs:List Int -&gt; ys:List Int -&gt;
+                {sum (xs ++ ys) == plus (sum xs) (sum ys)}
+</code></pre>
+</div>
+<div id="slide-6" class="slide">
 <h2 id="higher-order-map-reduce-theorem">Higher Order Map Reduce Theorem</h2>
-<p><br> If <code>f</code> is right-id and <code>op</code> distributes ... <br> ... then it is OK to map-reduce <br></p>
+<p><br> <strong>If</strong> <code>f</code> is right-id <em>and</em> <code>op</code> distributive <br> <strong>Then</strong> <code>map-reduce</code> is equivalent to sequential <br></p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
   <!-- Verify Source -->
@@ -533,10 +537,10 @@ sumEq n is = mRTheorem n             -- chunk size
   @-}</div>
 </div>
 
-<p><br> Manual Proof (see Appendix) <br></p>
+<p><br> Manual Proof (see Appendix)</p>
 </div>
-<div id="slide-5" class="slide">
-<h2 id="right-identity-of-plus">Right Identity of <code>plus</code></h2>
+<div id="slide-7" class="slide">
+<h2 id="right-identity-of-plus-1">Right Identity of <code>plus</code></h2>
 <p><br> <strong>Exercise:</strong> Can you prove plus has right identity? <br></p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
 
@@ -551,7 +555,7 @@ plusRightId xs = undefined</div>
 </div>
 
 </div>
-<div id="slide-6" class="slide">
+<div id="slide-8" class="slide">
 <h2 id="warmup-associativity-of-append">Warmup: Associativity of Append</h2>
 <p><br> <strong>Exercise:</strong> Can you prove plus has right identity? <br></p>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
@@ -562,13 +566,13 @@ plusRightId xs = undefined</div>
     <span class="glyphicon glyphicon-play"></span>
   </button>
  
-  <div id="program-8" class="programbox">{-@ appendAssoc :: xs:List a -> ys:List a -> zs:List a 
+  <div id="program-8" class="programbox">{-@ appendAssoc :: xs:List a -> ys:List a -> zs:List a
                 -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
 appendAssoc xs ys zs = undefined</div>
 </div>
 
 </div>
-<div id="slide-7" class="slide">
+<div id="slide-9" class="slide">
 <h2 id="proof-automation-associativity-of-append">Proof Automation: Associativity of Append</h2>
 <p><br> Proof Automation Flag <br></p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
@@ -591,15 +595,15 @@ appendAssoc xs ys zs = undefined</div>
   </button>
  
   <div id="program-10" class="programbox">{-@ automatic-instances appendAssocAuto @-}
-{-@ appendAssocAuto :: xs:List a -> ys:List a -> zs:List a 
+{-@ appendAssocAuto :: xs:List a -> ys:List a -> zs:List a
                 -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
 appendAssocAuto N        _  _ = trivial
 appendAssocAuto (C _ xs) ys zs = appendAssocAuto xs ys zs</div>
 </div>
 
 </div>
-<div id="slide-8" class="slide">
-<h2 id="distribution-of-sum">Distribution of <code>sum</code></h2>
+<div id="slide-10" class="slide">
+<h2 id="distributivity-of-sum-1">Distributivity of <code>sum</code></h2>
 <p><br> <strong>Exercise:</strong> Can you prove distribution of sum? <br></p>
 <ul>
 <li>Distribution of <code>sum</code>
@@ -613,12 +617,12 @@ appendAssocAuto (C _ xs) ys zs = appendAssocAuto xs ys zs</div>
  
   <div id="program-11" class="programbox">{-@ automatic-instances sumDistr @-}
 {-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
-sumDistr xs ys = undefined </div>
+sumDistr xs ys = undefined</div>
 </div>
 </li>
 </ul>
 </div>
-<div id="slide-9" class="slide">
+<div id="slide-11" class="slide">
 <h2 id="recap">Recap</h2>
 <p><br> <br></p>
 <ul>
@@ -631,7 +635,7 @@ Prove Program Equivalence</li>
 <p><br></p>
 <p>where Haskell = a general purpose programming language.</p>
 </div>
-<div id="slide-10" class="slide">
+<div id="slide-12" class="slide">
 <h2 id="recap-1">Recap</h2>
 <p><br></p>
 <table>
@@ -665,7 +669,7 @@ Prove Program Equivalence</li>
 <p><br></p>
 <p><a href="01-index.html?slide=27">Evaluation &amp; Conclusion</a></p>
 </div>
-<div id="slide-11" class="slide">
+<div id="slide-13" class="slide">
 <h2 id="appendix-proof-of-mrtheorem">Appendix: Proof of <code>mRTheorem</code></h2>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
@@ -717,7 +721,7 @@ mRTheorem n f op rightId distrib is
 </div>
 
 </div>
-<div id="slide-12" class="slide">
+<div id="slide-14" class="slide">
 <h2 id="append-of-take-and-drop">Append of Take and Drop</h2>
 <div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
 
@@ -740,7 +744,7 @@ appendTakeDrop i (C x xs)
 </div>
 
 </div>
-<div id="slide-13" class="slide">
+<div id="slide-15" class="slide">
 <h2 id="list-definition">List Definition</h2>
 <p>Built-in Lists are not supported for now.</p>
 <p>(So does imports...)</p>
@@ -762,7 +766,7 @@ llen (C _ xs) = 1 + llen xs</div>
 </div>
 
 </div>
-<div id="slide-14" class="slide">
+<div id="slide-16" class="slide">
 <h2 id="list-manipulation">List Manipulation</h2>
 <div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
 

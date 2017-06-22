@@ -109,12 +109,11 @@ psum n is = mapReduce n sum plus is
 
 <br>
 **Question:** Is `psum` equivalent to `sum`?
-<br>
 
 
 
 Proving Code Equivalence
--------------------------
+------------------------
 
 - By application of Higher Order Theorem
 
@@ -130,25 +129,34 @@ sumEq n is = mRTheorem n             -- chunk size
 \end{code}
 
 
-- Right Identity of `plus`
+Right Identity of `plus`
+------------------------
+
+<br>
 
 \begin{spec}
-{-@ plusRightId :: xs:List Int -> {plus (sum xs) (sum N) == sum xs} @-}
+  plusRightId :: xs:List Int ->
+                   {plus (sum xs) (sum N) == sum xs}
 \end{spec}
 
 
-- Distribution of `sum`
+Distributivity of `sum`
+-----------------------
+
+<br>
 
 \begin{spec}
-{-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
+  sumDistr :: xs:List Int -> ys:List Int ->
+                {sum (xs ++ ys) == plus (sum xs) (sum ys)}
 \end{spec}
+
 
 Higher Order Map Reduce Theorem
 -----------------------
 <br>
-If `f` is right-id and `op` distributes ...
+**If** `f` is right-id _and_ `op` distributive
 <br>
-... then it is OK to map-reduce
+**Then** `map-reduce` is equivalent to sequential
 <br>
 
 \begin{code}
@@ -163,14 +171,13 @@ If `f` is right-id and `op` distributes ...
 
 <br>
 Manual Proof (see Appendix)
-<br>
 
 
 
 Right Identity of `plus`
 -------------------------
 
-<br> 
+<br>
 **Exercise:** Can you prove plus has right identity?
 <br>
 
@@ -182,12 +189,12 @@ plusRightId xs = undefined
 Warmup: Associativity of Append
 --------------------------------
 
-<br> 
+<br>
 **Exercise:** Can you prove plus has right identity?
 <br>
 
 \begin{code}
-{-@ appendAssoc :: xs:List a -> ys:List a -> zs:List a 
+{-@ appendAssoc :: xs:List a -> ys:List a -> zs:List a
                 -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
 appendAssoc xs ys zs = undefined
 \end{code}
@@ -196,7 +203,7 @@ appendAssoc xs ys zs = undefined
 Proof Automation: Associativity of Append
 --------------------------------
 
-<br> 
+<br>
 Proof Automation Flag
 <br>
 
@@ -206,16 +213,16 @@ Proof Automation Flag
 
 \begin{code}
 {-@ automatic-instances appendAssocAuto @-}
-{-@ appendAssocAuto :: xs:List a -> ys:List a -> zs:List a 
+{-@ appendAssocAuto :: xs:List a -> ys:List a -> zs:List a
                 -> { xs ++ (ys ++ zs) == (xs ++ ys) ++ zs } @-}
 appendAssocAuto N        _  _ = trivial
 appendAssocAuto (C _ xs) ys zs = appendAssocAuto xs ys zs
 \end{code}
 
-Distribution of `sum`
--------------------------
+Distributivity of `sum`
+-----------------------
 
-<br> 
+<br>
 **Exercise:** Can you prove distribution of sum?
 <br>
 
@@ -223,7 +230,7 @@ Distribution of `sum`
 \begin{code}
 {-@ automatic-instances sumDistr @-}
 {-@ sumDistr :: xs:List Int -> ys:List Int -> {sum (xs ++ ys) == plus (sum xs) (sum ys)} @-}
-sumDistr xs ys = undefined 
+sumDistr xs ys = undefined
 \end{code}
 
 Recap
