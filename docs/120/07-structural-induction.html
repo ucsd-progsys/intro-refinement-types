@@ -476,10 +476,60 @@ map f (C x xs) = f x `C` map f xs</div>
                        (map f (select_C_2 xs))
        }
 </code></pre>
-<p>--- CUT</p>
 </div>
 <div id="slide-4" class="slide">
-<h2 id="reflection-of-non-recursive-functions">Reflection of Non Recursive Functions</h2>
+<h2 id="prove-fancy-lists-properties">Prove fancy lists properties</h2>
+<p><br></p>
+<ul>
+<li>Functor Laws
+<ul>
+<li>Identity: <code>map id == id</code></li>
+<li>Distribution: <code>map (compose f g) == compose (map f) (map g)</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monoid Laws
+<ul>
+<li>Left Identity: <code>append empty x == x</code></li>
+<li>Right Identity: <code>append x empty == x</code></li>
+<li>Associativity: <code>append xs (append ys zs) == append (append xs ys) zs</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monad Laws
+<ul>
+<li>Left Identity: <code>bind (return x) f == f x</code></li>
+<li>Right Identity: <code>bind x return == x</code></li>
+<li>Associativity: <code>bind (bind m f) g == bind m (\x:a -&gt; (bind (f x) g))</code></li>
+</ul></li>
+</ul>
+</div>
+<div id="slide-5" class="slide">
+<h2 id="recap">Recap</h2>
+<p><br> <br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Termination:</strong></td>
+<td style="text-align: left;">Well-founded Metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Reflection:</strong></td>
+<td style="text-align: left;">Allow Haskell functions in Logic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>tructural Induction:</strong></td>
+<td style="text-align: left;">Proving Theorems on Lists</td>
+</tr>
+</tbody>
+</table>
+<p><br> <br></p>
+<p><strong>Next:</strong> <a href="08-case-study-map-reduce.html">Case Study: MapReduce</a>: Program Properties that matter!</p>
+</div>
+<div id="slide-6" class="slide">
+<h2 id="appendix-reflection-of-non-recursive-functions">Appendix: Reflection of Non Recursive Functions</h2>
 <p><br> Non-recursive functions reflect too! <br></p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
@@ -505,7 +555,7 @@ compose :: f:(b -&gt; c) -&gt; g:(a -&gt; b) -&gt; x:a
         -&gt; {v:c | v == compose f g x &amp;&amp; v == f (g x)}
 </code></pre>
 </div>
-<div id="slide-5" class="slide">
+<div id="slide-7" class="slide">
 <h2 id="proving-map-identity">Proving Map-Identity</h2>
 <p><br> Optimization property: to <code>map</code> identity do not transverse the list! <br></p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
@@ -534,7 +584,7 @@ mapId (C x xs)
 
 <p>Proof by case splitting and recursive call.</p>
 </div>
-<div id="slide-6" class="slide">
+<div id="slide-8" class="slide">
 <h2 id="automation-proving-map-identity">Automation: Proving Map-Identity</h2>
 <p><br> Pretty Verbose Proof: Proof Automation! <br></p>
 <div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
@@ -569,7 +619,7 @@ mapIdAuto (C x xs) = mapIdAuto xs</div>
 <li>Manual case splitting.</li>
 </ul>
 </div>
-<div id="slide-7" class="slide">
+<div id="slide-9" class="slide">
 <h2 id="proving-map-fusion">Proving Map-Fusion</h2>
 <p><br> Optimization property: transverse the list only once! <br></p>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
@@ -588,59 +638,8 @@ mapFusion f g xs = undefined</div>
 
 <p><strong>Exercise:</strong> Can you prove map-fusion?</p>
 </div>
-<div id="slide-8" class="slide">
-<h2 id="other-fancy-lists-properties">Other fancy Lists properties</h2>
-<p><br></p>
-<ul>
-<li>Functor Laws
-<ul>
-<li>Identity: <code>map id == id</code></li>
-<li>Distribution: <code>map (compose f g) == compose (map f) (map g)</code></li>
-</ul></li>
-</ul>
-<p><br></p>
-<ul>
-<li>Monoid Laws
-<ul>
-<li>Left Identity: <code>append empty x == x</code></li>
-<li>Right Identity: <code>append x empty == x</code></li>
-<li>Associativity: <code>append xs (append ys zs) == append (append xs ys) zs</code></li>
-</ul></li>
-</ul>
-<p><br></p>
-<ul>
-<li>Monad Laws
-<ul>
-<li>Left Identity: <code>bind (return x) f == f x</code></li>
-<li>Right Identity: <code>bind x return == x</code></li>
-<li>Associativity: <code>bind (bind m f) g == bind m (\x:a -&gt; (bind (f x) g))</code></li>
-</ul></li>
-</ul>
-</div>
-<div id="slide-9" class="slide">
-<h2 id="recap">Recap</h2>
-<p><br> <br></p>
-<table>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;"><strong>Termination:</strong></td>
-<td style="text-align: left;">Well-founded Metrics</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;"><strong>Reflection:</strong></td>
-<td style="text-align: left;">Allow Haskell functions in Logic</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;"><strong>tructural Induction:</strong></td>
-<td style="text-align: left;">Proving Theorems on Lists</td>
-</tr>
-</tbody>
-</table>
-<p><br> <br></p>
-<p><strong>Next:</strong> <a href="08-case-study-map-reduce.html">Case Study: MapReduce</a>: Program Properties that matter!</p>
-</div>
 <div id="slide-10" class="slide">
-<h2 id="appendix-onto-monoid-laws">Appendix: Onto Monoid Laws</h2>
+<h2 id="onto-monoid-laws">Onto Monoid Laws</h2>
 <p><br></p>
 <p>Reflect the monoid list operators</p>
 <p><br></p>
