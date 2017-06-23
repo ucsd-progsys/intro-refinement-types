@@ -27,7 +27,6 @@ dummy = 7
 
 </section>
 
-
 Follow Along Here
 -----------------
 
@@ -37,9 +36,25 @@ Follow Along Here
 
 [http://ucsd-progsys.github.io/intro-refinement-types/120/](http://ucsd-progsys.github.io/intro-refinement-types/120/)
 
-<br>
 
-**Navigation links** at bottom right
+Plan
+----
+
+[**Motivation**](01-index.html)
+
+**Part I: Refinement Types**
+
+- [**Refinements**](02-refinements.html)
+- [**Data Types**](03-datatypes.html)
+- [**Case Study: Sorting**](04-case-study-insertsort.html)
+
+**Part II: Reflection**
+
+- [**Termination**](05-termination.html)
+- [**Reflection**](06-reflection.html)
+- [**Reflection**](07-structural-induction.html)
+- [**Case Study: Map-Reduce**](08-case-study-map-reduce.html)
+
 
 Whats this?
 -----------
