@@ -213,9 +213,10 @@ average xs = total `div` n
 </div>
 
 </div>
-<section id="data-types" class="level1">
-<h1>Data Types</h1>
+<section id="data-types" class="level2">
+<h2>Data Types</h2>
 <p><br></p>
+</section>
 <section id="example-lists" class="level2">
 <h2>Example: Lists</h2>
 <p><br></p>
@@ -263,10 +264,10 @@ size (_ ::: xs) = 1 + size xs</div>
   (:::) :: x:a -&gt; xs:List a -&gt; {v:List a|size v = 1 + size xs}
 </code></pre>
 </section>
-</section>
-<section id="using-measures" class="level1">
-<h1>Using Measures</h1>
+<section id="using-measures" class="level2">
+<h2>Using Measures</h2>
 <p><br></p>
+</section>
 <section id="exercise-partial-functions" class="level2">
 <h2>Exercise: <em>Partial</em> Functions</h2>
 <p><br></p>
@@ -372,12 +373,12 @@ average' xs = total `div` n
 <p><strong>Q:</strong> What is a safe input type for <code>average'</code>?</p>
 <p><br></p>
 </section>
-</section>
-<section id="refining-data-types" class="level1">
-<h1>Refining Data Types</h1>
+<section id="refining-data-types" class="level2">
+<h2>Refining Data Types</h2>
 <p><br> <br></p>
 <p>    <em>Make illegal states unrepresentable</em></p>
 <p><br></p>
+</section>
 <section id="example-year-is-12-months" class="level2">
 <h2>Example: Year is 12 Months</h2>
 <p><br></p>
@@ -564,7 +565,6 @@ sanDiegoTemp' = Year (init' (const 72) 12)</div>
 <li><a href="05-case-study-eval.html">Well Scoped Evaluator</a></li>
 <li><a href="06-case-study-bytestring.html">Low-level Memory</a></li>
 </ul>
-</section>
 </section>
 
 </div>
