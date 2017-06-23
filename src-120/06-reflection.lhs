@@ -44,7 +44,7 @@ fibMonotonic :: Int -> Int -> Proof
 
 
 Refinement Reflection
-=====================
+---------------------
 
 <br>
 <br>

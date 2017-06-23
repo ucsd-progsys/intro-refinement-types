@@ -41,9 +41,9 @@ appendAssoc, appendAssocAuto :: List a -> List a -> List a -> Proof
 
 
 
-
 Case Study: MapReduce
-=====================
+---------------------
+
 <br>
 Chunk input, map operation (in parallel), and reduce the results.
 <br>

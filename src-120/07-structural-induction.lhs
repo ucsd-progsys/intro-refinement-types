@@ -43,7 +43,8 @@ associativity :: L a -> (a -> L b) -> (b -> L c) -> Proof
 
 
 Structural Induction
-=====================
+--------------------
+
 <br>
 <br>
 How we *express* and *prove* properties on data types?

@@ -47,7 +47,7 @@ addElemO x xs = S.singleton x `S.union` elemsO xs
 <br>
 
 Case Study: Insertion Sort
-==========================
+--------------------------
 
 <br>
 
@@ -91,7 +91,7 @@ Is in increasing **order**.
 
 
 Property 1: Size
-================
+----------------
 
 <br>
 
@@ -121,7 +121,7 @@ insert x (y:::ys)
 
 
 Property 2: Elements
-====================
+--------------------
 
 
 <br>
@@ -204,7 +204,7 @@ insertE x (y:::ys)
 **Q:** Can you fix the type for `insertE` so `sortE` verifies?
 
 Property 3: Order
-=================
+-----------------
 
 <br>
 
@@ -397,7 +397,7 @@ insertO x _    = x :<: OEmp
 
 
 Multiple Measures
-=================
+-----------------
 
 
 Different Measures for `List`

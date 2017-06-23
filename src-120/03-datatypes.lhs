@@ -46,7 +46,7 @@ average xs = total `div` n
 
 
 Data Types
-==========
+----------
 
 <br>
 
@@ -106,7 +106,7 @@ data List a where
 
 
 Using Measures
-==============
+---------------
 
 <br>
 
@@ -236,7 +236,7 @@ average' xs = total `div` n
 
 
 Refining Data Types
-===================
+-------------------
 
 
 <br>

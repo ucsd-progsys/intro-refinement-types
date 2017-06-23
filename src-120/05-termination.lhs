@@ -24,9 +24,8 @@ isEven, isOdd :: Int -> Bool
 </div>
 
 
-
 Termination Checking
-====================
+--------------------
 
 <br>
 
