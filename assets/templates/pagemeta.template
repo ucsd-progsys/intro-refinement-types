@@ -12,7 +12,25 @@
     <link rel="stylesheet" type="text/css" href="$$root$$/css/editor-slides.css">
     <link rel="stylesheet" type="text/css" href="$$root$$/css/code-format.css">
     <link rel="stylesheet" type="text/css" href="$$root$$/css/slideshow.css">
+    <link rel="stylesheet" type="text/css" href="$$root$$/css/onepage-scroll.css">
     <style>
+
+      html {
+            height: 100%;
+      }
+
+      .wrapper {
+            height: 100% !important;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+      }
+
+      .main section  {
+            overflow: hidden;
+      }
+
+
       body {
         text-align: center;
       }
@@ -65,6 +83,7 @@
 
 <script type="text/javascript" src="$$root$$/js/angular/angular.js"></script>
 <script type="text/javascript" src="$$root$$/js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="$$root$$/js/liquid/onepagescroll.js"></script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -104,17 +123,7 @@ MathJax.Hub.Config({
 
 
 <div id='toc' class='mobile-hidden'>
-  <div id="nav">
-    <button id="toggle-nav-1" class="toggle-nav">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-  </div>
 
-<b>Double-click to move forward</b> or use <b>navigation arrows at bottom-right</b>.
-
-$toc
 </div>
 
        <div id="checker-status">
@@ -150,36 +159,9 @@ $toc
        </div>
 
 
+<div class="wrapper">
+<div class="main">
 
-<div id='page-wrapper'>
-
-  <div id="slide-nav">
-        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-backward"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-        </button>
-
-        <button id="toggle-nav-2" class="toggle-nav">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-forward"></span>
-        </button>
-  </div>
-
-
-
-<div id='page'>
 
 $$if(notitle)$$
 $$else$$
@@ -220,46 +202,13 @@ $$body$$
     var queryServerURL = "$$liquidserver$$" ;
   </script>
 
-  <!-- rust nav JS -->
-  <script type="text/javascript">
-    window.playgroundUrl = "";
-  </script>
-
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(event) {
-
- document.getElementById("toggle-nav-1").onclick = toggleNav;
- document.getElementById("toggle-nav-2").onclick = toggleNav;
-
-  function toggleNav() {
-    var toc         = document.getElementById("toc");
-    var pagewrapper = document.getElementById("page-wrapper");
-    var status      = document.getElementById("checker-status");
-
-    toggleClass(toc,         "mobile-hidden");
-    // toggleClass(status,      "mobile-hidden");
-    toggleClass(pagewrapper, "mobile-hidden");
-  };
-
-  function toggleClass(el, className) {
-     // from http://youmightnotneedjquery.com/
-     if (el.classList) {
-       el.classList.toggle(className);
-     } else {
-       var classes = el.className.split(' ');
-       var existingIndex = classes.indexOf(className);
-
-       if (existingIndex >= 0) {
-         classes.splice(existingIndex, 1);
-       } else {
-         classes.push(className);
-       }
-       el.className = classes.join(' ');
-     }
-  }
-});
-</script>
-
+  <script>
+    onePageScroll(".main", {
+      sectionContainer: "section",
+      loop: true,
+      responsiveFallback: false
+    });
+ </script>
 
 
 

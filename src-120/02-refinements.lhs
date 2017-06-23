@@ -19,16 +19,11 @@ size, size' :: [a] -> Int
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
 
-
-Simple Refinement Types
-=======================
-
+<br>
+<br>
+<br>
+<br>
 
 
 Simple Refinement Types
@@ -78,6 +73,7 @@ p := e           -- atom
 
 Expressions
 -----------
+
 
 \begin{spec} <div/>
 e := x, y, z,...    -- variable
@@ -152,7 +148,7 @@ poss     =  [0, 1, 2, 3]
 
 
 Refinement Type Checking
-========================
+------------------------
 
 
 <br>
@@ -304,7 +300,7 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
 
 
 Contracts: Function Types
-=========================
+-------------------------
 
 <br>
 
