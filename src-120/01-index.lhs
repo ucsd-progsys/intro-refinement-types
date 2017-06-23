@@ -7,7 +7,7 @@ dummy = 7
 \end{code}
 </div>
 
-<div class="slide">
+<section>
 
 <br>
 <br>
@@ -25,7 +25,7 @@ dummy = 7
 
 </p>
 
-</div>
+</section>
 
 
 Follow Along Here
