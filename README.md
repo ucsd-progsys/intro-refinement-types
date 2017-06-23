@@ -1,6 +1,7 @@
 README
 ======
 
+
 This repository has the materials for a 120 minute tutorial
 on programming and proving with Refinement types with [LiquidHaskell][lh-github]
 

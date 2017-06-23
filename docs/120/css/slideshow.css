@@ -17,9 +17,10 @@
 
 .slide {
   /* Position */
-  position: absolute;
-  left: 1%;
-  top: 2%;
+  /* position: absolute;
+     left: 1%;
+     top: 2%;
+   */
 
   /* Size */
   min-height: 95%;
@@ -39,12 +40,14 @@
 
 }
 
+ 
 .slide.active {
-  visibility:visible;
+  /* visibility:visible; */
   opacity:1;
 }
 
 .slide.inactive {
-  visibility:hidden;
+  /* visibility:hidden; */
   opacity:0;
 }
+

@@ -65,6 +65,7 @@ $(function () {
   var slideNum = parseInt(getParameterByName('slide'));
 
   if (slideNum >= 0){
+    moveTo(".main", slideNum);
     currSlide = slideNum;
   }
 
@@ -147,6 +148,7 @@ $('#page').dblclick(function(e) {
       // YIKES }
   // YIKES });
 
+  /*
   $('#page').on("swipeleft",function(event){
     console.log('next slide swipeleft');
     gotoSlide(nextSlide(currSlide));
@@ -165,7 +167,7 @@ $('#page').dblclick(function(e) {
     gotoSlide(prevSlide(currSlide));
     event.preventDefault();
   });
-
+  */
 
   $('.firstbutton').click(function (event) {
     console.log('first slide click');
@@ -186,5 +188,4 @@ function progPaneSlide(paneId){
   var paneId = "#program-pane-" + paneId;
   var elem   = $(paneId).closest(".slide");
   return allSlides.index(elem);
-
 }

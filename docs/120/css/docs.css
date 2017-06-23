@@ -52,7 +52,9 @@ body > .navbar .brand:hover {
 /* Sections
 -------------------------------------------------- */
 
+
 /* padding for in-page bookmarks and fixed navbar */
+/* 
 section {
   padding-top: 30px;
 }
@@ -63,6 +65,7 @@ section > .lead {
 section > ul li {
   margin-bottom: 5px;
 }
+*/
 
 /* Separators (hr) */
 .bs-docs-separator {
