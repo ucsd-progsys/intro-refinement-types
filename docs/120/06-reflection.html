@@ -12,7 +12,25 @@
     <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
     <link rel="stylesheet" type="text/css" href="./css/code-format.css">
     <link rel="stylesheet" type="text/css" href="./css/slideshow.css">
+    <link rel="stylesheet" type="text/css" href="./css/onepage-scroll.css">
     <style>
+
+      html {
+            height: 100%;
+      }
+
+      .wrapper {
+            height: 100% !important;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+      }
+
+      .main section  {
+            overflow: hidden;
+      }
+
+
       body {
         text-align: center;
       }
@@ -65,6 +83,7 @@
 
 <script type="text/javascript" src="./js/angular/angular.js"></script>
 <script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="./js/liquid/onepagescroll.js"></script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -104,182 +123,6 @@ MathJax.Hub.Config({
 
 
 <div id='toc' class='mobile-hidden'>
-  <div id="nav">
-    <button id="toggle-nav-1" class="toggle-nav">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-  </div>
-
-<b>Double-click to move forward</b> or use <b>navigation arrows at bottom-right</b>.
-
-<ul class='chapter'>
-<li><a href='01-index.html'><b>1.</b>Follow Along Here</a></li>
-<ul class='section'>
-<li><a href='01-index.html#whats-this'><b>1.1.</b> Whats this?</a></li>
-<li><a href='01-index.html#the-first-bug'><b>1.2.</b> The First <em>Bug</em></a></li>
-<li><a href='01-index.html#fast-forward-to-present-day'><b>1.3.</b> Fast forward to Present Day</a></li>
-<li><a href='01-index.html#fast-forward-to-present-day-1'><b>1.4.</b> Fast forward to Present Day</a></li>
-<li><a href='01-index.html#fast-forward-to-present-day-2'><b>1.5.</b> Fast forward to Present Day</a></li>
-<li><a href='01-index.html#programming-languages-research'><b>1.6.</b> Programming Languages Research</a></li>
-<li><a href='01-index.html#modern-languages'><b>1.7.</b> Modern Languages</a></li>
-<li><a href='01-index.html#modern-languages-1'><b>1.8.</b> Modern Languages</a></li>
-<li><a href='01-index.html#modern-languages-2'><b>1.9.</b> Modern Languages</a></li>
-<li><a href='01-index.html#modern-languages-3'><b>1.10.</b> Modern Languages?</a></li>
-<li><a href='01-index.html#well-typed-programs-can-go-very-wrong'><b>1.11.</b> Well-typed programs can go very wrong!</a></li>
-<li><a href='01-index.html#well-typed-programs-can-go-very-wrong-1'><b>1.12.</b> Well-typed programs can go very wrong!</a></li>
-<li><a href='01-index.html#well-typed-programs-can-go-very-wrong-2'><b>1.13.</b> Well-typed programs can go very wrong!</a></li>
-<li><a href='01-index.html#division-by-zero'><b>1.14.</b> Division By Zero</a></li>
-<li><a href='01-index.html#division-by-zero-1'><b>1.15.</b> Division By Zero</a></li>
-<li><a href='01-index.html#missing-keys'><b>1.16.</b> Missing Keys</a></li>
-<li><a href='01-index.html#missing-keys-1'><b>1.17.</b> Missing Keys</a></li>
-<li><a href='01-index.html#missing-keys-2'><b>1.18.</b> Missing Keys</a></li>
-<li><a href='01-index.html#segmentation-faults'><b>1.19.</b> Segmentation Faults</a></li>
-<li><a href='01-index.html#segmentation-faults-1'><b>1.20.</b> Segmentation Faults</a></li>
-<li><a href='01-index.html#heartbleeds'><b>1.21.</b> HeartBleeds</a></li>
-<li><a href='01-index.html#heartbleeds-1'><b>1.22.</b> HeartBleeds</a></li>
-<li><a href='01-index.html#heartbleeds-2'><b>1.23.</b> HeartBleeds</a></li>
-<li><a href='01-index.html#goal-programmer-extensible-analysis'><b>1.24.</b> Goal: Programmer <em>Extensible</em> Analysis</a></li>
-<li><a href='01-index.html#plan'><b>1.25.</b> Plan</a></li>
-<li><a href='01-index.html#evaluation'><b>1.26.</b> Evaluation</a></li>
-<li><a href='01-index.html#evaluation-1'><b>1.27.</b> Evaluation</a></li>
-<li><a href='01-index.html#evaluation-2'><b>1.28.</b> Evaluation</a></li>
-<li><a href='01-index.html#conclusion'><b>1.29.</b> Conclusion</a></li>
-<li><a href='01-index.html#current-future-work'><b>1.30.</b> Current &amp; Future Work</a></li>
-<li><a href='01-index.html#thank-you'><b>1.31.</b> Thank You!</a></li>
-</ul>
-<li><a href='02-refinements.html'><b>2.</b>Simple Refinement Types</a></li>
-<ul class='section'>
-<li><a href='02-refinements.html#simple-refinement-types-1'><b>2.1.</b> Simple Refinement Types</a></li>
-<li><a href='02-refinements.html#types'><b>2.2.</b> Types</a></li>
-<li><a href='02-refinements.html#predicates'><b>2.3.</b> Predicates</a></li>
-<li><a href='02-refinements.html#expressions'><b>2.4.</b> Expressions</a></li>
-<li><a href='02-refinements.html#example-integers-equal-to-0'><b>2.5.</b> Example: Integers equal to <code>0</code></a></li>
-<li><a href='02-refinements.html#example-natural-numbers'><b>2.6.</b> Example: Natural Numbers</a></li>
-<li><a href='02-refinements.html#exercise-positive-integers'><b>2.7.</b> Exercise: Positive Integers</a></li>
-<li><a href='02-refinements.html#refinement-type-checking'><b>2.8.</b> Refinement Type Checking</a></li>
-<li><a href='02-refinements.html#a-term-can-have-many-types'><b>2.9.</b> A Term Can Have <em>Many</em> Types</a></li>
-<li><a href='02-refinements.html#a-term-can-have-many-types-1'><b>2.10.</b> A Term Can Have <em>Many</em> Types</a></li>
-<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs'><b>2.11.</b> Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
-<li><a href='02-refinements.html#predicate-subtyping-nuprl-pvs-1'><b>2.12.</b> Predicate Subtyping <a href="http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf">[NUPRL, PVS]</a></a></li>
-<li><a href='02-refinements.html#example-natural-numbers-1'><b>2.13.</b> Example: Natural Numbers</a></li>
-<li><a href='02-refinements.html#example-natural-numbers-2'><b>2.14.</b> Example: Natural Numbers</a></li>
-<li><a href='02-refinements.html#smt-automates-subtyping'><b>2.15.</b> <a href="http://en.wikipedia.org/wiki/Satisfiability_modulo_theories">SMT</a> Automates Subtyping</a></li>
-<li><a href='02-refinements.html#contracts-function-types'><b>2.16.</b> Contracts: Function Types</a></li>
-<li><a href='02-refinements.html#pre-conditions'><b>2.17.</b> Pre-Conditions</a></li>
-<li><a href='02-refinements.html#exercise-pre-conditions'><b>2.18.</b> Exercise: Pre-Conditions</a></li>
-<li><a href='02-refinements.html#precondition-checked-at-call-site'><b>2.19.</b> Precondition Checked at Call-Site</a></li>
-<li><a href='02-refinements.html#exercise-check-that-data'><b>2.20.</b> Exercise: Check That Data</a></li>
-<li><a href='02-refinements.html#precondition-checked-at-call-site-1'><b>2.21.</b> Precondition Checked at Call-Site</a></li>
-<li><a href='02-refinements.html#size-returns-positive-values'><b>2.22.</b> <code>size</code> returns positive values</a></li>
-<li><a href='02-refinements.html#postconditions-checked-at-return'><b>2.23.</b> Postconditions Checked at Return</a></li>
-<li><a href='02-refinements.html#verifying-avg'><b>2.24.</b> Verifying <code>avg</code></a></li>
-<li><a href='02-refinements.html#recap'><b>2.25.</b> Recap</a></li>
-<li><a href='02-refinements.html#unfinished-business'><b>2.26.</b> Unfinished Business</a></li>
-</ul>
-<li><a href='03-datatypes.html'><b>3.</b>Data Types</a></li>
-<ul class='section'>
-<li><a href='03-datatypes.html#example-lists'><b>3.1.</b> Example: Lists</a></li>
-<li><a href='03-datatypes.html#specifying-the-size-of-a-list'><b>3.2.</b> Specifying the size of a List</a></li>
-<li><a href='03-datatypes.html#specifying-the-size-of-a-list-1'><b>3.3.</b> Specifying the size of a List</a></li>
-<li><a href='03-datatypes.html#using-measures'><b>3.4.</b> Using Measures</a></li>
-<li><a href='03-datatypes.html#exercise-partial-functions'><b>3.5.</b> Exercise: <em>Partial</em> Functions</a></li>
-<li><a href='03-datatypes.html#naming-non-empty-lists'><b>3.6.</b> Naming Non-Empty Lists</a></li>
-<li><a href='03-datatypes.html#head-and-tail-are-safe'><b>3.7.</b> <code>head</code> and <code>tail</code> are Safe</a></li>
-<li><a href='03-datatypes.html#a-useful-partial-function-fold-reduce'><b>3.8.</b> A Useful Partial Function: Fold / Reduce</a></li>
-<li><a href='03-datatypes.html#a-useful-partial-function-fold-reduce-1'><b>3.9.</b> A Useful Partial Function: Fold / Reduce</a></li>
-<li><a href='03-datatypes.html#exercise-average'><b>3.10.</b> Exercise: <code>average</code></a></li>
-<li><a href='03-datatypes.html#refining-data-types'><b>3.11.</b> Refining Data Types</a></li>
-<li><a href='03-datatypes.html#example-year-is-12-months'><b>3.12.</b> Example: Year is 12 Months</a></li>
-<li><a href='03-datatypes.html#example-year-is-12-months-1'><b>3.13.</b> Example: Year is 12 Months</a></li>
-<li><a href='03-datatypes.html#exercise-map'><b>3.14.</b> Exercise: <code>map</code></a></li>
-<li><a href='03-datatypes.html#exercise-init'><b>3.15.</b> Exercise: <code>init</code></a></li>
-<li><a href='03-datatypes.html#exercise-init-1'><b>3.16.</b> Exercise: <code>init'</code></a></li>
-<li><a href='03-datatypes.html#recap'><b>3.17.</b> Recap</a></li>
-</ul>
-<li><a href='04-case-study-insertsort.html'><b>4.</b>Case Study: Insertion Sort</a></li>
-<ul class='section'>
-<li><a href='04-case-study-insertsort.html#asdisort'><b>4.1.</b> Insertion Sort</a></li>
-<li><a href='04-case-study-insertsort.html#goal-verified-insertion-sort'><b>4.2.</b> Goal: Verified Insertion Sort</a></li>
-<li><a href='04-case-study-insertsort.html#property-1-size'><b>4.3.</b> Property 1: Size</a></li>
-<li><a href='04-case-study-insertsort.html#exercise-insert'><b>4.4.</b> Exercise: <code>insert</code></a></li>
-<li><a href='04-case-study-insertsort.html#property-2-elements'><b>4.5.</b> Property 2: Elements</a></li>
-<li><a href='04-case-study-insertsort.html#permutation'><b>4.6.</b> Permutation</a></li>
-<li><a href='04-case-study-insertsort.html#smt-solvers-reason-about-sets'><b>4.7.</b> SMT Solvers Reason About Sets</a></li>
-<li><a href='04-case-study-insertsort.html#specifying-a-lists-elements'><b>4.8.</b> Specifying A <code>List</code>s Elements</a></li>
-<li><a href='04-case-study-insertsort.html#exercise-verifying-permutation'><b>4.9.</b> Exercise: Verifying Permutation</a></li>
-<li><a href='04-case-study-insertsort.html#property-3-order'><b>4.10.</b> Property 3: Order</a></li>
-<li><a href='04-case-study-insertsort.html#recall-refined-data-types'><b>4.11.</b> Recall: Refined Data Types</a></li>
-<li><a href='04-case-study-insertsort.html#refined-data-ordered-pairs'><b>4.12.</b> Refined Data: Ordered Pairs</a></li>
-<li><a href='04-case-study-insertsort.html#exercise-ordered-pairs'><b>4.13.</b> Exercise: Ordered Pairs</a></li>
-<li><a href='04-case-study-insertsort.html#refined-data-csv-tables'><b>4.14.</b> Refined Data: CSV Tables</a></li>
-<li><a href='04-case-study-insertsort.html#exercise-valid-csv-tables'><b>4.15.</b> Exercise: Valid CSV Tables</a></li>
-<li><a href='04-case-study-insertsort.html#property-3-ordered-lists'><b>4.16.</b> Property 3: Ordered Lists</a></li>
-<li><a href='04-case-study-insertsort.html#lists'><b>4.17.</b> Lists</a></li>
-<li><a href='04-case-study-insertsort.html#ordered-lists'><b>4.18.</b> Ordered Lists</a></li>
-<li><a href='04-case-study-insertsort.html#ordered-lists-1'><b>4.19.</b> Ordered Lists</a></li>
-<li><a href='04-case-study-insertsort.html#exercise-insertion-sort'><b>4.20.</b> Exercise: Insertion Sort</a></li>
-<li><a href='04-case-study-insertsort.html#multiple-measures'><b>4.21.</b> Multiple Measures</a></li>
-<li><a href='04-case-study-insertsort.html#different-measures-for-list'><b>4.22.</b> Different Measures for <code>List</code></a></li>
-<li><a href='04-case-study-insertsort.html#multiple-measures-are-conjoined'><b>4.23.</b> Multiple Measures are Conjoined</a></li>
-<li><a href='04-case-study-insertsort.html#measures-vs.-indexed-types'><b>4.24.</b> Measures vs. Indexed Types</a></li>
-<li><a href='04-case-study-insertsort.html#continue'><b>4.25.</b> Continue</a></li>
-</ul>
-<li><a href='05-termination.html'><b>5.</b>Termination Checking</a></li>
-<ul class='section'>
-<li><a href='05-termination.html#why-termination-checking'><b>5.1.</b> Why termination Checking?</a></li>
-<li><a href='05-termination.html#example-termination-of-fib'><b>5.2.</b> Example: Termination of <code>fib</code></a></li>
-<li><a href='05-termination.html#proving-termination'><b>5.3.</b> Proving Termination</a></li>
-<li><a href='05-termination.html#example-termination-of-fib-1'><b>5.4.</b> Example: Termination of <code>fib</code></a></li>
-<li><a href='05-termination.html#user-specified-termination-metrics'><b>5.5.</b> User Specified Termination Metrics</a></li>
-<li><a href='05-termination.html#user-specified-termination-metrics-1'><b>5.6.</b> User Specified Termination Metrics</a></li>
-<li><a href='05-termination.html#proving-termination-1'><b>5.7.</b> Proving Termination</a></li>
-<li><a href='05-termination.html#lexicographic-termination'><b>5.8.</b> Lexicographic Termination</a></li>
-<li><a href='05-termination.html#how-about-data-types'><b>5.9.</b> How About Data Types?</a></li>
-<li><a href='05-termination.html#user-specified-metrics-on-adts'><b>5.10.</b> User specified metrics on ADTs</a></li>
-<li><a href='05-termination.html#diverging-functions'><b>5.11.</b> Diverging Functions</a></li>
-<li><a href='05-termination.html#proving-termination-2'><b>5.12.</b> Proving Termination</a></li>
-<li><a href='05-termination.html#termination-is-easy-in-practice'><b>5.13.</b> Termination is Easy in Practice</a></li>
-<li><a href='05-termination.html#termination-is-easy-in-practice-1'><b>5.14.</b> Termination is Easy in Practice</a></li>
-<li><a href='05-termination.html#recap'><b>5.15.</b> Recap</a></li>
-<li><a href='05-termination.html#what-properties-can-be-expressed-in-the-logic'><b>5.16.</b> What properties can be expressed in the logic?</a></li>
-</ul>
-<li><a href='06-reflection.html'><b>6.</b>Refinement Reflection</a></li>
-<ul class='section'>
-<li><a href='06-reflection.html#theorems-about-haskell-functions'><b>6.1.</b> Theorems about Haskell functions</a></li>
-<li><a href='06-reflection.html#theorems-about-haskell-functions-1'><b>6.2.</b> Theorems about Haskell functions</a></li>
-<li><a href='06-reflection.html#types-as-theorems'><b>6.3.</b> Types As Theorems</a></li>
-<li><a href='06-reflection.html#make-the-theorems-pretty'><b>6.4.</b> Make the theorems pretty!</a></li>
-<li><a href='06-reflection.html#make-the-theorems-even-prettier'><b>6.5.</b> Make the theorems even prettier!</a></li>
-<li><a href='06-reflection.html#use-more-smt-knowledge'><b>6.6.</b> Use more SMT knowledge</a></li>
-<li><a href='06-reflection.html#theorems-about-haskell-functions-2'><b>6.7.</b> Theorems about Haskell functions</a></li>
-<li><a href='06-reflection.html#refinement-reflection-1'><b>6.8.</b> Refinement Reflection</a></li>
-<li><a href='06-reflection.html#fib-is-an-uninterpreted-function'><b>6.9.</b> <code>fib</code> is an uninterpreted function</a></li>
-<li><a href='06-reflection.html#reflect-function-into-output-type'><b>6.10.</b> Reflect Function into Output Type</a></li>
-<li><a href='06-reflection.html#reflection-at-result-type'><b>6.11.</b> Reflection at Result Type</a></li>
-<li><a href='06-reflection.html#structuring-proofs'><b>6.12.</b> Structuring Proofs</a></li>
-<li><a href='06-reflection.html#reusing-proofs-the-because-operator'><b>6.13.</b> Reusing Proofs: The &quot;because&quot; operator</a></li>
-<li><a href='06-reflection.html#paper-pencil-style-proofs'><b>6.14.</b> Paper &amp; Pencil style Proofs</a></li>
-<li><a href='06-reflection.html#another-paper-pencil-proof'><b>6.15.</b> Another &quot;Paper &amp; Pencil&quot; Proof</a></li>
-<li><a href='06-reflection.html#generalizing-monotonicity-proof'><b>6.16.</b> Generalizing monotonicity proof</a></li>
-<li><a href='06-reflection.html#reusing-theorems-by-application'><b>6.17.</b> Reusing Theorems by Application</a></li>
-<li><a href='06-reflection.html#recap'><b>6.18.</b> Recap</a></li>
-</ul>
-<li><a href='07-case-study-map-reduce.html'><b>7.</b>Case Study: MapReduce</a></li>
-<ul class='section'>
-<li><a href='07-case-study-map-reduce.html#implementation'><b>7.1.</b> Implementation</a></li>
-<li><a href='07-case-study-map-reduce.html#use-case-summing-list'><b>7.2.</b> Use Case: Summing List</a></li>
-<li><a href='07-case-study-map-reduce.html#proving-code-equivalence'><b>7.3.</b> Proving Code Equivalence</a></li>
-<li><a href='07-case-study-map-reduce.html#sum-relevant-proofs'><b>7.4.</b> Sum relevant Proofs</a></li>
-<li><a href='07-case-study-map-reduce.html#map-reduce-equivalence'><b>7.5.</b> Map Reduce Equivalence</a></li>
-<li><a href='07-case-study-map-reduce.html#append-of-take-and-drop'><b>7.6.</b> Append of Take and Drop</a></li>
-<li><a href='07-case-study-map-reduce.html#list-definition'><b>7.7.</b> List Definition</a></li>
-<li><a href='07-case-study-map-reduce.html#list-manipulation'><b>7.8.</b> List Manipulation</a></li>
-<li><a href='07-case-study-map-reduce.html#recap'><b>7.9.</b> Recap</a></li>
-<li><a href='07-case-study-map-reduce.html#recap-1'><b>7.10.</b> Recap</a></li>
-</ul>
-</ul>
 
 </div>
 
@@ -316,36 +159,9 @@ MathJax.Hub.Config({
        </div>
 
 
+<div class="wrapper">
+<div class="main">
 
-<div id='page-wrapper'>
-
-  <div id="slide-nav">
-        <button class="btn btn-xs btn-link actbutton firstbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-backward"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton prevbutton" type="button" style="font-size:15px; color:black;  z-index:1">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-        </button>
-
-        <button id="toggle-nav-2" class="toggle-nav">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton nextbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-        </button>
-
-        <button class="btn btn-xs btn-link actbutton lastbutton" type="button" style="font-size:15px; color:black; z-index:1">
-          <span class="glyphicon glyphicon-forward"></span>
-        </button>
-  </div>
-
-
-
-<div id='page'>
 
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
@@ -389,12 +205,11 @@ fibMonotonic :: Int -> Int -> Proof</div>
 
 </div>
 <p><br> <br> <br> <br> <br></p>
-<div id="slide-0" class="slide">
-<h1 id="refinement-reflection">Refinement Reflection</h1>
+<section id="refinement-reflection" class="level1">
+<h1>Refinement Reflection</h1>
 <p><br> <br> Allow terminating <strong>Haskell</strong> functions in refinements!</p>
-</div>
-<div id="slide-1" class="slide">
-<h2 id="theorems-about-haskell-functions">Theorems about Haskell functions</h2>
+<section id="theorems-about-haskell-functions" class="level2">
+<h2>Theorems about Haskell functions</h2>
 <p><br></p>
 <p>e.g. Parallelized Function Equivalent to Original</p>
 <p><br></p>
@@ -406,15 +221,15 @@ fibMonotonic :: Int -> Int -> Proof</div>
 A. Farmer <em>et al</em>: Reasoning with the HERMIT <br><br> <img src="http://goto.ucsd.edu/~nvazou/images/hermit_laws.png" alt="Hermit Laws" style="width: 350px;" align="middle" />
 </p>
 </div>
-</div>
-<div id="slide-2" class="slide">
-<h2 id="theorems-about-haskell-functions-1">Theorems about Haskell functions</h2>
+</section>
+<section id="theorems-about-haskell-functions-1" class="level2">
+<h2>Theorems about Haskell functions</h2>
 <p><br> <br> <br> Can we express the above theorems in Liquid Haskell? <br> <br></p>
 <p>Express &amp; Prove Theorems <strong>in</strong> Haskell ...</p>
 <p>... <strong>for</strong> Haskell functions.</p>
-</div>
-<div id="slide-3" class="slide">
-<h2 id="types-as-theorems">Types As Theorems</h2>
+</section>
+<section id="types-as-theorems" class="level2">
+<h2>Types As Theorems</h2>
 <p>Refined Types are <strong>theorems</strong></p>
 <p>and</p>
 <p>Haskell Functions are <strong>proofs</strong>.</p>
@@ -430,9 +245,9 @@ A. Farmer <em>et al</em>: Reasoning with the HERMIT <br><br> <img src="http://go
 onePlusOne _ = ()</div>
 </div>
 
-</div>
-<div id="slide-4" class="slide">
-<h2 id="make-the-theorems-pretty">Make the theorems pretty!</h2>
+</section>
+<section id="make-the-theorems-pretty" class="level2">
+<h2>Make the theorems pretty!</h2>
 <p><br></p>
 <p><a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a> comes with Liquid Haskell and allows for pretty proofs!</p>
 <br>
@@ -450,9 +265,9 @@ onePlusOne _ = ()</div>
 propOnePlusOne _ = trivial</div>
 </div>
 
-</div>
-<div id="slide-5" class="slide">
-<h2 id="make-the-theorems-even-prettier">Make the theorems even prettier!</h2>
+</section>
+<section id="make-the-theorems-even-prettier" class="level2">
+<h2>Make the theorems even prettier!</h2>
 <p><br></p>
 <p><a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a> comes with Liquid Haskell and allows for pretty proofs!</p>
 <br>
@@ -468,9 +283,9 @@ propOnePlusOne _ = trivial</div>
 propOnePlusOne' _ = trivial *** QED</div>
 </div>
 
-</div>
-<div id="slide-6" class="slide">
-<h2 id="use-more-smt-knowledge">Use more SMT knowledge</h2>
+</section>
+<section id="use-more-smt-knowledge" class="level2">
+<h2>Use more SMT knowledge</h2>
 <p><br></p>
 <p><a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a> comes with Liquid Haskell and allows for pretty proofs!</p>
 <br>
@@ -486,15 +301,15 @@ propOnePlusOne' _ = trivial *** QED</div>
 propPlusAccum _ _ = trivial *** QED</div>
 </div>
 
-</div>
-<div id="slide-7" class="slide">
-<h2 id="theorems-about-haskell-functions-2">Theorems about Haskell functions</h2>
+</section>
+<section id="theorems-about-haskell-functions-2" class="level2">
+<h2>Theorems about Haskell functions</h2>
 <p><br> <br> <br> Can we express the above theorems in Liquid Haskell? <br> <br></p>
 <p>Express &amp; Prove Theorems <strong>in</strong> Haskell ...</p>
 <p>... <strong>for</strong> Haskell functions.</p>
-</div>
-<div id="slide-8" class="slide">
-<h2 id="refinement-reflection-1">Refinement Reflection</h2>
+</section>
+<section id="refinement-reflection-1" class="level2">
+<h2>Refinement Reflection</h2>
 <p><strong>Reflect</strong> <code>fib</code> in the logic.</p>
 <div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
 
@@ -513,9 +328,9 @@ fib i | i == 0    = 0
 
 <p><br></p>
 <p>(Need to prove <code>fib</code> terminates...)</p>
-</div>
-<div id="slide-9" class="slide">
-<h2 id="fib-is-an-uninterpreted-function"><code>fib</code> is an uninterpreted function</h2>
+</section>
+<section id="fib-is-an-uninterpreted-function" class="level2">
+<h2><code>fib</code> is an uninterpreted function</h2>
 <p><br> For which logic only knows the congruence axiom... <br></p>
 <div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
 
@@ -544,9 +359,9 @@ fibCongr _ _ = trivial</div>
 fibOne _ = trivial</div>
 </div>
 
-</div>
-<div id="slide-10" class="slide">
-<h2 id="reflect-function-into-output-type">Reflect Function into Output Type</h2>
+</section>
+<section id="reflect-function-into-output-type" class="level2">
+<h2>Reflect Function into Output Type</h2>
 <p><br> The type of <code>fib</code> connects logic &amp; Haskell implementation <br></p>
 <pre class="spec"><code>fib :: i:Nat
     -&gt; {v:Nat |  v == fib i
@@ -557,9 +372,9 @@ fibOne _ = trivial</div>
 </code></pre>
 <p><br></p>
 <p><strong>Calling</strong> <code>fib i</code> reveals its implementation in the logic!</p>
-</div>
-<div id="slide-11" class="slide">
-<h2 id="reflection-at-result-type">Reflection at Result Type</h2>
+</section>
+<section id="reflection-at-result-type" class="level2">
+<h2>Reflection at Result Type</h2>
 <br>
 <div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
 
@@ -576,9 +391,9 @@ fibEq _ = let f1 = fib 1 -- f1:: {f1 == fib 1 && f1 == 1}
 
 <p><br></p>
 <p><strong>Exercise:</strong> Lets prove that <code>fib 2 == 1</code>.</p>
-</div>
-<div id="slide-12" class="slide">
-<h2 id="structuring-proofs">Structuring Proofs</h2>
+</section>
+<section id="structuring-proofs" class="level2">
+<h2>Structuring Proofs</h2>
 <p><br> <br> Using combinators from <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a>!</p>
 <br> <br>
 <div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
@@ -596,9 +411,9 @@ fibTwo _
   *** QED</div>
 </div>
 
-</div>
-<div id="slide-13" class="slide">
-<h2 id="reusing-proofs-the-because-operator">Reusing Proofs: The &quot;because&quot; operator</h2>
+</section>
+<section id="reusing-proofs-the-because-operator" class="level2">
+<h2>Reusing Proofs: The &quot;because&quot; operator</h2>
 <p><br> <br></p>
 <p>Using combinators from <a href="https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs"><code>ProofCombinators</code></a>!</p>
 <br> <br>
@@ -619,9 +434,9 @@ fibThree _
   *** QED</div>
 </div>
 
-</div>
-<div id="slide-14" class="slide">
-<h2 id="paper-pencil-style-proofs">Paper &amp; Pencil style Proofs</h2>
+</section>
+<section id="paper-pencil-style-proofs" class="level2">
+<h2>Paper &amp; Pencil style Proofs</h2>
 <p><br> <code>fib</code> is increasing <br></p>
 <div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
 
@@ -648,9 +463,9 @@ fibUp i
   *** QED</div>
 </div>
 
-</div>
-<div id="slide-15" class="slide">
-<h2 id="another-paper-pencil-proof">Another &quot;Paper &amp; Pencil&quot; Proof</h2>
+</section>
+<section id="another-paper-pencil-proof" class="level2">
+<h2>Another &quot;Paper &amp; Pencil&quot; Proof</h2>
 <p><br> <strong>Exercise:</strong> Lets fix the proof that <code>fib</code> is monotonic? <br></p>
 <div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
 
@@ -687,9 +502,9 @@ fibMonotonic x y
   <div id="program-13" class="programbox">{-@ LIQUID "--totality" @-}</div>
 </div>
 
-</div>
-<div id="slide-16" class="slide">
-<h2 id="generalizing-monotonicity-proof">Generalizing monotonicity proof</h2>
+</section>
+<section id="generalizing-monotonicity-proof" class="level2">
+<h2>Generalizing monotonicity proof</h2>
 <p><br> <strong>Exercise:</strong> Generalize the implementation of <code>fMono</code> proof below to any increasing function <code>f</code>. <br></p>
 <div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
 
@@ -717,9 +532,9 @@ fMono f fUp x y
   *** QED</div>
 </div>
 
-</div>
-<div id="slide-17" class="slide">
-<h2 id="reusing-theorems-by-application">Reusing Theorems by Application</h2>
+</section>
+<section id="reusing-theorems-by-application" class="level2">
+<h2>Reusing Theorems by Application</h2>
 <p><br></p>
 <p><code>fib</code> is monotonic!</p>
 <p><br></p>
@@ -735,9 +550,9 @@ fMono f fUp x y
 fibMono     = fMono fib fibUp</div>
 </div>
 
-</div>
-<div id="slide-18" class="slide">
-<h2 id="recap">Recap</h2>
+</section>
+<section id="recap" class="level2">
+<h2>Recap</h2>
 <p><br></p>
 <table>
 <tbody>
@@ -769,7 +584,8 @@ fibMono     = fMono fib fibUp</div>
 </table>
 <p><br></p>
 <p><strong>Next:</strong> <a href="07-structural-induction.html">Structural Induction</a>: Program Properties about data types!</p>
-</div>
+</section>
+</section>
 
 </div>
 </div>
@@ -804,46 +620,13 @@ fibMono     = fMono fib fibUp</div>
     var queryServerURL = "http://goto.ucsd.edu:8090/" ;
   </script>
 
-  <!-- rust nav JS -->
-  <script type="text/javascript">
-    window.playgroundUrl = "";
-  </script>
-
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(event) {
-
- document.getElementById("toggle-nav-1").onclick = toggleNav;
- document.getElementById("toggle-nav-2").onclick = toggleNav;
-
-  function toggleNav() {
-    var toc         = document.getElementById("toc");
-    var pagewrapper = document.getElementById("page-wrapper");
-    var status      = document.getElementById("checker-status");
-
-    toggleClass(toc,         "mobile-hidden");
-    // toggleClass(status,      "mobile-hidden");
-    toggleClass(pagewrapper, "mobile-hidden");
-  };
-
-  function toggleClass(el, className) {
-     // from http://youmightnotneedjquery.com/
-     if (el.classList) {
-       el.classList.toggle(className);
-     } else {
-       var classes = el.className.split(' ');
-       var existingIndex = classes.indexOf(className);
-
-       if (existingIndex >= 0) {
-         classes.splice(existingIndex, 1);
-       } else {
-         classes.push(className);
-       }
-       el.className = classes.join(' ');
-     }
-  }
-});
-</script>
-
+  <script>
+    onePageScroll(".main", {
+      sectionContainer: "section",
+      loop: true,
+      responsiveFallback: false
+    });
+ </script>
 
 
 

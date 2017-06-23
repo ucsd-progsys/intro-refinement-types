@@ -6,13 +6,14 @@
     <meta name="generator" content="rustdoc">
     <title>An Introduction to Refinement Types</title>
 
+    <script type="text/javascript" src="./js/liquid/onepagescroll.js"></script>
+    <link rel="stylesheet" type="text/css" href="./css/onepage-scroll.css">
     <link href="./css/bootstrap.css" rel="stylesheet">
     <link href="./css/bootstrap-theme.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
     <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
     <link rel="stylesheet" type="text/css" href="./css/code-format.css">
     <link rel="stylesheet" type="text/css" href="./css/slideshow.css">
-    <link rel="stylesheet" type="text/css" href="./css/onepage-scroll.css">
     <style>
 
       html {
@@ -83,7 +84,6 @@
 
 <script type="text/javascript" src="./js/angular/angular.js"></script>
 <script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
-<script type="text/javascript" src="./js/liquid/onepagescroll.js"></script>
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -107,8 +107,9 @@ MathJax.Hub.Config({
 });
 </script>
 
-<!-- GITHUB -->
+<!-- GITHUB
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+-->
 
 <!-- LOCAL
 
@@ -118,13 +119,9 @@ MathJax.Hub.Config({
 
 </head>
 
-<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+<!-- <body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl"> -->
 
-
-
-<div id='toc' class='mobile-hidden'>
-
-</div>
+<body>
 
        <div id="checker-status">
 
@@ -159,9 +156,9 @@ MathJax.Hub.Config({
        </div>
 
 
+
 <div class="wrapper">
 <div class="main">
-
 
 <div class="hidden">
 <div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
@@ -171,7 +168,7 @@ MathJax.Hub.Config({
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-0" class="programbox">{-@ LIQUID "--no-termination" @-}
 {-@ LIQUID "--diff"           @-}
 {-@ LIQUID "--short-names"    @-}
@@ -243,7 +240,7 @@ p := ...         -- predicate in decidable logic
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-1" class="programbox">{-@ type Zero = {v:Int | v = 0} @-}
 
 {-@ zero :: Zero @-}
@@ -263,7 +260,7 @@ zero     =  0</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-2" class="programbox">{-@ type Nat = {v:Int | 0 <= v} @-}
 
 {-@ nats :: [Nat]               @-}
@@ -282,7 +279,7 @@ nats     =  [0, 1, 2, 3]</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-3" class="programbox">{-@ type Pos = {v:Int | 0 <= v} @-}
 
 {-@ poss :: [Pos]               @-}
@@ -310,7 +307,7 @@ poss     =  [0, 1, 2, 3]</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-4" class="programbox">{-@ zeroA :: Zero @-}
 zeroA     = 0
 
@@ -362,7 +359,7 @@ zeroB     = 0</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-5" class="programbox">{-@ zero' :: Nat @-}
 zero'     =  zero   -- zero :: Zero <: Nat</div>
 </div>
@@ -387,7 +384,7 @@ zero'     =  zero   -- zero :: Zero <: Nat</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-6" class="programbox">{-@ four :: Nat @-}
 four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
   where
@@ -416,7 +413,7 @@ four  = x + 1          -- x = 3 |- {v = x + 1} <: Nat
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-7" class="programbox">{-@ impossible :: {v:_ | false} -> a @-}
 impossible msg = error msg</div>
 </div>
@@ -437,7 +434,7 @@ impossible msg = error msg</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-8" class="programbox">{-@ safeDiv :: Int -> Int -> Int   @-}
 safeDiv _ 0 = impossible "divide-by-zero"
 safeDiv x n = x `div` n</div>
@@ -456,7 +453,7 @@ safeDiv x n = x `div` n</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-9" class="programbox">avg2 x y   = safeDiv (x + y) 2</div>
 </div>
 
@@ -478,7 +475,7 @@ safeDiv x n = x `div` n</div>
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-10" class="programbox">calc :: IO ()
 calc = do
   putStrLn "Enter numerator"
@@ -501,7 +498,7 @@ calc = do
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-11" class="programbox">avg        :: [Int] -> Int
 avg xs     = safeDiv total n
   where
@@ -524,7 +521,7 @@ avg xs     = safeDiv total n
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-12" class="programbox">{-@ size :: [a] -> Pos @-}
 size [_]    = 1
 size (_:xs) = 1 + size xs
@@ -555,7 +552,7 @@ size (_:xs) = 1 + n  where n = size xs -- (2)
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-13" class="programbox">avg' xs    = safeDiv total n
   where
     total  = sum  xs
@@ -597,7 +594,7 @@ size (_:xs) = 1 + n  where n = size xs -- (2)
           ng-show="isUnknown" ng-click="verifySource()">
     <span class="glyphicon glyphicon-play"></span>
   </button>
- 
+
   <div id="program-14" class="programbox">{-@ size'    :: [a] -> Pos @-}
 size' [_]    = 1
 size' (_:xs) = 1 + size' xs
@@ -641,13 +638,18 @@ size' _      = impossible "size"</div>
     var queryServerURL = "http://goto.ucsd.edu:8090/" ;
   </script>
 
-  <script>
-    onePageScroll(".main", {
-      sectionContainer: "section",
-      loop: true,
-      responsiveFallback: false
-    });
- </script>
+  <!-- rust nav JS -->
+  <script type="text/javascript">
+    window.playgroundUrl = "";
+  </script>
+
+<script>
+ onePageScroll(".main", {
+   sectionContainer: "section",
+   loop: true,
+   responsiveFallback: false
+ });
+</script>
 
 
 
