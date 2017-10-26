@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>An Introduction to Refinement Types</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/code-format.css">
+    <link rel="stylesheet" type="text/css" href="./css/slideshow.css">
+    <link rel="stylesheet" type="text/css" href="./css/onepage-scroll.css">
+    <style>
+
+      html {
+            height: 100%;
+      }
+
+      .wrapper {
+            height: 100% !important;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+      }
+
+      .main section  {
+            overflow: hidden;
+      }
+
+
+      body {
+        text-align: center;
+      }
+      .mybreak {
+        line-height: 1em;
+      }
+      table {
+        margin-left: 150px;
+        margin-right: auto;
+      }
+
+      ul {
+          list-style-type: none;
+        }
+
+      #slide-nav {
+          position: absolute;
+          bottom: 4%;
+          /* left: 40%; */
+          right: 4%;
+          z-index: 100;
+      }
+
+      #checker-status {
+          position: absolute;
+          top: 4%;
+          right: 2%;
+      }
+
+    </style>
+
+
+      <!-- JQUERY LOCAL
+
+        <script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+
+      -->
+
+     <!-- JQUERY MOBILE -->
+
+     <!-- Include the jQuery library -->
+     <script src="./js/jquery/jquery-1.11.3.min.js"></script>
+
+     <!-- SWIPE
+       <script src="./js/jquery/init-mobile.js"></script>
+       <script src="./js/jquery/jquery.mobile-1.4.5.min.js"></script>
+     -->
+
+
+
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="./js/liquid/onepagescroll.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<!-- LOCAL
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+-->
+
+</head>
+
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+
+
+<div id='toc' class='mobile-hidden'>
+
+</div>
+
+       <div id="checker-status">
+
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-click="jumpToProgPane(err)">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+
+
+<div class="wrapper">
+<div class="main">
+
+
+<div class="hidden">
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{-# LANGUAGE TupleSections    #-}
+{-@ LIQUID "--no-warnings"    @-}
+{-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--betaequivalence" @-}
+
+
+-- Hidden code
+{-@ LIQUID "--higherorder"     @-}
+{-@ LIQUID "--totality"        @-}
+
+module StructuralInduction where
+
+import Prelude hiding (map, id, length, return)
+import Language.Haskell.Liquid.ProofCombinators
+
+
+length :: L a -> Int
+
+mapFusion :: (b -> c) -> (a -> b) -> L a -> Proof
+
+mapId :: L a -> Proof
+mapIdAuto :: L a -> Proof
+emptyLeft :: L a -> Proof
+emptyRight :: L a -> Proof
+appendAssoc :: L a -> L a -> L a -> Proof
+leftIdentity :: a -> (a -> L b) -> Proof
+rightIdentity :: L a -> Proof
+associativity :: L a -> (a -> L b) -> (b -> L c) -> Proof</div>
+</div>
+
+</div>
+<p><br> <br> <br> <br> <br></p>
+<section id="structural-induction" class="level2">
+<h2>Structural Induction</h2>
+<p><br> <br> How we <em>express</em> and <em>prove</em> properties on data types? <br></p>
+</section>
+<section id="the-list-data-type" class="level2">
+<h2>The list data type</h2>
+<p><br> A user defined list, <br></p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">data L a = N | C a (L a)
+
+{-@ data L [length] a =
+      N | C { hd :: a, tl :: L a}
+  @-}</div>
+</div>
+
+<p><br> with its anchored size function. <br></p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ measure length @-}
+{-@ length :: L a -> Nat @-}
+length N        = 0
+length (C _ xs) = 1 + length xs</div>
+</div>
+
+</section>
+<section id="reflection-of-adts-into-the-logic" class="level2">
+<h2>Reflection of ADTs into the logic</h2>
+<p><br></p>
+<p>The Liquid pragma</p>
+<p><br></p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">{-@ LIQUID "--exact-data-cons" @-}</div>
+</div>
+
+<p><br> Automatically creates checker and selector <em>measures</em>: <br></p>
+<pre class="spec"><code>isN :: L a -&gt; Bool
+isC :: L a -&gt; Bool
+
+select_C_1 :: L a -&gt; a
+select_C_2 :: L a -&gt; L a
+</code></pre>
+<p><br> <strong>Question:</strong> Do these function types look familiar? <br></p>
+</section>
+<section id="reflection-of-structural-inductive-functions" class="level2">
+<h2>Reflection of Structural Inductive Functions</h2>
+<br> With the above measures, <code>map</code> reflects into logic! <br>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">{-@ reflect map @-}
+map :: (a -> b) -> L a -> L b
+map f N        = N
+map f (C x xs) = f x `C` map f xs</div>
+</div>
+
+<br> The body of <code>map</code> reflects in its result type <br>
+<pre class="spec"><code>map :: f:(a-&gt;b) -&gt; xs:L a
+    -&gt; {v:L a | v == map f xs
+             &amp;&amp; v == if isN xs then N else
+                     C (f (select_C_1 xs)
+                       (map f (select_C_2 xs))
+       }
+</code></pre>
+</section>
+<section id="prove-fancy-lists-properties" class="level2">
+<h2>Prove fancy lists properties</h2>
+<p><br></p>
+<ul>
+<li>Functor Laws
+<ul>
+<li>Identity: <code>map id == id</code></li>
+<li>Distribution: <code>map (compose f g) == compose (map f) (map g)</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monoid Laws
+<ul>
+<li>Left Identity: <code>append empty x == x</code></li>
+<li>Right Identity: <code>append x empty == x</code></li>
+<li>Associativity: <code>append xs (append ys zs) == append (append xs ys) zs</code></li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li>Monad Laws
+<ul>
+<li>Left Identity: <code>bind (return x) f == f x</code></li>
+<li>Right Identity: <code>bind x return == x</code></li>
+<li>Associativity: <code>bind (bind m f) g == bind m (\x:a -&gt; (bind (f x) g))</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="recap" class="level2">
+<h2>Recap</h2>
+<p><br> <br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Termination:</strong></td>
+<td style="text-align: left;">Well-founded Metrics</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Reflection:</strong></td>
+<td style="text-align: left;">Allow Haskell functions in Logic</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>tructural Induction:</strong></td>
+<td style="text-align: left;">Proving Theorems on Lists</td>
+</tr>
+</tbody>
+</table>
+<p><br> <br></p>
+<p><strong>Next:</strong> <a href="08-case-study-map-reduce.html">Case Study: MapReduce</a>: Program Properties that matter!</p>
+</section>
+<section id="appendix-reflection-of-non-recursive-functions" class="level2">
+<h2>Appendix: Reflection of Non Recursive Functions</h2>
+<p><br> Non-recursive functions reflect too! <br></p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ reflect id @-}
+id :: a -> a
+id x = x
+
+{-@ reflect compose @-}
+compose :: (b -> c) -> (a -> b) -> a -> c
+compose f g x = f (g x)</div>
+</div>
+
+<p>Get automatically the &quot;singleton&quot; Liquid Types:</p>
+<pre class="spec"><code>id :: x:a -&gt; {v:a | v == id x &amp;&amp; v == x}
+
+compose :: f:(b -&gt; c) -&gt; g:(a -&gt; b) -&gt; x:a
+        -&gt; {v:c | v == compose f g x &amp;&amp; v == f (g x)}
+</code></pre>
+</section>
+<section id="proving-map-identity" class="level2">
+<h2>Proving Map-Identity</h2>
+<p><br> Optimization property: to <code>map</code> identity do not transverse the list! <br></p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">{-@ mapId :: xs:L a -> { map id xs == id xs } @-}
+mapId N
+  =   map id N
+  ==. N
+  ==. id N
+  *** QED
+mapId (C x xs)
+  =   map id (C x xs)
+  ==. id x `C` map id xs
+  ==. x `C` map id xs
+  ==. x `C` id xs         ? mapId xs
+  ==. x `C` xs
+  ==. id (x `C` xs)
+  *** QED</div>
+</div>
+
+<p>Proof by case splitting and recursive call.</p>
+</section>
+<section id="automation-proving-map-identity" class="level2">
+<h2>Automation: Proving Map-Identity</h2>
+<p><br> Pretty Verbose Proof: Proof Automation! <br></p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}</div>
+</div>
+
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">{-@ automatic-instances mapIdAuto @-}
+
+{-@ mapIdAuto :: xs:L a -> { map id xs == id xs } @-}
+mapIdAuto N        = trivial
+mapIdAuto (C x xs) = mapIdAuto xs</div>
+</div>
+
+<p>Proof Generation:</p>
+<ul>
+<li>Automatic Unfolding, but</li>
+<li>Manual case splitting.</li>
+</ul>
+</section>
+<section id="proving-map-fusion" class="level2">
+<h2>Proving Map-Fusion</h2>
+<p><br> Optimization property: transverse the list only once! <br></p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ automatic-instances mapFusion @-}
+{-@ mapFusion :: f:(b -> c) -> g:(a -> b) -> xs:L a
+  -> { map  (compose f g) xs == (map f) (map g xs) } @-}
+mapFusion f g xs = undefined</div>
+</div>
+
+<p><strong>Exercise:</strong> Can you prove map-fusion?</p>
+</section>
+<section id="onto-monoid-laws" class="level2">
+<h2>Onto Monoid Laws</h2>
+<p><br></p>
+<p>Reflect the monoid list operators</p>
+<p><br></p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">{-@ reflect append @-}
+append :: L a -> L a -> L a
+append N ys        = ys
+append (C x xs) ys = x `C` append xs ys
+
+{-@ reflect empty @-}
+empty :: L a
+empty = N</div>
+</div>
+
+</section>
+<section id="monoid-laws-left-identity" class="level2">
+<h2>Monoid Laws: Left Identity</h2>
+<p><br> Lets prove the left identity monoid law! <br></p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ automatic-instances emptyLeft @-}
+
+{-@ emptyLeft :: x:L a -> { append empty x == x }  @-}
+emptyLeft x = trivial</div>
+</div>
+
+</section>
+<section id="monoid-laws-right-identity" class="level2">
+<h2>Monoid Laws: Right Identity</h2>
+<p><br> Lets prove the right identity monoid law! <br></p>
+<div id="program-pane-12" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-12" class="programbox">{-@ automatic-instances emptyRight @-}
+{-@ emptyRight :: x:L a -> { append x empty == x }  @-}
+emptyRight N        = trivial
+emptyRight (C x xs) = emptyRight xs</div>
+</div>
+
+</section>
+<section id="monoid-laws-associativity" class="level2">
+<h2>Monoid Laws: Associativity</h2>
+<p><br> Lets prove the associativity monoid law! <br></p>
+<div id="program-pane-13" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-13" class="programbox">{-@ automatic-instances appendAssoc @-}
+
+{-@ appendAssoc :: xs:L a -> ys:L a -> zs:L a
+  -> {append xs (append ys zs) == append (append xs ys) zs } @-}
+appendAssoc N _ _          = trivial
+appendAssoc (C x xs) ys zs = appendAssoc xs ys zs</div>
+</div>
+
+</section>
+<section id="onto-monad-laws" class="level2">
+<h2>Onto Monad Laws!</h2>
+<p><br> Define monad list operators <br></p>
+<div id="program-pane-14" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-14" class="programbox">{-@ reflect return @-}
+return :: a -> L a
+return x = C x N
+
+{-@ reflect bind @-}
+bind :: L a -> (a -> L b) -> L b
+bind N _ = N
+bind (C x xs) f = append (f x) (bind xs f)</div>
+</div>
+
+</section>
+<section id="monoid-laws-left-identity-1" class="level2">
+<h2>Monoid Laws: Left Identity</h2>
+<p><br> Lets prove the left identity monad law! <br></p>
+<div id="program-pane-15" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-15" class="programbox">{-@ automatic-instances leftIdentity @-}
+
+{-@ leftIdentity :: x:a -> f:(a -> L b)
+  -> { bind (return x) f == f x } @-}
+leftIdentity x f = emptyRight (f x)</div>
+</div>
+
+</section>
+<section id="monoid-laws-right-identity-1" class="level2">
+<h2>Monoid Laws: Right Identity</h2>
+<p><br> Lets prove the right identity monad law! <br></p>
+<div id="program-pane-16" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-16" class="programbox">{-@ automatic-instances rightIdentity @-}
+
+{-@ rightIdentity :: x:L a -> { bind x return == x } @-}
+rightIdentity N
+  = trivial
+rightIdentity (C x xs)
+  =   rightIdentity xs
+  &&& emptyLeft xs</div>
+</div>
+
+</section>
+<section id="monoid-laws-associativity-1" class="level2">
+<h2>Monoid Laws: Associativity</h2>
+<p><br> To prove associativity, lets assume a helper lemma! <br></p>
+<ul>
+<li>Bind distribution</li>
+</ul>
+<div id="program-pane-17" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-17" class="programbox">{-@ automatic-instances bindAppend @-}
+{-@ bindAppend :: xs:L a -> ys:L a -> f:(a -> L b)
+     -> { bind (append xs ys) f == append (bind xs f) (bind ys f) } @-}
+bindAppend N _ _
+  = trivial
+bindAppend (C x xs) ys f
+  = appendAssoc (f x) (bind xs f) (bind ys f)
+  &&& bindAppend xs ys f</div>
+</div>
+
+</section>
+<section id="monoid-laws-associativity-2" class="level2">
+<h2>Monoid Laws: Associativity</h2>
+<p><br> Lets prove the associativity monad law! <br></p>
+<div id="program-pane-18" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-18" class="programbox">{-@ automatic-instances associativity @-}
+{-@ associativity :: m:L a -> f: (a -> L b) -> g:(b -> L c)
+  -> {bind (bind m f) g == bind m (\x:a -> (bind (f x) g)) } @-}
+associativity N f g
+  =   trivial
+associativity (C x xs) f g
+  =   bindAppend (f x) (bind xs f) g
+  &&& associativity xs f g</div>
+</div>
+
+</section>
+
+</div>
+</div>
+
+<!--Site Meter
+<div class="hidden">
+  <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes"
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes"
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+</div>
+-->
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script>
+  <script src="./js/liquid/annot.js"></script>
+  <script src="./js/liquid/config.js"></script>
+  <script src="./js/liquid/slideshow.js"></script>
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "http://goto.ucsd.edu:8090/" ;
+  </script>
+
+  <script>
+    onePageScroll(".main", {
+      sectionContainer: "section",
+      loop: true,
+      responsiveFallback: false
+    });
+ </script>
+
+
+
+</body>
+</html>

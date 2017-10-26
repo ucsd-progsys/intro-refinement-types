@@ -6,7 +6,6 @@
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--higherorder"    @-}
-{-@ LIQUID "--totality"       @-}
 {-@ LIQUID "--exactdc"        @-}
 {-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}
 

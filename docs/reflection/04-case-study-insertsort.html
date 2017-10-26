@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <title>An Introduction to Refinement Types</title>
+
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/rust-book-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/editor-slides.css">
+    <link rel="stylesheet" type="text/css" href="./css/code-format.css">
+    <link rel="stylesheet" type="text/css" href="./css/slideshow.css">
+    <link rel="stylesheet" type="text/css" href="./css/onepage-scroll.css">
+    <style>
+
+      html {
+            height: 100%;
+      }
+
+      .wrapper {
+            height: 100% !important;
+            height: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+      }
+
+      .main section  {
+            overflow: hidden;
+      }
+
+
+      body {
+        text-align: center;
+      }
+      .mybreak {
+        line-height: 1em;
+      }
+      table {
+        margin-left: 150px;
+        margin-right: auto;
+      }
+
+      ul {
+          list-style-type: none;
+        }
+
+      #slide-nav {
+          position: absolute;
+          bottom: 4%;
+          /* left: 40%; */
+          right: 4%;
+          z-index: 100;
+      }
+
+      #checker-status {
+          position: absolute;
+          top: 4%;
+          right: 2%;
+      }
+
+    </style>
+
+
+      <!-- JQUERY LOCAL
+
+        <script type="text/javascript" src="./js/jquery/jquery-2.0.3.min.js"></script>
+
+      -->
+
+     <!-- JQUERY MOBILE -->
+
+     <!-- Include the jQuery library -->
+     <script src="./js/jquery/jquery-1.11.3.min.js"></script>
+
+     <!-- SWIPE
+       <script src="./js/jquery/init-mobile.js"></script>
+       <script src="./js/jquery/jquery.mobile-1.4.5.min.js"></script>
+     -->
+
+
+
+<script type="text/javascript" src="./js/angular/angular.js"></script>
+<script type="text/javascript" src="./js/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="./js/liquid/onepagescroll.js"></script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    extensions: ["color.js"],
+    Macros: {
+      True: "\\mathit{True}",
+      RR:   "{\\bf R}",
+      Int:  "\\mathtt{Int}",
+      Nat:  "\\mathtt{Nat}",
+      Zero: "\\mathtt{Zero}",
+      foo:   ["{\\bf Jhala FOO #1}", 1],
+      kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
+      bindx: ["{{#1}\\!:\\!{#2}}", 2],
+      reft:  ["\\{\\bindx{#1}{#2} \\mid {#3}\\}", 3],
+      ereft: ["\\bindx{#1}{\\{#2 \\mid #3\\}}", 3],
+      reftx: ["\\{{#1}\\mid{#2}\\}", 2],
+      inferrule: ["\\frac{#2}{#3}\\;{#1}", 3]
+  }
+  }
+});
+</script>
+
+<!-- GITHUB -->
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<!-- LOCAL
+
+  <script src="js/MathJax-2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+-->
+
+</head>
+
+<body class="rustdoc" data-spy="scroll" data-target=".bs-docs-sidebar" ng-app="liquidDemo" ng-controller="LiquidDemoCtrl">
+
+
+
+<div id='toc' class='mobile-hidden'>
+
+</div>
+
+       <div id="checker-status">
+
+         <!-- Verifying ... -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; z-index:1"
+                ng-show="isChecking" ng-click="verifySource()">
+          <span class="glyphicon glyphicon-hourglass"></span>
+         </button>
+
+
+         <!-- Safe -->
+         <button class="btn btn-xs btn-link actbutton" type="button" style="font-size:30px; color:green; z-index:1"
+                 ng-show="isSafe">
+           <span class="glyphicon glyphicon-ok"></span>
+         </button>
+
+         <div class="dropdown" ng-show="isBad">
+             <button class="btn btn-xs btn-link dropdown-toggle"
+                     type="button"
+                     id="errorblockdropdown"
+                     data-toggle="dropdown"
+                     style="font-size:30px; color:red; z-index:1">
+               <span class="glyphicon glyphicon-remove" style="vertical-align:middle"></span><font size="4">{{errorBlocks.length}}</font>
+               </span>
+             </button>
+             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+               <li ng-repeat="err in errorBlocks">
+                 <a tabindex="-1" ng-click="jumpToProgPane(err)">{{err.index}}</a>
+               </li>
+             </ul>
+         </div>
+       </div>
+
+
+<div class="wrapper">
+<div class="main">
+
+
+<div class="hidden">
+<div id="program-pane-0" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-0" class="programbox">{-@ LIQUID "--short-names"    @-}
+{-@ LIQUID "--no-warnings"    @-}
+{-@ LIQUID "--no-termination" @-}
+
+module InsertSort where
+
+import Prelude hiding (sum, length, map, filter, foldr, foldr1)
+import qualified Data.Set as S -- hiding (elems, insert)
+
+insert, insertE :: (Ord a) => a -> List a -> List a
+sort, sortE     :: (Ord a) => List a -> List a
+
+{-@ measure length @-}
+length :: List a -> Int
+length Emp        = 0
+length (_ ::: xs) = 1 + length xs
+
+
+data List a  = Emp
+             | (:::) { hd :: a, tl :: List a }
+             deriving (Eq, Ord, Show)
+
+infixr 9 :::
+
+infixr 9 :<:
+
+-- | Lists of a given size N
+{-@ type ListN a N = {v:List a | length v == N } @-}
+
+{-@ type OListE a S = {v:OList a | elemsO v = S} @-}
+
+{-@ measure elemsO @-}
+elemsO :: (Ord a) => OList a -> S.Set a
+elemsO OEmp       = S.empty
+elemsO (x :<: xs) = addElemO x xs
+
+{-@ inline addElemO @-}
+addElemO :: (Ord a) => a -> OList a -> S.Set a
+addElemO x xs = S.singleton x `S.union` elemsO xs</div>
+</div>
+
+</div>
+<p><br></p>
+<section id="case-study-insertion-sort" class="level2">
+<h2>Case Study: Insertion Sort</h2>
+<p><br></p>
+</section>
+<section id="asdisort" class="level2">
+<h2>Insertion Sort</h2>
+<p><br></p>
+<pre class="spec"><code>sort :: (Ord a) =&gt; List a -&gt; List a
+sort []           = Emp
+sort (x:xs)       = insert x (sort xs)
+
+insert :: (Ord a) =&gt; a -&gt; List a -&gt; List a
+insert x Emp      = x ::: Emp
+insert x (y:::ys)
+  | x &lt;= y        = x ::: y ::: ys
+  | otherwise     = y ::: insert x ys
+</code></pre>
+<p><br></p>
+</section>
+<section id="goal-verified-insertion-sort" class="level2">
+<h2>Goal: Verified Insertion Sort</h2>
+<p><br></p>
+<p><strong>Goal:</strong> specify &amp; verify that output:</p>
+<p><br></p>
+<p>Is the same <strong>size</strong> as the input,</p>
+<p>Has the same <strong>elements</strong> as the input,</p>
+<p>Is in increasing <strong>order</strong>.</p>
+</section>
+<section id="property-1-size" class="level2">
+<h2>Property 1: Size</h2>
+<p><br></p>
+</section>
+<section id="exercise-insert" class="level2">
+<h2>Exercise: <code>insert</code></h2>
+<p><br></p>
+<p><strong>Q:</strong> Can you fix the type of <code>insert</code> so <code>sort</code> checks?</p>
+<div id="program-pane-1" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-1" class="programbox">{-@ sort :: (Ord a) => xs:List a -> ListN a {length xs} @-}
+sort Emp          = Emp
+sort (x:::xs)     = insert x (sort xs)
+
+{-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
+insert x Emp      = x ::: Emp
+insert x (y:::ys)
+  | x <= y        = x ::: y ::: ys
+  | otherwise     = y ::: insert x ys</div>
+</div>
+
+<p><br></p>
+</section>
+<section id="property-2-elements" class="level2">
+<h2>Property 2: Elements</h2>
+<p><br></p>
+</section>
+<section id="permutation" class="level2">
+<h2>Permutation</h2>
+<p><br></p>
+<p>Same size is all fine, how about <strong>same elements</strong> in output?</p>
+<p><br></p>
+</section>
+<section id="smt-solvers-reason-about-sets" class="level2">
+<h2>SMT Solvers Reason About Sets</h2>
+<p><br></p>
+<p>Hence, we can write <em>Set-valued</em> measures</p>
+<p><br></p>
+<p>Using the <code>Data.Set</code> API for convenience</p>
+<p><br></p>
+<pre class="spec"><code>import qualified Data.Set as S
+</code></pre>
+<p><br></p>
+</section>
+<section id="specifying-a-lists-elements" class="level2">
+<h2>Specifying A <code>List</code>s Elements</h2>
+<p><br></p>
+<div id="program-pane-2" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-2" class="programbox">{-@ measure elems @-}
+elems :: (Ord a) => List a -> S.Set a
+elems Emp      = S.empty
+elems (x:::xs) = addElem x xs
+
+{-@ inline addElem @-}
+addElem :: (Ord a) => a -> List a -> S.Set a
+addElem x xs = S.union (S.singleton x) (elems xs)</div>
+</div>
+
+<p><code>inline</code> lets us reuse Haskell terms in refinements.</p>
+</section>
+<section id="exercise-verifying-permutation" class="level2">
+<h2>Exercise: Verifying Permutation</h2>
+<p>Lets verify that <code>sortE</code> returns the same set of elements:</p>
+<div id="program-pane-3" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-3" class="programbox">{-@ type ListE a S = {v:List a | elems v = S} @-}
+
+{-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
+sortE Emp         = Emp
+sortE (x:::xs)    = insertE x (sortE xs)
+
+{-@ insertE :: (Ord a) => x:a -> xs:List a -> List a @-}
+insertE x Emp     = x ::: Emp
+insertE x (y:::ys)
+  | x <= y        = x ::: y ::: ys
+  | otherwise     = y ::: insertE x ys</div>
+</div>
+
+<p><strong>Q:</strong> Can you fix the type for <code>insertE</code> so <code>sortE</code> verifies?</p>
+</section>
+<section id="property-3-order" class="level2">
+<h2>Property 3: Order</h2>
+<p><br></p>
+<p>Yes, yes, but does <code>sort</code> actually <strong>sort</strong> ?</p>
+<p><br></p>
+<p>How to specify <strong>ordered lists</strong> ?</p>
+<p><br></p>
+</section>
+<section id="recall-refined-data-types" class="level2">
+<h2>Recall: Refined Data Types</h2>
+<p><br></p>
+</section>
+<section id="refined-data-ordered-pairs" class="level2">
+<h2>Refined Data: Ordered Pairs</h2>
+<p><br></p>
+<p>Lets write a type for <strong>ordered pairs</strong></p>
+<div id="program-pane-4" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-4" class="programbox">data OrdPair = OP {opX :: Int, opY :: Int}</div>
+</div>
+
+<p><br></p>
+<p><strong>Legal Values</strong> value of <code>opX &lt; opY</code></p>
+<pre class="spec"><code>okPair  = OP 2 4  -- legal
+badPair = OP 4 2  -- illegal
+</code></pre>
+</section>
+<section id="exercise-ordered-pairs" class="level2">
+<h2>Exercise: Ordered Pairs</h2>
+<p><br></p>
+<p><strong>Q:</strong> Can you refine the data type to <em>legal</em> values only?</p>
+<p><br></p>
+<div id="program-pane-5" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-5" class="programbox">{-@ data OrdPair = OP { opX :: Int, opY :: Int} @-}
+
+okPair  = OP 2 4  -- legal
+badPair = OP 4 2  -- illegal</div>
+</div>
+
+<p><br></p>
+</section>
+<section id="refined-data-csv-tables" class="level2">
+<h2>Refined Data: CSV Tables</h2>
+<p><br></p>
+<div id="program-pane-6" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-6" class="programbox">data Csv = Csv {
+   hdrs :: List String
+ , vals :: List (List Int)
+ }
+
+scores  = Csv {
+   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
+ , vals = (   1 :::       25  :::      88 ::: Emp)
+      ::: (   2 :::       27  :::      83 ::: Emp)
+      ::: (   3 :::       19  :::      93 ::: Emp)
+      ::: Emp
+ }</div>
+</div>
+
+</section>
+<section id="exercise-valid-csv-tables" class="level2">
+<h2>Exercise: Valid CSV Tables</h2>
+<p><strong>Q:</strong> Can you refine <code>Csv</code> so <code>scores'</code> is rejected?</p>
+<div id="program-pane-7" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-7" class="programbox">{-@ data Csv = Csv {
+      hdrs :: List String
+    , vals :: List (List Int)
+    }                                          @-}
+
+scores' = Csv {
+   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
+ , vals = (   1 :::       25  :::      88 ::: Emp)
+      ::: (   2 :::                    83 ::: Emp)
+      ::: (   3 :::       19  :::      93 ::: Emp)
+      ::: Emp
+ }</div>
+</div>
+
+</section>
+<section id="property-3-ordered-lists" class="level2">
+<h2>Property 3: Ordered Lists</h2>
+<p><br></p>
+<p><strong>Refine</strong> the <code>List</code> data type to enforce <strong>ordering</strong>!</p>
+<p><br></p>
+</section>
+<section id="lists" class="level2">
+<h2>Lists</h2>
+<p><br></p>
+<p>Lets <strong>define</strong> a type for ordered lists</p>
+<p><br></p>
+<div id="program-pane-8" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-8" class="programbox">data OList a =
+      OEmp
+    | (:<:) { oHd :: a
+            , oTl :: OList a }</div>
+</div>
+
+<p><br></p>
+</section>
+<section id="ordered-lists" class="level2">
+<h2>Ordered Lists</h2>
+<p><br></p>
+<p>Lets <strong>refine</strong> the type to enforce <strong>order</strong></p>
+<div id="program-pane-9" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-9" class="programbox">{-@ data OList a =
+      OEmp
+    | (:<:) { oHd :: a
+            , oTl :: OList {v:a | oHd <= v}} @-}</div>
+</div>
+
+<p><br></p>
+<p>Head <code>oHd</code> is <strong>smaller than every value</strong> <code>v</code> in tail <code>oTl</code></p>
+</section>
+<section id="ordered-lists-1" class="level2">
+<h2>Ordered Lists</h2>
+<p><br></p>
+<p><em>Illegal values unrepresentable</em></p>
+<p><br></p>
+<div id="program-pane-10" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-10" class="programbox">okList :: OList Int
+okList = 1 :<: 2 :<: 3 :<: OEmp
+
+badList :: OList Int
+badList = 1 :<: 3 :<: 2 :<: OEmp</div>
+</div>
+
+</section>
+<section id="exercise-insertion-sort" class="level2">
+<h2>Exercise: Insertion Sort</h2>
+<p><br></p>
+<p><strong>Q:</strong> Oops. There's a problem! Can you fix it?</p>
+<div id="program-pane-11" class="welleditor" style="background:#fff; position:relative">
+
+  <!-- Verify Source -->
+  <button class="btn btn-xs btn-link actbutton" type="button" style="z-index:1"
+          ng-show="isUnknown" ng-click="verifySource()">
+    <span class="glyphicon glyphicon-play"></span>
+  </button>
+ 
+  <div id="program-11" class="programbox">{-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
+sortO Emp      = OEmp
+sortO (x:::xs) = insertO x (sortO xs)
+
+{-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
+insertO x (y :<: ys)
+  | x <= y     = y :<: x :<: ys
+  | otherwise  = y :<: insertO x ys
+insertO x _    = x :<: OEmp</div>
+</div>
+
+</section>
+<section id="multiple-measures" class="level2">
+<h2>Multiple Measures</h2>
+</section>
+<section id="different-measures-for-list" class="level2">
+<h2>Different Measures for <code>List</code></h2>
+<p><br></p>
+<p>We just wrote <em>two</em> measures for <code>List</code></p>
+<p><br></p>
+<ul>
+<li><code>length :: List a -&gt; Nat</code></li>
+<li><code>elems  :: List a -&gt; Set a</code></li>
+</ul>
+</section>
+<section id="multiple-measures-are-conjoined" class="level2">
+<h2>Multiple Measures are Conjoined</h2>
+<p><br></p>
+<p>Data constructor refinements are <strong>conjoined</strong></p>
+<pre class="spec"><code>data List a where
+  Emp   :: {v:List a |  length v = 0
+                     &amp;&amp; elems v  = empty}
+  (:::) :: x:a
+        -&gt; xs:List a
+        -&gt; {v:List a |  length v = 1 + length xs
+                     &amp;&amp; elems v  = addElem x  xs }
+</code></pre>
+</section>
+<section id="recap" class="level2">
+<h2>Recap</h2>
+<p><br></p>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Refinements:</strong></td>
+<td style="text-align: left;">Types + Predicates</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Specification:</strong></td>
+<td style="text-align: left;">Refined Input/Output Types</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><strong>Verification:</strong></td>
+<td style="text-align: left;">SMT-based Predicate Subtyping</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>Measures:</strong></td>
+<td style="text-align: left;">Specify Properties of Data</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+</section>
+<section id="continue" class="level2">
+<h2>Continue</h2>
+<p><br></p>
+<p><strong>Other Case Studies</strong></p>
+<ul>
+<li><a href="http://ucsd-progsys.github.io/lh-workshop/05-case-study-eval.html">Well Scoped Evaluator</a></li>
+<li><a href="http://ucsd-progsys.github.io/lh-workshop/06-case-study-bytestring.html">Low-level Memory</a></li>
+</ul>
+<p><br></p>
+<p><strong>Continue:</strong> <a href="05-termination.html">[Part II : Proofs]</a></p>
+</section>
+
+</div>
+</div>
+
+<!--Site Meter
+<div class="hidden">
+  <script type="text/javascript" src="http://s23.sitemeter.com/js/counter.js?site=s23liquidtypes"></script>
+  <noscript>
+    <a href="http://s23.sitemeter.com/stats.asp?site=s23liquidtypes"
+      target="_top">
+      <img src="http://s23.sitemeter.com/meter.asp?site=s23liquidtypes"
+      alt="Site Meter" border="0"/></a>
+  </noscript>
+</div>
+-->
+
+
+
+
+<!-- JavaScript below! ============================================== -->
+
+  <script src="./js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/ace/mode-haskell.js"  type="text/javascript" charset="utf-8"></script>
+  <script src="./js/liquid/tooltip.js"></script>
+  <script src="./js/liquid/annot.js"></script>
+  <script src="./js/liquid/config.js"></script>
+  <script src="./js/liquid/slideshow.js"></script>
+  <script src="./js/liquid/liquid.js"></script>
+
+  <script type="text/javascript">
+    var queryServerURL = "http://goto.ucsd.edu:8090/" ;
+  </script>
+
+  <script>
+    onePageScroll(".main", {
+      sectionContainer: "section",
+      loop: true,
+      responsiveFallback: false
+    });
+ </script>
+
+
+
+</body>
+</html>
