@@ -9,6 +9,7 @@ on programming and proving with Refinement types with [LiquidHaskell][lh-github]
 
 For other versions, you may be interested in:
 
++ [Reflection](http://goto.ucsd.edu/~nvazou/presentations/penn17/01-index.html)
 + [25 mins](http://ucsd-progsys.github.io/intro-refinement-types/25/)
 + [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
 + [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)

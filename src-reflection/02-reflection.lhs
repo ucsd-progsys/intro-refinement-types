@@ -1,134 +1,185 @@
-Overview
-------------------------------------
+Refinement Reflection
+---------------------
+<br>
 
-We illustrate Liquid Haskell as a theorem prover. 
-It is a formed version of § 2 of 
-["Towards Complete Specification and Verification with SMT"](https://nikivazou.github.io/static/popl18/refinement-reflection.pdf).
+Reflect function definition into its result refined type.
 
-
-Prelude 
---------
-
-Overview is a Haskell module with Liquid Haskell annotations. 
-We enable the Liquid Haskell flags that allow 
-higher order reasoning
-(which is increasing the precision of verification and is by default off for efficiency).
-By default Liquid Haskell checks that all your functions are total. 
+<br>
 
 \begin{code}
-module Overview where
+module RefinementRelfection where
 {-@ LIQUID "--higherorder"    @-}
-
 import Language.Haskell.Liquid.ProofCombinators 
 \end{code}
 
-2.1 Refinement Types
+<br>
+
+Refinement Types
 ---------------------
 
-
-Propositions with SMT-automated proofs 
+Types + Logical Predicates
 
 \begin{code}
-{-@ type Plus_2_2 = {v:Proof | 2 + 2 = 4 } @-}
-
-plus_2_2 :: () -> Proof 
-{-@ plus_2_2 :: () -> Plus_2_2 @-}
-plus_2_2 _ = () 
-
-{-@ type Plus_comm = x:Int -> y:Int -> {v:Proof | x + y = y + x } @-}
-plus_comm :: Int -> Int -> Proof 
-plus_comm _ _ = () 
-
-{-@ type Int_up = n:Int -> (m::Int, {v:Proof | n < m}) @-}
-{-@ int_up :: Int_up @-}
-int_up :: Int -> (Int, Proof)
-int_up n = (n+1, ()) 
+{-@ type Nat = {v : Int | 0 <= v} @-}
 \end{code}
 
-*Note:*
-In the paper we defined `plus_2_2` 
-to take zero arguments, while here we give it a unit argument. 
-The reason is to keep verification local. 
-If we define a zero argument proof term, 
-the property it is proving will 
-be checked but then will enter in the assumption 
-environment that proves the rest of the module. 
-For example, the following property (commented out) 
-will get verified as unsafe
+Used for Specification
 
 \begin{code}
-{- 
-false     :: Proof 
-{-@ false :: {v:Proof | false} @-}
-false     = ()  
--}
+{-@ nats :: [Nat] @-}
+nats = [0, 1, 2]
 \end{code}
 
-but then verification of the rest of the module 
-will assume false. 
-This is sound, but inconvenient. 
-Thus, we follow the convention not to have proof terms without 
-arguments. 
 
+Specification & Termination & Verification 
+-------------------------------------------
 
-2.2 Refinement Reflection
---------------------------
-
-We define the function `fib` on natural numbers 
-and reflect it into logic. 
+We user refinement types for specification & termination 
 
 \begin{code}
-{-@ reflect fib @-}
 {-@ fib :: Nat -> Nat @-}
-fib :: Int -> Int
+
 fib i | i <= 1 = i 
 fib i = fib (i-1) + fib (i-2)
 \end{code}
 
-To prove that `fib 2 == 1` we need to call `fib` on 
-arguments, `0`, `1`, and `2`.
+
+Propositions
+------------
+
+Propositions are refined unit types
+
+\begin{spec} <div/>
+  type Proof = ()
+\end{spec}
+
+with SMT-automated proofs 
+
+\begin{code}
+{-@ plus_2_2 :: () -> {v:Proof | 2 + 2 = 4 } @-}
+plus_2_2 _   = () 
+\end{code}
+
+
+Universal & Existential Propositions
+-------------------------------------
+
+Function arguments for universals 
+\begin{code}
+{-@ plusComm :: x:Int -> y:Int 
+             -> {v:Proof | x + y = y + x } @-}
+plusComm _ _ = () 
+\end{code}
+
+<br>
+
+Dependent Pairs for existentials
+\begin{code}
+{-@ intUp :: n:Int -> (m::Int, {v:Proof | n < m}) @-}
+intUp n = (n+1, ()) 
+\end{code}
+
+
+Refinement Reflection
+------------------------------
+
+<br>
+
+How do we talk about user defined functions
+e.g., `fib`?
+
+<br>
+
+\begin{code}
+{-@ reflect fib @-}
+\end{code}
+
+
+Step 1: Definition
+--------------------------
+
+
+In the logic, `fib` is an unintepreted function 
+
+\begin{code}
+{-@ fibCongr :: x:Nat -> y:Nat 
+             -> {x == y => fib x == fib y} @-}
+fibCongr _ _ = ()
+\end{code}
+
+
+Step 2: Reflection
+-------------------
+
+The Haskell definition of `fib`
+is reflected into the type
+
+\begin{spec}
+  fib :: i:Nat -> { v:Nat | v = fib i && fibP i }
+\end{spec}
+
+where
+\begin{spec}
+  fibP i = if i <= 1 then fib i = i 
+           else fib i = fib (i-1) + fib (i-2)
+\end{spec}
+
+
+Step 3: Application 
+-------------------
+
+<br>
+To prove that `fib 2 == 1` we  call `fib` on `0`, `1`, and `2`.
+
 \begin{code}
 {-@ pf_fib2 :: { v:_ | fib 2 = 1 } @-}
-pf_fib2 :: (Int,Int,Int)
 pf_fib2 = let { t0 = fib 0; t1 = fib 1; t2 = fib 2 } 
           in (t0,t1,t2)
 \end{code}
 
-Unlike the paper, we return the results `t0`, `t1`, and `t2`.
-If we do not return these calls, ghc will optimize them away, 
-to Liquid Haskell will not see these calls. 
-Thus the `pf_fib2` version presented in the paper:
+<br> 
+This does not look good ...
 
-< {-@ pf_fib2Unsafe  :: () -> { v:_ | fib 2 = 1 } @-}
-< pf_fib2Unsafe      :: () -> Proof 
-< pf_fib2Unsafe _    = let { t0 = fib 0; t1 = fib 1; t2 = fib 2 } 
-<                      in ()
 
-In unsafe, since Liquid Haskell just sees 
+Proof structure is not important ...
+---------------------------------
 
-< pf_fib2Unsafe _ = ()
-
-Alternative, we could write 
+... as long as it has proper applications.
 
 \begin{code}
 {-@ pf_fib2' :: () -> {v:[Nat] | fib 2 = 1 } @-}
-pf_fib2'     :: () -> [Int]
 pf_fib2' _   =  [ fib 0 , fib 1 , fib 2 ]
 \end{code}
 
-2.3 Equational Proofs
+<br> 
+Still does not look good ...
+
+
+
+Equational Proofs
 ----------------------
 
-We structure proofs using 
-proof combinators from the imported 
-[ProofCombinators](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs) library, that comes with Liquid Haskell.
+[ProofCombinators](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs) library to structure proof terms.
 
-- **“Equation” Combinators**
-Using the `(==.)` equational operator, 
-the proof `fib2_1` is formatted as below. 
+\begin{spec} </div>
+data QED = QED 
+
+(***) :: a -> QED -> Proof 
+_ *** QED = () 
+\end{spec}
+
+\begin{spec}
+(==.) :: x:a -> a -> {v:a | v == x }
+\end{spec}
+
+
+Equational Proofs in Practice 
+----------------------
+
+We rewrite the `fib2` proof using [ProofCombinators](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs).
+
 
 \begin{code}
-fib2_1     :: () -> Proof 
 {-@ fib2_1 :: () -> { fib 2 = 1 } @-}
 fib2_1 _   
   =   fib 2 
@@ -137,47 +188,33 @@ fib2_1 _
   *** QED
 \end{code}
 
-*Note:* the operator `==.` takes two terms to be proved equal 
-and one *optional* proof argument. 
-You can check its definition at the library  
-[ProofCombinators](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs)
+<br> 
+Finally, looks like a proof! 
 
+“Because” Combinators
+---------------------------
 
-Also, the intermediate steps of the proofs are not checked. 
-For example, the following proof is verified, even if the intermediate equality 
-steps are not correct
+We extend `(==.)` to take an optional proof argument and ...
 
-\begin{code}
-fib2_1'     :: () -> Proof 
-{-@ fib2_1' :: () -> { fib 2 = 1 } @-}
-fib2_1' _   
-  =   fib 2 
-  ==. fib 1 + fib 0 
-  ==. fib 8 + fib 1 
-  ==. 1 
-  *** QED
-\end{code}
-
-- **“Because” Combinators**
-To prove `fib 3 = 2` we call the proof `fib2_1` as a lemma
-using the `(?)` combinator. 
+... define a dollar like `(?)` combinator. 
 
 \begin{code}
-fib3_2     :: () -> Proof
 {-@ fib3_2 :: () -> { fib 3 = 2 } @-}
 fib3_2 _ 
   =   fib 3 
   ==. fib 2 + fib 1 
-  ==. 2             ? (fib2_1 ())
+  ==. 2             ? fib2_1 ()
   *** QED
 \end{code}
 
-- **Arithmetic and Ordering**
+
+Arithmetic and Ordering
+------------------------
+
 Similarly, we use arithmetic proof combinators 
 for arithmetic proofs. 
 
 \begin{code}
-fibUp :: Int -> Proof 
 {-@ fibUp :: n:Nat -> {fib n <= fib (n + 1)} @-}
 fibUp 0 
   = fib 0  <. fib 1 *** QED
@@ -187,19 +224,31 @@ fibUp n
   = fib n <=. fib n + fib (n-1) ==. fib (n+1) *** QED
 \end{code}
 
-- **Induction & Higher Order Reasoning**
-Our technique reasons about higher order properties too, 
-that is, we can prove theorems over any function `f`. 
-For example, we prove that every function 
-`f` that increases locally 
-(i.e. `f z ≤ f (z+1)` for all `z`) 
-also increases globally (i.e. `f x ≤ f y` for all `x < y`)
 
+Induction
+------------------------------------
+
+Since `fib` increases locally, it is also monotonic. 
 \begin{code}
-fMono :: (Int -> Int)
-      -> (Int -> Proof)
-      -> Int -> Int
-      -> Proof
+{-@ fibMono :: x:Nat -> y:{Nat | x < y} 
+            ->  {fib x <= fib y} / [y] @-}
+fibMono x y
+  | x+1 == y 
+  = fib x <=. fib (x+1) ? fibUp x 
+          <=. fib y 
+          *** QED
+  | x+1 <  y 
+  = fib x <=. fib (y-1) ? fibMono x (y-1) 
+          <=. fib y     ? fibUp (y-1) 
+          *** QED
+\end{code}
+
+
+Higher Order Reasoning
+------------------------------------
+
+Every function that increases locally, is also monotonic. 
+\begin{code}
 {-@ fMono :: f:(Nat -> Int) 
           -> (n:Nat -> {f n <= f (n + 1)})
           -> x:Nat -> y:{Nat | x < y} 
@@ -215,65 +264,90 @@ fMono f up x y
         *** QED
 \end{code}
 
-We prove the theorem by induction on `y` as specified by the annotation 
-`/ [y]` which states that
-`y` is a well-founded termination metric that decreases at each recursive call.
 
-We can apply the general `fMono` theorem to prove that 
-`fib` increases monotonically:
+
+Instantiation of Higher Order Theorems
+------------------------------------
+
+We get back monotonicity of `fib` ...
+
+... by application of the general `fMono` theorem.
 
 \begin{code}
-fibMono :: Int -> Int -> Proof
-{-@ fibMono :: n:Nat -> m:{Nat |  n < m } -> { fib n <= fib m } @-}
-fibMono = fMono fib fibUp
+{-@ fibMono' :: n:Nat -> m:{Nat |  n < m } -> { fib n <= fib m } @-}
+fibMono' = fMono fib fibUp
 \end{code}
 
-
-2.4 Complete Verification: Automating Equational Reasoning
+What about automation?
 -----------------------------------------------------------
-Next, we use PLE to automate our proofs. 
-The local `automatic-instances` flag activates PLE 
-on functions that are marked with `automatic-instances`
+
+
+
+<br>
+
+**Observation:** 
+Since all reflected functions are terminating, ...
+
+... their unfoldings are also termining, 
+
+... so unfolding can be **predictably** automated. 
+
+
+Proof by Logical Evaluation (*PLE*)
+--------------------------------
+
+
+- **In theory:** Repeatedly unfold each function that statically unfolds.
+
+- **In practise:** 
 
 \begin{code}
 {-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}
-\end{code}
 
-With these flags (as thus PLE) activated, 
-the proof terms as simplified to only use 
-recursive calls and helper lemmata. 
-
-\begin{code}
-{-@ automatic-instances fib3_2_PLE @-}
-fib3_2_PLE     :: () -> Proof
-{-@ fib3_2_PLE :: () -> { fib 3 = 2 } @-}
+{- automatic-instances fib3_2_PLE @-}
+{- fib3_2_PLE :: () -> { fib 3 = 2 } @-}
 fib3_2_PLE _   =  ()
 \end{code}
 
 
-\begin{code}
-{-@ automatic-instances fibUpPLE @-}
-fibUpPLE :: Int -> Proof 
-{-@ fibUpPLE :: n:Nat -> {fib n <= fib (n + 1)} @-}
-fibUpPLE 0 = ()
-fibUpPLE 1 = ()
-fibUpPLE n = fibUp (n-1) &&& fibUp (n-2)
-\end{code}
+Summary: 
+---------
+
+<br>
+
+- Refinement Reflection and Proof by Logical Evaluation combined ...
+
+- ... allow for complete verification with SMT-automation!
+
+<br>
+
+- Case Study: [**MapReduce Equivalence**](03-laws-for-lists.html)
 
 
+
+
+
+Haskell Sigs
+--------------
+
 \begin{code}
-fMonoPLE :: (Int -> Int)
+fib3_2_PLE     :: () -> Proof
+nats      :: [Int]
+fib       :: Int -> Int
+fibCongr  :: Int -> Int -> Proof
+plus_2_2  :: () -> Proof 
+pf_fib2   :: (Int,Int,Int)
+pf_fib2'  :: () -> [Int]
+fib2_1     :: () -> Proof 
+intUp     :: Int -> (Int, Proof)
+plusComm  :: Int -> Int -> Proof 
+fib3_2     :: () -> Proof
+fibUp :: Int -> Proof 
+fMono :: (Int -> Int)
       -> (Int -> Proof)
       -> Int -> Int
       -> Proof
-{-@ fMonoPLE :: f:(Nat -> Int) 
-          -> (n:Nat -> {f n <= f (n + 1)})
-          -> x:Nat -> y:{Nat | x < y} 
-          ->  {f x <= f y} / [y] @-}
-fMonoPLE f up x y
-  | x+1 == y 
-  = up x 
-  | x+1 <  y 
-  =   fMonoPLE f up x (y-1) 
-  &&& up (y-1) 
+fibMono' :: Int -> Int -> Proof
+fibMono :: Int -> Int -> Proof
 \end{code}
+

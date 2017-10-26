@@ -7,7 +7,6 @@
 {-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--higherorder"    @-}
 {-@ LIQUID "--exactdc"        @-}
-{-@ LIQUID "--automatic-instances=liquidinstanceslocal" @-}
 
 module MapReduce where
 
@@ -232,43 +231,20 @@ Distributivity of `sum`
 sumDistr xs ys = undefined
 \end{code}
 
-Recap
------
 
-<br>
-<br>
-
--  **Refinement Reflection:** Allow Haskell functions in Logic
--  <div class="fragment">**Case Study:**</div> Prove Program Equivalence
-
-<br>
-<br>
-
-Prove crucial properties **for** Haskell **in** Haskell!
+Summary: 
+---------
 
 <br>
 
-where Haskell = a general purpose programming language.
+- Refinement Reflection and Proof by Logical Evaluation combined ...
 
-
-
-Recap
------
+- ... allow for complete verification with SMT-automation!
 
 <br>
 
-|                     |                                |
-|--------------------:|:-------------------------------|
-| **Refinements:**    | Types + Predicates             |
-| **Specification:**  | Refined Input/Output Types     |
-| **Verification:**   | SMT-based Predicate Subtyping  |
-| **Measures:**       | Specify Properties of Data     |
-| **Termination:**    | Well-founded Metrics           |
-| **Reflection:**     | Haskell functions in Logic     |
-
-<br>
-
-[Evaluation & Conclusion](01-index.html?slide=27)
+- Case Study: [**MapReduce Equivalence**](03-map-decude.html)
+- Case Study: [**Natural Deduction**](04-natural-deduction.html)
 
 
 

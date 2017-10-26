@@ -77,7 +77,7 @@ Predictable & SMT-automated Verification
 <br>
 
 
-**GOAL:** Alternative representation of user-defined functions...
+**GOAL:** Alternative representation of user-defined functions ...
 
 
 ... for SMT-decidable (*i.e.,* **unpredictable**) verification.
@@ -106,7 +106,7 @@ Outline
 How far can we go?
 
 - [**1. Refinement Reflection: Fibonacci**](02-reflection.html)
-- [**2. Case Study: Laws for Lists**](03-laws-for-lists.html)
+- [**2. Case Study: MapReduce Equivalence**](03-map-reduce.html)
 - [**3. Encoding Natural Deduction**](04-natural-deduction.html)
 
 
@@ -130,7 +130,7 @@ Conclusion
 
 
 
-Thanks you! 
+Thank you! 
 -----------
 
 <br>
