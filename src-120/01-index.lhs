@@ -401,7 +401,7 @@ Evaluation
 ----------
 
 
-<img src="img/benchmarks.png" height=250px>
+<img src="img/code-spec-indiv.png" height=250px>
 
 + **Specifications:** 1 / 10 LOC  (*ok*)
 
