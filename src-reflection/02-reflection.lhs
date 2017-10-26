@@ -99,7 +99,7 @@ Step 1: Definition
 --------------------------
 
 
-In the logic, `fib` is an unintepreted function 
+In the logic, `fib` is an uninterpreted function 
 
 \begin{code}
 {-@ fibCongr :: x:Nat -> y:Nat 

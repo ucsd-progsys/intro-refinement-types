@@ -21,7 +21,7 @@ dummy = 7
 <br>
 
 <h4 style="border-bottom:none"><i>Niki Vazou 
-<br> (Univerisyt of Maryland)</i></h4>
+<br> (University of Maryland)</i></h4>
 
 </p>
 <br>
@@ -30,7 +30,7 @@ dummy = 7
 
 </section>
 
-Two Tends in Program Verification  
+Two Trends in Program Verification  
 -----------------
 
 <br>
