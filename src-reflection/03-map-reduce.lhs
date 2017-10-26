@@ -243,7 +243,7 @@ Summary:
 
 <br>
 
-- Case Study: [**MapReduce Equivalence**](03-map-decude.html)
+- Case Study: [**MapReduce Equivalence**](03-map-reduce.html)
 - Case Study: [**Natural Deduction**](04-natural-deduction.html)
 
 

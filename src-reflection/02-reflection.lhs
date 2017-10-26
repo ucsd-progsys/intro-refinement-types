@@ -321,7 +321,7 @@ Summary:
 
 <br>
 
-- Case Study: [**MapReduce Equivalence**](03-laws-for-lists.html)
+- Case Study: [**MapReduce Equivalence**](03-map-reduce.html)
 
 
 
