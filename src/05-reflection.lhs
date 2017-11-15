@@ -9,256 +9,223 @@
 
 -- Hidden code
 {-@ LIQUID "--higherorder"     @-}
+{-@ LIQUID "--automatic-instances=liquidinstances" @-}
 
 module RefinementReflection where
 import Language.Haskell.Liquid.ProofCombinators
 
-fib :: Int -> Int
-propPlusAccum :: Int -> Int -> Proof
-propOnePlusOne :: () -> Proof
-onePlusOne :: () -> Proof
-fibOne :: () -> Proof
-fibTwo :: () -> Proof
-fibEq  :: () -> Proof
-fibCongr :: Int -> Int -> Proof
-fibUp :: Int -> Proof
-fibThree :: () -> Proof
-fMono :: (Int -> Int)
-      -> (Int -> Proof)
-      -> Int
-      -> Int
-      -> Proof
-fibMono :: Int -> Int -> Proof
-fibMonotonic :: Int -> Int -> Proof
-
+sillyProof :: Int -> Int -> Proof
 \end{code}
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
+Types as Theorems, Programs as Proofs
+-------------------------------------
 
-
-
-Refinement Reflection
----------------------
-
-<br>
-<br>
-Allow terminating **Haskell** functions in refinements!
-
-
-Theorems about Haskell functions
---------------------------------
-
-<br>
-
-e.g. Parallelized Function Equivalent to Original
-
-<br>
-
-
-\begin{spec}
-forall xs. sum xs == parallelSum xs
-\end{spec}
-
-<div class="hidden">
-
-<br>
-<p align="center">
-A. Farmer *et al*: Reasoning with the HERMIT
-<br><br>
-<img src="http://goto.ucsd.edu/~nvazou/images/hermit_laws.png" alt="Hermit Laws" style="width: 350px;" align="middle" />
+<p align=center>
+<img src="img/escher-drawing-hands.gif" height=300px/>
 </p>
-</div>
 
+**Classic Idea**
 
-Theorems about Haskell functions
---------------------------------
-
-<br>
-<br>
-<br>
-Can we express the above theorems in Liquid Haskell?
-<br>
-<br>
-
-Express & Prove Theorems **in** Haskell ...
-
-... **for** Haskell functions.
-
-
+[Curry-Howard][curryhoward], [Propositions As Types][wadler15]
 
 Types As Theorems
 -----------------
 
+<br>
 
-Refined Types are **theorems**
+The Refined _Type_ ...
 
-and
+$$\reft{v}{b}{P}$$
 
-Haskell Functions are **proofs**.
+... corresponds to the _theorem_
+
+$$\mathit{P}$$
+
+
+
+Types as Theorems: Example
+--------------------------
+
+<br>
+
+The Refined _Type_ ...
 
 \begin{code}
-{-@ onePlusOne :: () -> {v:() | 1 + 1 == 2 } @-}
-onePlusOne _ = ()
+{-@ type OnePlusOneEqualsTwo = {v:() | 1 + 1 = 2} @-}
 \end{code}
 
-Make the theorems pretty!
--------------------------
+... corresponds to the _theorem_
+
+$$1 + 1 = 2$$
+
+Programs As Proofs: Example
+---------------------------
 
 <br>
 
-[`ProofCombinators`](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs) comes with Liquid Haskell
-and allows for pretty proofs!
+The _program_ ...
 
-<br>
 \begin{code}
--- import Language.Haskell.Liquid.ProofCombinators
-
-{-@ propOnePlusOne :: () ->  {v: Proof | 1 + 1 == 2} @-}
-propOnePlusOne _ = trivial
+{-@ easyProof :: OnePlusOneEqualsTwo @-}
+easyProof = ()
 \end{code}
 
+... corresponds to a _proof_ that
 
-Make the theorems even prettier!
---------------------------------
+$$1 + 1 = 2$$
+
+Types As Theorems
+-----------------
+
+<br>
+
+The Refined _Type_ ...
+
+$$\bindx{n}{\Nat} \rightarrow \reft{v}{b}{P(n)}$$
+
+... corresponds to the _theorem_
+
+$$\forall n \in \Nat.\ P(n)$$
+
+Types as Theorems: Example
+--------------------------
 
 <br>
 
-[`ProofCombinators`](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs) comes with Liquid Haskell
-and allows for pretty proofs!
+The Refined _Type_ ...
 
-<br>
 \begin{code}
-{-@ propOnePlusOne' :: _ ->  { 1 + 1 == 2 } @-}
-propOnePlusOne' _ = trivial *** QED
+{-@ type PlusCommutes = n:Int -> m:Int -> { n + m = m + n } @-}
 \end{code}
 
+... corresponds to the _theorem_
 
-Use more SMT knowledge
-----------------------
+$$\forall n, m.\ n + m = m + n$$
 
-<br>
-
-[`ProofCombinators`](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs) comes with Liquid Haskell
-and allows for pretty proofs!
+Programs As Proofs: Example
+---------------------------
 
 <br>
+
+The _program_ ...
+
 \begin{code}
-{-@ propPlusAccum :: x:Int -> y:Int -> { x + y == y + x } @-}
-propPlusAccum _ _ = trivial *** QED
+{-@ sillyProof :: PlusCommutes @-}
+sillyProof n m = ()
 \end{code}
 
+... corresponds to a _proof_ that
 
+$$\forall n, m.\ n + m = m + n$$
 
-Theorems about Haskell functions
---------------------------------
+Those Proofs were Boring
+------------------------
 
 <br>
-<br>
-<br>
-Can we express the above theorems in Liquid Haskell?
-<br>
+
+Simple Arithmetic, automatically proved by SMT Solver
+
+
+Those Proofs were Boring
+------------------------
+
 <br>
 
-Express & Prove Theorems **in** Haskell ...
+Simple Arithmetic, automatically proved by SMT Solver
 
-... **for** Haskell functions.
+**How about proofs about user-defined functions?**
+
+Theorems about Functions
+------------------------
+
+<br>
+
+\begin{code}
+{-@ reflect sum @-}
+sum :: Int -> Int
+sum n
+  | n <= 0    = 0
+  | otherwise = n + sum (n - 1)
+\end{code}
+
+<br>
+
+**How can we prove the the theorems**
+
+$\mathit{sum}(0) = 0$, $\mathit{sum}(1) = 1$, $\mathit{sum}(2) = 3$, $\mathit{sum}(3) = 6$
+
 
 Refinement Reflection
 ---------------------
 
-**Reflect** `fib` in the logic.
+<br>
+
+The annotation
 
 \begin{code}
-{-@ reflect fib @-}
-{-@ fib :: i:Nat -> Nat @-}
-fib i | i == 0    = 0
-      | i == 1    = 1
-      | otherwise = fib (i-1) + fib (i-2)
+{-@ reflect sum @-}
 \end{code}
 
-<br>
+tells LiquidHaskell to type the function as:
 
-(Need to prove `fib` terminates...)
-
-`fib` is an uninterpreted function
-----------------------------------
-
-<br>
-For which logic only knows the congruence axiom...
-<br>
-
-\begin{code}
-{-@ fibCongr :: i:Nat -> j:Nat -> {i == j => fib i == fib j} @-}
-fibCongr _ _ = trivial
-\end{code}
-
-<br>
-
-... and nothing else
-
-<br>
-\begin{code}
-{-@ fibOne :: () ->  {fib 1 == 1 } @-}
-fibOne _ = trivial
-\end{code}
 
 Reflect Function into Output Type
 ---------------------------------
 
-<br>
 The type of `fib` connects logic & Haskell implementation
+
 <br>
 
 \begin{spec}
-fib :: i:Nat
-    -> {v:Nat |  v == fib i
-              && v == if i == 0 then 0 else
-                      if i == 1 then 1 else
-                      fib (i-1) + fib (i-2)
-       }
+sum :: n:Int -> {v:Int | v = (if n == 0 then 0 else n + sum (n-1)) }
 \end{spec}
 
 <br>
 
-**Calling** `fib i` reveals its implementation in the logic!
+**Key Idea**
+
+Calling `sum n` _reveals implementation_ at `n` to refinement logic!
 
 Reflection at Result Type
 -------------------------
 
 <br>
 \begin{code}
-{-@ fibEq :: () ->  {fib 1 == 1 } @-}
-fibEq _ = let f1 = fib 1 -- f1:: {f1 == fib 1 && f1 == 1}
-          in [f1] *** QED
+{-@ sum3 :: _ -> { sum 3 == 6 } @-}
+sum3 _ = let s0 = sum 0  -- s0 :: {s0 = sum 0 && s0 = 0}
+             s1 = sum 1  -- s1 :: {s1 = sum 1 && s1 = 1 + sum 0}
+             s2 = sum 2  -- s2 :: {s2 = sum 2 && s2 = 1 + sum 1}
+             s3 = sum 3  -- s3 :: {s3 = sum 3 && s3 = 1 + sum 2}
+         in
+         [s0,s1,s2,s3] *** QED  -- SMT solver connects the dots.
 \end{code}
 
 <br>
 
-**Exercise:** Lets prove that `fib 2 == 1`.
+**Key Idea**
 
-Structuring Proofs
-------------------
+Calling `sum n` _reveals implementation_ at `n` to refinement logic!
+
+
+Structuring Proofs as Calculations
+----------------------------------
 
 <br>
-<br>
+
 Using combinators from [`ProofCombinators`](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs)!
 
 <br>
-<br>
 \begin{code}
-{-@ fibTwo :: _ -> { fib 2 == 1 } @-}
-fibTwo _
-  =   fib 2
-  ==. fib 1 + fib 0
-  *** QED
+{-@ sum3' :: _ -> { sum 3 == 6 } @-}
+sum3' _ =   sum 3
+        ==. 3 + sum 2
+        ==. 3 + 2 + sum 1
+        ==. 3 + 2 + 1 + sum 0
+        ==. 6
+        *** QED
 \end{code}
-
 
 
 Reusing Proofs: The "because" operator
@@ -400,3 +367,6 @@ Recap
 <div class="fragment">
 **Next:** [Structural Induction](07-structural-induction.html): Program Properties about data types!
 </div>
+
+[curryhoward]: https://en.wikipedia.org/wiki/Curry–Howard_correspondence
+[wadler]: http://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf

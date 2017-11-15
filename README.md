@@ -92,46 +92,6 @@ Outline [45]
 + 05-reflection    [7]
 + 06-concl         [5]
 
-
-Avoiding Infinite Loops
------------
-
-* Another fun application: termination?
-
-    dog-chasing-tail.gif
-
-- sum
-- sumTR  [show:     metric]
-- range  [exercise: metric]
-- ack
-- map OR reverse/reverseTR
-- merge
-- mergeSort - bug?
-
-
-sort :: Ord a => [a] -> [a]
-sort []   = []
-sort [x]  = [x]
-sort xs   = merge (sort xs1) (sort xs2)
-  where
-    (xs1, xs2) = split xs
-
-{-@ merge :: Ord a => xs:[a] -> ys:[a] -> [a] / [(len xs + len ys)] @-}
-merge :: Ord a => [a] -> [a] ->  [a]
-merge xs []         = xs
-merge [] ys         = ys
-merge (x:xs) (y:ys)
-  | x <= y          = x : merge xs (y:ys)
-  | otherwise       = y : merge (x:xs) ys
-
-{-@ split :: xs:[a] -> Halves a xs @-}
-split :: [a] -> ([a], [a])
-split (x:(y:zs)) = (x:xs, y:ys) where (xs, ys) = split zs
-split xs         = (xs, [])
-
-{-@ type Halves a Xs = {v: (Half a Xs, Half a Xs) | len (fst v) + len (snd v) == len Xs} @-}
-{-@ type Half a Xs  = {v:[a] | (len v > 1) => (len v < len Xs)}                          @-}
-
 Proving Theorems
 ----------------
 
