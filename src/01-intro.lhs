@@ -235,18 +235,6 @@ Outline
 
 [Refinements by Example](03-examples.html)
 
-Outline
--------
-
-<br>
-
-[Motivation](01-intro.html)
-
-[Refinements 101](02-refinements.html)
-
-[Refinements by Example](03-examples.html)
-
-[Abstracting Over Refinements](04-abstracting.html)
 
 Outline
 -------
@@ -259,6 +247,37 @@ Outline
 
 [Refinements by Example](03-examples.html)
 
-[Abstracting Over Refinements](04-abstracting.html)
+[How to Avoid Infinite Loops](04-termination.html)
 
-[Current Status & Future Directions](05-concl.html)
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[How to Avoid Infinite Loops](04-termination.html)
+
+[Types as Theorems, Programs as Proofs](05-reflection.html)
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[How to Avoid Infinite Loops](04-termination.html)
+
+[Types as Theorems, Programs as Proofs](05-reflection.html)
+
+[Current Status & Future Directions](06-concl.html)

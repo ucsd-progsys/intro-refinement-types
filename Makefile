@@ -73,6 +73,11 @@ html: indexhtml $(htmlObjects)
 	cp src/*.html               $(SITE)/
 	cp -r $(IMG)                $(SITE)/
 	cp -r $(CSS)                $(SITE)/
+
+client: indexhtml $(htmlObjects)
+	cp src/*.html               $(SITE)/
+	cp -r $(IMG)                $(SITE)/
+	cp -r $(CSS)                $(SITE)/
 	cp -r $(LIQUIDCLIENT)/fonts $(SITE)/
 	cp -r $(LIQUIDCLIENT)/css   $(SITE)/
 	cp -r $(LIQUIDCLIENT)/js    $(SITE)/

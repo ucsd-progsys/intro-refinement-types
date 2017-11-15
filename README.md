@@ -72,7 +72,7 @@ Insert Sort
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
 
-Outline
+Outline [25]
 -------
 
 + 01-intro         [3]
@@ -80,3 +80,127 @@ Outline
 + 03-examples      [9]
 + 04-abstracting   [4]
 + 05-concl         [3]
+
+
+Outline [45]
+-------
+
++ 01-intro         [5]
++ 02-refinements   [8]
++ 03-examples      [10]
++ 04-termination   [7]
++ 05-reflection    [7]
++ 06-concl         [5]
+
+
+Avoiding Infinite Loops
+-----------
+
+* Another fun application: termination?
+
+    dog-chasing-tail.gif
+
+- sum
+- sumTR  [show:     metric]
+- range  [exercise: metric]
+- ack
+- map OR reverse/reverseTR
+- merge
+- mergeSort - bug?
+
+
+sort :: Ord a => [a] -> [a]
+sort []   = []
+sort [x]  = [x]
+sort xs   = merge (sort xs1) (sort xs2)
+  where
+    (xs1, xs2) = split xs
+
+{-@ merge :: Ord a => xs:[a] -> ys:[a] -> [a] / [(len xs + len ys)] @-}
+merge :: Ord a => [a] -> [a] ->  [a]
+merge xs []         = xs
+merge [] ys         = ys
+merge (x:xs) (y:ys)
+  | x <= y          = x : merge xs (y:ys)
+  | otherwise       = y : merge (x:xs) ys
+
+{-@ split :: xs:[a] -> Halves a xs @-}
+split :: [a] -> ([a], [a])
+split (x:(y:zs)) = (x:xs, y:ys) where (xs, ys) = split zs
+split xs         = (xs, [])
+
+{-@ type Halves a Xs = {v: (Half a Xs, Half a Xs) | len (fst v) + len (snd v) == len Xs} @-}
+{-@ type Half a Xs  = {v:[a] | (len v > 1) => (len v < len Xs)}                          @-}
+
+Proving Theorems
+----------------
+
+* Reflection
+
+  { v:Proof | sum 3 ==  6 }
+  { v:Proof | sum 4 == 10 }
+  { v:Proof | sum 5 == 15 }
+
+  { sum 3 ==  6 }
+  { sum 4 == 10 }
+  { sum 5 == 15 }
+
+  Need the body blah blah?
+
+* Proposition are Types
+
+  Proposition
+  Forall n in Nat. sum n = (n * (n + 1) / 2)
+
+  Type
+  n:Nat -> { sum n = sum n = (n * (n + 1) / 2) }
+
+* Proofs      are Programs.
+
+  sumTo // full-proof
+
+  sumTo // PLE
+
+
+
+```
+{-@ LIQUID "--higherorder"                         @-}
+{-@ LIQUID "--automatic-instances=liquidinstances" @-}
+
+module Blank where
+
+{- prop :: x:Int -> y:Int -> {v:Int | v = x * y} @-}
+-- prop :: Int -> Int -> Int
+-- prop x y = y * x
+
+{- assume (*) :: (Num a) => x:a -> y:a -> {v:a | v = x * y} @-}
+
+{-@ reflect sumTo @-}
+{-@ sumTo :: Nat -> Nat @-}
+sumTo :: Int -> Int
+sumTo n
+  | n == 0    = 0
+  | otherwise = n + sumTo (n-1)
+
+{-@ thm :: n:Nat -> { 2 * sumTo n == n * (n + 1) } @-}
+thm :: Int -> ()
+thm 0 = ()
+thm n = thm (n - 1)
+
+{-@ reflect fac        @-}
+{-@ fac :: Nat  -> Nat @-}
+fac :: Int -> Int
+fac n
+  | n == 0    = 1
+  | otherwise = n * fac (n-1)
+
+{-@ reflect facTR       @-}
+{-@ facTR :: Nat -> Nat @-}
+facTR :: Int -> Int
+facTr n
+
+{-@ prop :: _ -> { fac 5 == 120 } @-}
+prop :: a -> ()
+prop _ = ()
+
+```
