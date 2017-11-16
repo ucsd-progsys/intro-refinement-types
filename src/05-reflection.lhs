@@ -13,9 +13,12 @@
 
 module Reflection where
 import Language.Haskell.Liquid.ProofCombinators
+import Prelude hiding (sum, (++))
 
 sillyProof :: Int -> Int -> Proof
 appendPf :: [a] -> [a] -> [a] -> ()
+
+by = (?)
 
 {-
 thm :: [a] -> [a] -> [a] -> ()
@@ -40,12 +43,10 @@ Types as Theorems, Programs as Proofs
 -------------------------------------
 
 <p align=center>
-<img src="img/escher-drawing-hands.gif" height=300px/>
+<img src="img/escher-drawing-hands.jpg" height=300px/>
 </p>
 
-**Classic Idea**
-
-[Curry-Howard][curryhoward], [Propositions As Types][wadler15]
+**Classic Idea** [Curry-Howard][curryhoward], [Propositions As Types][wadler]
 
 Types As Theorems
 -----------------
@@ -56,7 +57,7 @@ The Refined _Type_ ...
 
 $$\reft{v}{b}{P}$$
 
-... corresponds to the _theorem_
+... corresponds to the _Theorem_
 
 $$\mathit{P}$$
 
@@ -73,7 +74,7 @@ The Refined _Type_ ...
 {-@ type OnePlusOneEqualsTwo = {v:() | 1 + 1 = 2} @-}
 \end{code}
 
-... corresponds to the _theorem_
+... corresponds to the _Theorem_
 
 $$1 + 1 = 2$$
 
@@ -82,14 +83,14 @@ Programs As Proofs: Example
 
 <br>
 
-The _program_ ...
+The _Program_ ...
 
 \begin{code}
 {-@ easyProof :: OnePlusOneEqualsTwo @-}
 easyProof = ()
 \end{code}
 
-... corresponds to a _proof_ that
+... corresponds to a _Proof_ that
 
 $$1 + 1 = 2$$
 
@@ -102,7 +103,7 @@ The Refined _Type_ ...
 
 $$\bindx{n}{\Nat} \rightarrow \reft{v}{b}{P(n)}$$
 
-... corresponds to the _theorem_
+... corresponds to the _Theorem_
 
 $$\forall n \in \Nat.\ P(n)$$
 
@@ -117,7 +118,7 @@ The Refined _Type_ ...
 {-@ type PlusCommutes = n:Int -> m:Int -> { n + m = m + n } @-}
 \end{code}
 
-... corresponds to the _theorem_
+... corresponds to the _Theorem_
 
 $$\forall n, m.\ n + m = m + n$$
 
@@ -126,14 +127,14 @@ Programs As Proofs: Example
 
 <br>
 
-The _program_ ...
+The _Program_ ...
 
 \begin{code}
 {-@ sillyProof :: PlusCommutes @-}
 sillyProof n m = ()
 \end{code}
 
-... corresponds to a _proof_ that
+... corresponds to a _Proof_ that
 
 $$\forall n, m.\ n + m = m + n$$
 
@@ -143,10 +144,14 @@ Types as Theorems, Programs as Proofs
 
 <br>
 
+<p align=center>
+
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
 | Types       | are | Theorems    |
 | Programs    | are | Proofs      |
+
+</p>
 
 Those Proofs were Boring
 ------------------------
@@ -168,8 +173,6 @@ Simple Arithmetic, automatically proved by SMT Solver
 Theorems about Functions
 ------------------------
 
-<br>
-
 \begin{code}
 {-@ reflect sum @-}
 sum :: Int -> Int
@@ -178,17 +181,17 @@ sum n
   | otherwise = n + sum (n - 1)
 \end{code}
 
-<br>
-
 **How can we prove the the theorems**
 
-$\mathit{sum}(0) = 0$, $\mathit{sum}(1) = 1$, $\mathit{sum}(2) = 3$, $\mathit{sum}(3) = 6$
+$\mathit{sum}(1) = 1$,
+
+$\mathit{sum}(2) = 3$,
+
+$\mathit{sum}(3) = 6$.
 
 
 Refinement Reflection
 ---------------------
-
-<br>
 
 The annotation
 
@@ -198,23 +201,33 @@ The annotation
 
 tells LiquidHaskell to type the function as:
 
+\begin{spec}
+sum :: n:Int -> {v:Int | v = (if n == 0 then 0 else n + sum (n-1)) }
+\end{spec}
+
 
 Reflect Function into Output Type
 ---------------------------------
 
-The type of `fib` connects logic & Haskell implementation
+<br>
+
+The type of `sum` connects _implementation_ and _specification_
+
+
+Reflect Function into Output Type
+---------------------------------
 
 <br>
 
-\begin{spec}
-sum :: n:Int -> {v:Int | v = (if n == 0 then 0 else n + sum (n-1)) }
-\end{spec}
+The type of `sum` connects _implementation_ and _specification_
 
 <br>
 
 **Key Idea**
 
 Calling `sum n` _reveals implementation_ at `n` to refinement logic!
+
+
 
 Reflection at Result Type
 -------------------------
@@ -227,10 +240,8 @@ sum3 _ = let s0 = sum 0  -- s0 :: {s0 = sum 0 && s0 = 0}
              s2 = sum 2  -- s2 :: {s2 = sum 2 && s2 = 1 + sum 1}
              s3 = sum 3  -- s3 :: {s3 = sum 3 && s3 = 1 + sum 2}
          in
-         [s0,s1,s2,s3] *** QED  -- SMT solver connects the dots.
+             [s0, s1, s2, s3] *** QED  -- SMT  connects the dots.
 \end{code}
-
-<br>
 
 **Key Idea**
 
@@ -261,10 +272,14 @@ Types as Theorems, Programs as Proofs
 
 <br>
 
+<p align=center>
+
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
 | Types       | are | Theorems    |
 | Programs    | are | Proofs      |
+
+</p>
 
 Reusing Proofs: Functions as Lemmas
 -----------------------------------
@@ -281,7 +296,7 @@ Reuse by _calling_ the function
 {-@ sum4 :: _ -> { sum 4 = 10 } @-}
 sum4 _ =  sum 4
       ==. 4 + sum 3
-      ==. 4 + 6     `by` (sum3 ())
+      ==. 4 + 6       ? (sum3 ())
       ==. 10
       *** QED
 \end{code}
@@ -292,12 +307,15 @@ Types as Theorems, Programs as Proofs
 
 <br>
 
+<p align=center>
+
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
 | Types       | are | Theorems    |
 | Programs    | are | Proofs      |
 | Functions   | are | Lemmas      |
 
+</p>
 
 Proof by Logical Evaluation
 ---------------------------
@@ -361,7 +379,8 @@ sumPf 0 =   2 * (sum 0)
         *** QED
 sumPf n =   2 * (sum n)
         ==. 2 * (n + sum (n-1))
-        ==. 2 * (n + ((n - 1) * n)) `by` sumPf (n-1)
+        ==. 2 * (n + ((n - 1) * n))
+            ? sumPf (n-1)
         ==. n * (n + 1)
         *** QED
 \end{code}
@@ -372,6 +391,8 @@ sumPf n =   2 * (sum n)
 Types as Theorems, Programs as Proofs
 -------------------------------------
 
+<p align=center>
+
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
 | Types       | are | Theorems    |
@@ -379,9 +400,12 @@ Types as Theorems, Programs as Proofs
 | Functions   | are | Lemmas      |
 | Branches    | are | Case-Splits |
 
+</p>
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
+
+<p align=center>
 
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
@@ -391,10 +415,10 @@ Types as Theorems, Programs as Proofs
 | Branches    | are | Case-Splits |
 | Recursion   | is  | Induction   |
 
+</p>
+
 Theorems about Data
 -------------------
-
-<br>
 
 Recall the list appending function:
 
@@ -409,8 +433,9 @@ Recall the list appending function:
 Lets prove that the operator is _associative_
 
 \begin{code}
-type AppendAssoc a = xs:[a] -> ys:[a] -> zs:[a]
+{-@ type AppendAssoc a = xs:[a] -> ys:[a] -> zs:[a]
                    -> { (xs ++ ys) ++ zs = xs ++ (ys ++ zs) }
+  @-}
 \end{code}
 
 Theorems about Data: Associativity of `append`
@@ -421,7 +446,7 @@ Theorems about Data: Associativity of `append`
 Lets write fill in a _calculational_ proof:
 
 \begin{code}
-appendPf :: AppendAssoc a
+{-@ appendPf :: AppendAssoc a @-}
 appendPf xs ys zs = () -- Q: Can you help me fill this in?
 \end{code}
 
@@ -459,6 +484,8 @@ If `op` is associative then `reduce op xs == parallelReduce op xs`
 Types as Theorems, Programs as Proofs
 -------------------------------------
 
+<p align=center>
+
 | **Code**    |     | **Math**    |
 |------------:|:---:|:------------|
 | Types       | are | Theorems    |
@@ -467,6 +494,7 @@ Types as Theorems, Programs as Proofs
 | Branches    | are | Case-Splits |
 | Recursion   | is  | Induction   |
 
+</p>
 
 
 Outline

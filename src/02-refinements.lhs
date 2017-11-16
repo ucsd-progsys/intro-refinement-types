@@ -362,3 +362,25 @@ Dependent Application + Predicate Subtyping
 <div class="mybreak"><br></div>
 
 **[[Eliminates boring proofs & Makes Verification Practical]](03-examples.html)**
+
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)

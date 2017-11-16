@@ -9,6 +9,7 @@ module Examples
        , sum''
        , average
        -- , insertSort
+       , length
        )
        where
 
@@ -93,7 +94,7 @@ What does a function **require** for correct execution?
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ at :: v:Vector a -> {i:Nat| i < vlen v} -> a @-}
+{-@ at :: vec:Vector a -> {i:Nat| i < vlen vec} -> a @-}
 \end{code}
 
 <div class="mybreak"><br></div>
@@ -510,5 +511,30 @@ Collections & HOFs
 
 Refinements for Datatypes
 
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+
+Outline
+-------
+
+<br>
+
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[How to Avoid Infinite Loops](04-termination.html)
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602
