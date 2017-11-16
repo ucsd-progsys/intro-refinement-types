@@ -2,19 +2,36 @@
 
 \begin{code}
 {-# LANGUAGE TupleSections    #-}
-{-@ LIQUID "--no-warnings"    @-}
-{-@ LIQUID "--short-names"    @-}
-{-@ LIQUID "--diff"           @-}
-
-
--- Hidden code
-{-@ LIQUID "--higherorder"     @-}
+{-@ LIQUID "--no-warnings"      @-}
+{-@ LIQUID "--short-names"      @-}
+{-@ LIQUID "--diff"             @-}
+{-@ LIQUID "--exact-data-cons"  @-}
+{-@ LIQUID "--higherorder"      @-}
 {-@ LIQUID "--automatic-instances=liquidinstances" @-}
 
-module RefinementReflection where
+-- Hidden code
+
+module Reflection where
 import Language.Haskell.Liquid.ProofCombinators
 
 sillyProof :: Int -> Int -> Proof
+appendPf :: [a] -> [a] -> [a] -> ()
+
+{-
+thm :: [a] -> [a] -> [a] -> ()
+
+thm [] ys zs     = ([] ++ ys) ++ zs
+                ==. ys ++ zs
+                ==. [] ++ (ys ++ zs)
+                *** QED
+thm (x:xs) ys zs = ((x:xs) ++ ys) ++ zs
+                ==. (x : (xs ++ ys)) ++ zs
+                ==.  x : ((xs ++ ys) ++ zs)
+                ==.  x : (xs ++ (ys ++ zs)) ? thm xs ys zs
+                ==.  (x : xs) ++ (ys ++ zs)
+                *** QED
+
+ -}
 \end{code}
 
 </div>
@@ -120,6 +137,17 @@ sillyProof n m = ()
 
 $$\forall n, m.\ n + m = m + n$$
 
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+<br>
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+
 Those Proofs were Boring
 ------------------------
 
@@ -218,7 +246,7 @@ Using combinators from [`ProofCombinators`](https://github.com/ucsd-progsys/liqu
 
 <br>
 \begin{code}
-{-@ sum3' :: _ -> { sum 3 == 6 } @-}
+{-@ sum3' :: _ -> { sum 3 = 6 } @-}
 sum3' _ =   sum 3
         ==. 3 + sum 2
         ==. 3 + 2 + sum 1
@@ -228,145 +256,252 @@ sum3' _ =   sum 3
 \end{code}
 
 
-Reusing Proofs: The "because" operator
---------------------------------------
+Types as Theorems, Programs as Proofs
+-------------------------------------
 
 <br>
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+
+Reusing Proofs: Functions as Lemmas
+-----------------------------------
+
 <br>
 
-Using combinators from [`ProofCombinators`](https://github.com/ucsd-progsys/liquidhaskell/blob/develop/include/Language/Haskell/Liquid/ProofCombinators.hs)!
+**Proofs are functions**
+
+Reuse by _calling_ the function
 
 <br>
-<br>
+
 \begin{code}
-{-@ fibThree :: _ -> { fib 3 == 2 } @-}
-fibThree _
-  =   fib 3
-  ==. fib 2 + fib 1
-  ==. 1     + 1      ? fibTwo ()
-  ==. 2
-  *** QED
+{-@ sum4 :: _ -> { sum 4 = 10 } @-}
+sum4 _ =  sum 4
+      ==. 4 + sum 3
+      ==. 4 + 6     `by` (sum3 ())
+      ==. 10
+      *** QED
 \end{code}
 
-Paper & Pencil style Proofs
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+<br>
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+| Functions   | are | Lemmas      |
+
+
+Proof by Logical Evaluation
 ---------------------------
 
 <br>
-`fib` is increasing
+
+**Long chains of calculations are tedious**
+
+
+Proof by Logical Evaluation
+---------------------------
+
 <br>
+
+**Long chains of calculations are tedious**
+
+Make the machine do the hard work!
+
+A new algorithm to [emulate computation in SMT logic][popl18]
 
 \begin{code}
-{-@ fibUp :: i:Nat -> {fib i <= fib (i+1)} @-}
-fibUp i
-  | i == 0
-  =   fib 0 <. fib 1
-  *** QED
-  | i == 1
-  =   fib 1 <=. fib 1 + fib 0 <=. fib 2
-  *** QED
-  | otherwise
-  =   fib i
-  ==. fib (i-1) + fib (i-2)
-  <=. fib i     + fib (i-2) ? fibUp (i-1)
-  <=. fib i     + fib (i-1) ? fibUp (i-2)
-  <=. fib (i+1)
-  *** QED
+{-@ sum3auto :: _ -> { sum 3 = 6 }  @-}
+sum3auto _ = ()
+
+{-@ sum4auto :: _ -> { sum 4 = 10 } @-}
+sum4auto _ = ()
 \end{code}
 
-
-Another "Paper & Pencil" Proof
-------------------------------
+Proof by Induction
+-------------------
 
 <br>
-**Exercise:** Lets fix the proof that `fib` is monotonic?
+
+Lets prove the theorem
+
+$$\forall n.\ \sum_{i = 0}^n i = \frac{n \times (n + 1)}{2}$$
+
+Proof by Induction
+-------------------
+
 <br>
+
+Lets prove the theorem
+
+$$\forall n.\ \sum_{i = 0}^n i = \frac{n \times (n + 1)}{2}$$
+
+that is
+
+$$\forall n \in \Nat.\ 2 \times \mathit{sum}(n) = n \times (n + 1)$$
+
+Proof by Induction
+------------------
+
+$$\forall n \in \Nat.\ 2 \times \mathit{sum}(n) = n \times (n + 1)$$
 
 \begin{code}
-{-@ fibMonotonic :: x:Nat -> y:{Nat | x < y } -> {fib x <= fib y}  @-}
-fibMonotonic x y
-  | y == x + 1
-  =   fib x
-  <=. fib (x+1) ? fibUp x
-  <=. fib y
-  *** QED
-  | x < y - 1
-  =   fib x
-  <=. fib (y-1) ? trivial {- Inductive Hypothesis call goes here -}
-  <=. fib y     ? fibUp (y-1)
-  *** QED
+{-@ sumPf :: n:Nat -> { 2 * sum n == n * (n + 1) } @-}
+sumPf  :: Int -> ()
+sumPf 0 =   2 * (sum 0)
+        ==. 0
+        *** QED
+sumPf n =   2 * (sum n)
+        ==. 2 * (n + sum (n-1))
+        ==. 2 * (n + ((n - 1) * n)) `by` sumPf (n-1)
+        ==. n * (n + 1)
+        *** QED
 \end{code}
 
+**Q:** What happens if we use the wrong induction?
 
-**Exercise:** Can you replace `trivial` to fix the monotonicity proof?
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+| Functions   | are | Lemmas      |
+| Branches    | are | Case-Splits |
+
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+| Functions   | are | Lemmas      |
+| Branches    | are | Case-Splits |
+| Recursion   | is  | Induction   |
+
+Theorems about Data
+-------------------
+
 <br>
 
-Note: Totality checker should be on for valid proofs
+Recall the list appending function:
 
 \begin{code}
-{-@ LIQUID "--totality" @-}
+{-@ infix   ++ @-}
+{-@ reflect ++ @-}
+(++)        :: [a] -> [a] -> [a]
+[]     ++ ys = ys
+(x:xs) ++ ys = x : (xs ++ ys)
 \end{code}
 
-
-Generalizing monotonicity proof
--------------------------------
-
-<br>
-**Exercise:** Generalize the implementation of `fMono` proof below to any increasing function `f`.
-<br>
+Lets prove that the operator is _associative_
 
 \begin{code}
-{-@ fMono :: f:(Nat -> Int)
-          -> fUp:(z:Nat -> {f z <= f (z+1)})
-          -> x:Nat
-          -> y:{Nat|x < y}
-          -> {f x <= f y} / [y] @-}
-fMono f fUp x y
-  | y == x + 1
-  =   fib x
-  <=. fib (x+1) ? fibUp x
-  <=. fib y
-  *** QED
-  | x < y - 1
-  =   fib x
-  <=. fib (y-1) ? fibMonotonic x (y-1)
-  <=. fib y     ? fibUp (y-1)
-  *** QED
+type AppendAssoc a = xs:[a] -> ys:[a] -> zs:[a]
+                   -> { (xs ++ ys) ++ zs = xs ++ (ys ++ zs) }
 \end{code}
 
-Reusing Theorems by Application
--------------------------------
+Theorems about Data: Associativity of `append`
+----------------------------------------------
 
 <br>
 
-`fib` is monotonic!
-
-<br>
+Lets write fill in a _calculational_ proof:
 
 \begin{code}
-{-@ fibMono :: n:Nat -> m:{Nat | n < m }  -> {fib n <= fib m} @-}
-fibMono     = fMono fib fibUp
+appendPf :: AppendAssoc a
+appendPf xs ys zs = () -- Q: Can you help me fill this in?
 \end{code}
 
-Recap
------
+Case Study: MapReduce
+---------------------
+
+<br>
+Chunk input, map operation (in parallel), and reduce the results.
+<br>
+<br>
+
+<p align=center>
+<img src="img/map-reduce.jpg" height=350px/>
+</p>
+
+
+Reduce Theorem
+--------------
+
+**Description**
+
+If `op` is associative then `reduce op xs == parallelReduce op xs`
+
+**Theorem**
+
+\begin{spec}
+  reduceTheorem
+    :: op:(a -> a -> a)                          -- for any op-erator
+    -> xs:[a]                                    -- for any collection xs
+    -> (a:_ -> b:_ -> c:_ -> { assoc op a b c }) -- if op is associative
+    -> { reduce op xs = parReduce op xs }        -- then parReduce equals plain reduce.
+\end{spec}
+
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+| Functions   | are | Lemmas      |
+| Branches    | are | Case-Splits |
+| Recursion   | is  | Induction   |
+
+
+
+Outline
+-------
 
 <br>
 
-|                     |                                |
-|--------------------:|:-------------------------------|
-| **Refinements:**    | Types + Predicates             |
-| **Specification:**  | Refined Input/Output Types     |
-| **Verification:**   | SMT-based Predicate Subtyping  |
-| **Measures:**       | Specify Properties of Data     |
-| **Termination:**    | Well-founded Metrics           |
-| **Reflection:**     | Haskell functions in Logic     |
+[Motivation](01-intro.html)
 
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[How to Avoid Infinite Loops](04-termination.html)
+
+[Types as Theorems, Programs as Proofs](05-reflection.html)
+
+Outline
+-------
 
 <br>
 
-<div class="fragment">
-**Next:** [Structural Induction](07-structural-induction.html): Program Properties about data types!
-</div>
+[Motivation](01-intro.html)
+
+[Refinements 101](02-refinements.html)
+
+[Refinements by Example](03-examples.html)
+
+[How to Avoid Infinite Loops](04-termination.html)
+
+[Types as Theorems, Programs as Proofs](05-reflection.html)
+
+[Current Status & Future Directions](06-concl.html)
+
 
 [curryhoward]: https://en.wikipedia.org/wiki/Curry–Howard_correspondence
 [wadler]: http://homepages.inf.ed.ac.uk/wadler/papers/propositions-as-types/propositions-as-types.pdf
+[popl18]: https://arxiv.org/abs/1711.03842

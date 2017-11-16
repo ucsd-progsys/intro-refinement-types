@@ -193,35 +193,17 @@ How About Data Types?
 
 <br>
 
-Why does `reverse` terminate?
+Why does `append` terminate?
 
 \begin{code}
-reverse :: [a] -> [a]
-reverse []     = []
-reverse (x:xs) = reverse xs ++ [x]
+append           :: [a] -> [a] -> [a]
+append []     ys = ys []
+append (x:xs) ys = x : append xs ys
 \end{code}
 
 **Recursive Calls on Smaller Lists**
 
 Default Metric: First parameter with _associated size_
-
-User-specified Metrics on Data Types
-------------------------------------
-
-<br>
-
-Why does `fastReverse` terminate?
-
-\begin{code}
-fastReverse :: [a] -> [a]
-fastReverse xs = revLoop [] xs
-
-{-@ revLoop :: [a] -> [a] -> [a] @-}
-revLoop acc []     = acc
-revLoop acc (x:xs) = revLoop (x:acc) xs
-\end{code}
-
-**Default fails, have to specify _which_ list decreases.**
 
 User specified metrics on Data Types
 ------------------------------------

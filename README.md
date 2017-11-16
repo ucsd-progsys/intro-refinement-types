@@ -113,7 +113,7 @@ Proving Theorems
   Forall n in Nat. sum n = (n * (n + 1) / 2)
 
   Type
-  n:Nat -> { sum n = sum n = (n * (n + 1) / 2) }
+  n:Nat -> { sum n = (n * (n + 1) / 2) }
 
 * Proofs      are Programs.
 
@@ -129,38 +129,72 @@ Proving Theorems
 
 module Blank where
 
-{- prop :: x:Int -> y:Int -> {v:Int | v = x * y} @-}
--- prop :: Int -> Int -> Int
--- prop x y = y * x
+import Prelude hiding (sum)
+import Language.Haskell.Liquid.ProofCombinators
 
-{- assume (*) :: (Num a) => x:a -> y:a -> {v:a | v = x * y} @-}
+{-@ assume (*) :: (Num a) => x:a -> y:a -> {v:a | v = x * y} @-}
 
-{-@ reflect sumTo @-}
-{-@ sumTo :: Nat -> Nat @-}
-sumTo :: Int -> Int
-sumTo n
+{-@ reflect sum @-}
+{-@ sum :: Nat -> Nat @-}
+sum :: Int -> Int
+sum n
   | n == 0    = 0
-  | otherwise = n + sumTo (n-1)
+  | otherwise = n + sum (n-1)
 
-{-@ thm :: n:Nat -> { 2 * sumTo n == n * (n + 1) } @-}
+{-@ thm :: n:Nat -> { 2 * sum n == n * (n + 1) } @-}
 thm :: Int -> ()
 thm 0 = ()
 thm n = thm (n - 1)
 
-{-@ reflect fac        @-}
-{-@ fac :: Nat  -> Nat @-}
-fac :: Int -> Int
-fac n
-  | n == 0    = 1
-  | otherwise = n * fac (n-1)
-
-{-@ reflect facTR       @-}
-{-@ facTR :: Nat -> Nat @-}
-facTR :: Int -> Int
-facTr n
-
-{-@ prop :: _ -> { fac 5 == 120 } @-}
-prop :: a -> ()
-prop _ = ()
-
+{-@ sumPf :: n:Nat -> { 2 * sum n == n * (n + 1) } @-}
+sumPf  :: Int -> ()
+sumPf 0 =   2 * (sum 0)
+        ==. 0
+        *** QED
+sumPf n =   2 * (sum n)
+        ==. 2 * (n + sum (n-1))
+        ==. 2 * (n + ((n - 1) * n)) ? sumPf (n-1)
+        ==. n * (n + 1)
+        *** QED
 ```
+
+
+
+{-@ LIQUID "--higherorder"                         @-}
+{-@ LIQUID "--automatic-instances=liquidinstances" @-}
+{-@ LIQUID "--exact-data-cons"                     @-}
+
+module Blank where
+
+import Prelude hiding ((++))
+
+import Language.Haskell.Liquid.ProofCombinators
+
+
+{-@ reflect ++ @-}
+{-@ infix ++ @-}
+(++) :: [a] -> [a] -> [a]
+[]  ++ ys = ys
+(x : xs) ++ ys = x : (xs ++ ys)
+
+{-@ reflect append @-}
+append :: [a] -> [a] -> [a]
+append []     ys = ys
+append (x:xs) ys = x : append xs ys
+
+{-@ inline assoc @-}
+assoc op x y z = (x `op` y) `op` z == x `op` (y `op` z)
+
+{-@ thm :: xs:[a] -> ys:[a] -> zs:[a] -> { (xs ++ ys) ++ zs = xs ++ (ys ++ zs) } @-}
+thm :: [a] -> [a] -> [a] -> ()
+
+thm [] ys zs     = ([] ++ ys) ++ zs
+                ==. ys ++ zs
+                ==. [] ++ (ys ++ zs)
+                *** QED
+thm (x:xs) ys zs = ((x:xs) ++ ys) ++ zs
+                ==. (x : (xs ++ ys)) ++ zs
+                ==.  x : ((xs ++ ys) ++ zs)
+                ==.  x : (xs ++ (ys ++ zs)) ? thm xs ys zs
+                ==.  (x : xs) ++ (ys ++ zs)
+                *** QED
