@@ -18,6 +18,9 @@ import Prelude hiding (sum, (++))
 sillyProof :: Int -> Int -> Proof
 appendPf :: [a] -> [a] -> [a] -> ()
 
+{-@ infix   ++ @-}
+{-@ reflect ++ @-}
+
 by = (?)
 
 {-
@@ -153,22 +156,32 @@ Types as Theorems, Programs as Proofs
 
 </p>
 
-Those Proofs were Boring
-------------------------
-
-<br>
-
-Simple Arithmetic, automatically proved by SMT Solver
-
 
 Those Proofs were Boring
 ------------------------
 
 <br>
 
-Simple Arithmetic, automatically proved by SMT Solver
+**Simple Arithmetic**
+
+Automatically proved by SMT Solver
+
+
+Those Proofs were Boring
+------------------------
+
+<br>
+
+**Simple Arithmetic**
+
+Automatically proved by SMT Solver
+
+<br>
 
 **How about proofs about user-defined functions?**
+
+Beyond automatic SMT, but the user can _write proofs_
+
 
 Theorems about Functions
 ------------------------
@@ -193,16 +206,19 @@ $\mathit{sum}(3) = 6$.
 Refinement Reflection
 ---------------------
 
-The annotation
+<br>
+
+The _annotation_
 
 \begin{code}
 {-@ reflect sum @-}
 \end{code}
 
-tells LiquidHaskell to type the function as:
+
+Automatically gives `sum` the _type_
 
 \begin{spec}
-sum :: n:Int -> {v:Int | v = (if n == 0 then 0 else n + sum (n-1)) }
+sum :: n:Int -> {v:Int | v = if n == 0 then 0 else n + sum (n-1)}
 \end{spec}
 
 
@@ -213,6 +229,10 @@ Reflect Function into Output Type
 
 The type of `sum` connects _implementation_ and _specification_
 
+\begin{spec}
+sum :: n:Int -> {v:Int | v = if n == 0 then 0 else n + sum (n-1)}
+\end{spec}
+
 
 Reflect Function into Output Type
 ---------------------------------
@@ -221,11 +241,15 @@ Reflect Function into Output Type
 
 The type of `sum` connects _implementation_ and _specification_
 
+\begin{spec}
+sum :: n:Int -> {v:Int | v = if n == 0 then 0 else n + sum (n-1)}
+\end{spec}
+
 <br>
 
 **Key Idea**
 
-Calling `sum n` _reveals implementation_ at `n` to refinement logic!
+Calling `sum n` _reveals_ definition at `n` to refinement logic!
 
 
 
@@ -235,17 +259,17 @@ Reflection at Result Type
 <br>
 \begin{code}
 {-@ sum3 :: _ -> { sum 3 == 6 } @-}
-sum3 _ = let s0 = sum 0  -- s0 :: {s0 = sum 0 && s0 = 0}
-             s1 = sum 1  -- s1 :: {s1 = sum 1 && s1 = 1 + sum 0}
-             s2 = sum 2  -- s2 :: {s2 = sum 2 && s2 = 1 + sum 1}
-             s3 = sum 3  -- s3 :: {s3 = sum 3 && s3 = 1 + sum 2}
-         in
-             [s0, s1, s2, s3] *** QED  -- SMT  connects the dots.
+
+sum3 _ = let s0 = sum 0   -- s0 :: {sum 0 = 0        }
+             s1 = sum 1   -- s1 :: {sum 1 = 1 + sum 0}
+             s2 = sum 2   -- s2 :: {sum 2 = 2 + sum 1}
+             s3 = sum 3   -- s3 :: {sum 3 = 3 + sum 2}
+         in  ()           -- SMT connects the dots.
 \end{code}
 
 **Key Idea**
 
-Calling `sum n` _reveals implementation_ at `n` to refinement logic!
+Calling `sum n` _reveals_ definition at `n` to refinement logic!
 
 
 Structuring Proofs as Calculations
@@ -281,6 +305,15 @@ Types as Theorems, Programs as Proofs
 
 </p>
 
+
+Reusing Proofs: Functions as Lemmas
+-----------------------------------
+
+<br>
+
+**Proofs are functions**
+
+
 Reusing Proofs: Functions as Lemmas
 -----------------------------------
 
@@ -290,17 +323,41 @@ Reusing Proofs: Functions as Lemmas
 
 Reuse by _calling_ the function
 
+
+Reusing Proofs: Functions as Lemmas
+-----------------------------------
+
 <br>
+
+**Proofs are functions**
+
+Reuse by _calling_ the function
 
 \begin{code}
 {-@ sum4 :: _ -> { sum 4 = 10 } @-}
 sum4 _ =  sum 4
       ==. 4 + sum 3
-      ==. 4 + 6       ? (sum3 ())
+      ==. 4 + 6     ?   sum3 ()   -- lemma { sum 3 == 6 }
       ==. 10
       *** QED
 \end{code}
 
+`?` is a library operator (read ``because'')
+
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+<br>
+
+<p align=center>
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+
+</p>
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
@@ -323,6 +380,18 @@ Proof by Logical Evaluation
 <br>
 
 **Long chains of calculations are tedious**
+
+
+Proof by Logical Evaluation
+---------------------------
+
+<br>
+
+**Long chains of calculations are tedious**
+
+Make the machine do the hard work!
+
+A new algorithm to [emulate computation in SMT logic][popl18]
 
 
 Proof by Logical Evaluation
@@ -374,19 +443,31 @@ $$\forall n \in \Nat.\ 2 \times \mathit{sum}(n) = n \times (n + 1)$$
 \begin{code}
 {-@ sumPf :: n:Nat -> { 2 * sum n == n * (n + 1) } @-}
 sumPf  :: Int -> ()
-sumPf 0 =   2 * (sum 0)
+sumPf 0 =   2 * sum 0
         ==. 0
         *** QED
-sumPf n =   2 * (sum n)
+sumPf n =   2 * sum n
         ==. 2 * (n + sum (n-1))
-        ==. 2 * (n + ((n - 1) * n))
-            ? sumPf (n-1)
+        ==. 2 * (n + ((n - 1) * n))   ?  sumPf (n - 1)
         ==. n * (n + 1)
         *** QED
 \end{code}
 
 **Q:** What happens if we use the wrong induction?
 
+
+Types as Theorems, Programs as Proofs
+-------------------------------------
+
+<p align=center>
+
+| **Code**    |     | **Math**    |
+|------------:|:---:|:------------|
+| Types       | are | Theorems    |
+| Programs    | are | Proofs      |
+| Functions   | are | Lemmas      |
+
+</p>
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
@@ -420,11 +501,9 @@ Types as Theorems, Programs as Proofs
 Theorems about Data
 -------------------
 
-Recall the list appending function:
+Recall the list append function:
 
 \begin{code}
-{-@ infix   ++ @-}
-{-@ reflect ++ @-}
 (++)        :: [a] -> [a] -> [a]
 []     ++ ys = ys
 (x:xs) ++ ys = x : (xs ++ ys)
@@ -454,12 +533,18 @@ Case Study: MapReduce
 ---------------------
 
 <br>
-Chunk input, map operation (in parallel), and reduce the results.
+_Chunk_ inputs, _Map_ operation in parallel, and _Reduce_ the results.
 <br>
+
+Case Study: MapReduce
+---------------------
+
+<br>
+_Chunk_ inputs, _Map_ operation in parallel, and _Reduce_ the results.
 <br>
 
 <p align=center>
-<img src="img/map-reduce.jpg" height=350px/>
+<img src="img/map-reduce.jpg" height=250px/>
 </p>
 
 
@@ -473,11 +558,11 @@ If `op` is associative then `reduce op xs == parallelReduce op xs`
 **Theorem**
 
 \begin{spec}
-  reduceTheorem
-    :: op:(a -> a -> a)                          -- for any op-erator
-    -> xs:[a]                                    -- for any collection xs
-    -> (a:_ -> b:_ -> c:_ -> { assoc op a b c }) -- if op is associative
-    -> { reduce op xs = parReduce op xs }        -- then parReduce equals plain reduce.
+reduceTheorem
+ :: op:(a -> a -> a)                  -- for any op-erator
+ -> xs:[a]                            -- for any collection xs
+ -> Assoc op                          -- if op is associative
+ -> {reduce op xs = parReduce op xs}  -- then parReduce is ok!
 \end{spec}
 
 

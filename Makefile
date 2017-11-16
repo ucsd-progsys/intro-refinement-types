@@ -9,7 +9,7 @@ FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
 IMG=assets/img
-GHPAGE=../intro-refinement-types-pages/
+GHPAGE=../live/ 
 
 ##############################################
 PANDOC=pandoc
@@ -121,6 +121,11 @@ distclean:
 upload: all 
 	cp -r $(SITE)/* $(GHPAGE)
 	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
+
+live: all 
+	cp -r $(SITE)/* $(GHPAGE)
+	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin master 
+
 
 
 #clean:

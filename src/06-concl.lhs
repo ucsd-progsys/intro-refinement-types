@@ -102,7 +102,7 @@ Many Friends, Many Directions
 [DML/Stardust][stardust]        CMU/UBC
 [F7/F*][fstar]                  MSR/INRIA
 [RefinedRacket][rtr]            IU
-[Synquid][synquid]              MIT
+[Synquid][synquid]              MIT/UCSD
 ----------------------------    ------------
 
 

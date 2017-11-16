@@ -15,7 +15,7 @@ dummy = 7
 
 
 <p align=center>
-<h1 style="border-bottom:none">An Introduction to Refinement Types</h1>
+<h1 style="border-bottom:none">Language-Integrated Verification</h1>
 
 <br>
 
@@ -32,7 +32,7 @@ dummy = 7
 <br>
 <br>
 
-[http://ucsd-progsys.github.io/intro-refinement-types/](http://ucsd-progsys.github.io/intro-refinement-types/)
+[http://ucsd-progsys.github.io/live/](http://ucsd-progsys.github.io/live/)
 
 </div>
 
@@ -184,7 +184,7 @@ Non-termination
 
 Functional Correctness / Assertions...
 
-Goal: Algorithmic Software Verification
+Goal: Language-Integrated Verification
 ---------------------------------------
 
 <br>
@@ -193,7 +193,7 @@ Goal: Algorithmic Software Verification
 
 Verify *program specific* properties via *domain specific* analysis
 
-Goal: Algorithmic Software Verification
+Goal: Language-Integrated Verification 
 ---------------------------------------
 
 <br>

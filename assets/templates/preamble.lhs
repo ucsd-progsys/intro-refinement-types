@@ -1,7 +1,7 @@
 ---
-title:          "An Introduction to Refinement Types"
+title:          "Language-Integrated Verification" 
 author:         Ranjit Jhala
-date:           Jan 11th, 2016
+date:           Nov 16th, 2017
 documentclass:  book
 toc:            true
 bibliography:   sw.bib
