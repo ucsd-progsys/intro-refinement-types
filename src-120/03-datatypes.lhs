@@ -1,32 +1,33 @@
-<div class="hidden">
+Data Types
+==========
 
 \begin{code}
 {-# LANGUAGE TupleSections    #-}
-{-@ LIQUID "--no-warnings"    @-}
-{-@ LIQUID "--short-names"    @-}
 {-@ LIQUID "--no-termination" @-}
-{-@ LIQUID "--totality"       @-}
-{-@ LIQUID "--diff"           @-}
-
 module DataTypes where
 
-import Prelude hiding (replicate, (++), sum, init, length, map, filter, foldr, foldr1)
+import Prelude hiding (length, sum, take)
+\end{code}
 
-map         :: (a -> b) -> List a -> List b
-foldr1      :: (a -> a -> a) -> List a -> a
-head        :: List a -> a
-tail        :: List a -> List a
-init, init' :: (Int -> a) -> Int -> List a
--- append      :: List a -> List a -> List a
--- filter      :: (a -> Bool) -> List a -> List a
-impossible         :: String -> a
-average     :: List Int -> Int
--- wtAverage   :: List (Int, Int) -> Int
+<div class="hidden">
 
-infixr 9 :::
+\begin{code}
 
-{-@ data List [size] a = Emp | (:::) {hd :: a, tl :: List a } @-}
-{-@ invariant {v: List a | 0 <= size v} @-}
+head       :: List a -> a
+tail       :: List a -> List a
+headt      :: List a -> a
+tailt      :: List a -> List a
+impossible :: String -> a
+avg        :: List Int -> Int
+take       :: Int -> List a -> List a 
+
+
+sum :: List Int -> Int 
+sum N = 0 
+sum (C x xs) = x + sum xs
+
+{-@ data List [length] a = N | C {hd :: a, tl :: List a } @-}
+{-@ invariant {v: List a | 0 <= length v} @-}
 
 {-@ type Nat      = {v:Int | v >= 0} @-}
 {-@ type Pos      = {v:Int | v >  0} @-}
@@ -34,25 +35,17 @@ infixr 9 :::
 {-@ impossible :: {v:_ | false} -> a @-}
 impossible = error
 
-{-@ average :: ListNE Int -> Int @-}
-average xs = total `div` n
-  where
-    total   = foldr1 (+) xs
-    n       = size xs
+{-@ safeDiv :: Int -> {v:Int | v /= 0} -> Int   @-}
+safeDiv :: Int -> Int -> Int 
+safeDiv _ 0 = impossible "divide-by-zero"
+safeDiv x n = x `div` n
+
 \end{code}
 
 </div>
 
-
-
-Data Types
-----------
-
-<br>
-
-
 Example: Lists
---------------
+==========
 
 <br>
 
@@ -62,14 +55,16 @@ Lets define our own `List` data type:
 <br>
 
 \begin{code}
-data List a = Emp               -- Nil
-            | (:::) a (List a)  -- Cons
+data List a = Emp             -- Nil
+            | C a (List a)  -- Cons
 \end{code}
 </div>
 
 
-Specifying the size of a List
--------------------------------
+
+Specifying the Length of a List
+==========
+
 
 <br>
 
@@ -79,65 +74,64 @@ Specifying the size of a List
 Haskell function with *a single equation per constructor*
 </div>
 
+<br>
+
 \begin{code}
-{-@ measure size @-}
-size :: List a -> Int
-size Emp        = 0
-size (_ ::: xs) = 1 + size xs
+{-@ measure length          @-}
+{-@ length :: List a -> Nat @-}
+length     :: List a -> Int
+length Emp        = 0
+length (C _ xs) = 1 + length xs
 \end{code}
 
 
+Specifying the Length of a List
+==========
 
-Specifying the size of a List
--------------------------------
 
 **Measure**
 
 *Strengthens* type of data constructor
 
+<br>
+
 <div class="fragment">
 
 \begin{spec} <div/>
 data List a where
-  Emp   :: {v:List a | size v = 0}
-  (:::) :: x:a -> xs:List a -> {v:List a|size v = 1 + size xs}
+
+  Emp :: {v:List a | length v = 0}
+
+  C :: x:a -> xs:List a
+    -> {v:List a | length v = 1 + length xs}
 \end{spec}
+
 </div>
 
-
-Using Measures
----------------
-
-<br>
-
-
-
-
-
-Exercise: *Partial* Functions
------------------------------
-
-<br>
+Example: *Partial* Functions
+==========
 
 Fear `head` and `tail` no more!
 
 <div class="fragment">
 \begin{code}
-{-@ head        :: List a -> a @-}
-head (x ::: _)  = x
-head _          = impossible "head"
+{-@ head     :: List a -> a @-}
+head (C x _) = x
+head _       = impossible "head"
 
-{-@ tail        :: List a -> List a @-}
-tail (_ ::: xs) = xs
-tail _          = impossible "tail"
+{-@ tail      :: List a -> List a @-}
+tail (C _ xs) = xs
+tail _        = impossible "tail"
 \end{code}
+
+<br> <br>
 
 **Q:** Write types for `head` and `tail` that verify `impossible`.
 </div>
 
-
 Naming Non-Empty Lists
-----------------------
+==========
+
 
 <br>
 
@@ -146,244 +140,122 @@ A convenient *type alias*
 <br>
 
 \begin{code}
-{-@ type ListNE a = {v:List a| 0 < size v} @-}
+{-@ type ListNE a = {v:List a| 0 < length v} @-}
 \end{code}
 
-<br>
+Totality Checking in Liquid Haskell 
+==========
 
-<div class="slideonly">
+<div class="fragment">
+\begin{code}
 
-`head` and `tail` are Safe
---------------------------
+{-@ headt      :: List a -> a @-}
+headt (C x _)  = x
 
-When called with *non-empty* lists:
+{-@ tailt      :: ListNE a -> List a @-}
+tailt (C _ xs) = xs
+\end{code}
 
-<br>
+<br> <br>
 
-\begin{spec}
-{-@ head :: ListNE a -> a @-}
-head (x ::: _)  = x
-head _          = impossible "head"
-
-{-@ tail :: ListNE a -> List a @-}
-tail (_ ::: xs) = xs
-tail _          = impossible "tail"
-\end{spec}
+Partial Functions are _automatically_ detected!
 
 </div>
 
-<br>
 
+</div>
 
+Back to `average`
+==========
 
-
-A Useful Partial Function: Fold / Reduce
-----------------------------------------
-
-<br>
-
-**Fold** or **Reduce** `f` over *any* list using seed `acc`
 
 <br>
 
 \begin{code}
-foldr :: (a -> b -> b) -> b -> List a -> b
-foldr _ acc Emp        = acc
-foldr f acc (x ::: xs) = f x (foldr f acc xs)
-\end{code}
-
-<br>
-
-A Useful Partial Function: Fold / Reduce
-----------------------------------------
-
-<br>
-
-**Fold** or **Reduce** `f` over *non-empty* list using *first element* as seed
-
-<br>
-
-\begin{code}
-{-@ foldr1 :: (a -> a -> a) -> List a -> a @-}
-foldr1 f (x ::: xs) = foldr f x xs
-foldr1 _ _          = impossible "foldr1"
-\end{code}
-
-<br>
-
-**Q:** How shall we fix `foldr1`?
-
-
-Exercise: `average`
--------------------
-
-<br>
-
-\begin{code}
-{-@ average' :: List Int -> Int @-}
-average' xs = total `div` n
+{-@ avg    :: List Int -> Int @-}
+avg xs     = safeDiv total n
   where
-    total   = foldr1 (+) xs
-    n       = size xs
+    total  = sum    xs
+    n      = length xs         -- returns a Nat
 \end{code}
 
-<br>
+<br> 
+**Q:** Write type for `avg` that verifies safe division.
 
-**Q:** What is a safe input type for `average'`?
-
-<br>
-
-
-
-Refining Data Types
--------------------
+In bounds `take`
+==========
 
 
-<br>
-<br>
-
-&nbsp; &nbsp; *Make illegal states unrepresentable*
-
-<br>
-
-Example: Year is 12 Months
---------------------------
-
+**Q:** Use measures to specify a good type for `take`
 <br>
 
 \begin{code}
-data Year a = Year (List a)
-\end{code}
-
-<br>
-
-<div class="fragment">
-**Legal Values:** Lists of `12` elements, e.g.
-
-<br>
-
-`"jan" ::: "feb" ::: ... ::: "dec" ::: Emp"`
-
-</div>
-
-<br>
-
-
-Example: Year is 12 Months
---------------------------
-
-<br>
-
-**Refine Type to Legal Values**
-
-\begin{code}
-{-@ data Year a = Year (ListN a 12) @-}
+{-@ take :: i:Int -> xs:List a -> List a @-} 
+take 0 Emp        = Emp 
+take i (C x xs) = if i == 0 then Emp else x `C` (take (i-1) xs)
+take i Emp        = impossible "Out of bounds indexing!" 
 \end{code}
 
 
-**Lists Of A Given Size**
 
+Catch the The Heartbleed Bug!
+==========
+
+
+Assuming the library `Text` types...
+
+<br>
+<div class="hidden">
 \begin{code}
-{-@ type ListN a N = {v: List a | size v == N} @-}
-\end{code}
-
-
-<div class="fragment">
-**Make illegal states unrepresentable**
-
-\begin{code}
-badYear = Year (1 ::: Emp)
+data Text 
+pack :: String -> Text 
+takeWord16 :: Int -> Text -> Text 
+pack = undefined 
+takeWord16 = undefined 
 \end{code}
 </div>
+\begin{code}
+{-@ measure tlen      :: Text -> Int                               @-}
+
+{-@ assume pack       :: i:String -> {o:Text | len i == tlen o }   @-}
+{-@ assume takeWord16 :: i:Nat -> {v:Text | i <= tlen v} -> Text @-}
+\end{code}
 
 
-Exercise: `map`
----------------
-
+<br>
+... HeartBleed **cannot** happen!
 <br>
 
 \begin{code}
-{-@ map :: (a -> b) -> xs:List a -> List b @-}
-map _ Emp         = Emp
-map f (x ::: xs)  = f x ::: map f xs
-\end{code}
-
-<div class="fragment">
-**Q:** Can you fix `map` to verify `tempAverage`?
-
-\begin{code}
-data Weather = W { temp :: Int, rain :: Int }
-
-tempAverage :: Year Weather -> Int
-tempAverage (Year ms) = average months
-  where
-    months            = map temp ms
-\end{code}
-</div>
-
-
-Exercise: `init`
-----------------
-
-<br>
-
-\begin{code}
-{-@ init :: (Int -> a) -> Nat -> List a @-}
-init _ 0 = Emp
-init f n = f n ::: init f (n-1)
+safeTake   = takeWord16 2  (pack "hat")
+unsafeTake = takeWord16 10 (pack "hat")
 \end{code}
 
 <br>
-
-<div class="fragment">
-**Q:** Can you fix the type of `init` so that `sanDiegoTemp` is accepted?
-
-\begin{code}
-sanDiegoTemp :: Year Int
-sanDiegoTemp = Year (init (const 72) 12)
-\end{code}
-</div>
-
-
-Exercise: `init'`
-------------------
-
 <br>
-
-\begin{code}
-{-@ init' :: (Int -> a) -> n:Nat -> List a @-}
-init' f n = go 0
-  where
-    go i | i < n     = f i ::: go (i+1)
-         | otherwise = Emp
-\end{code}
-
-<div class="fragment">
-**Q:** For bonus points, fix `init'` so `sanDiegoTemp'`is accepted?
-
-\begin{code}
-sanDiegoTemp' :: Year Int
-sanDiegoTemp' = Year (init' (const 72) 12)
-\end{code}
-</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 Recap
------
+==========
+
 
 <br>
-
-|                     |                                |
-|--------------------:|:-------------------------------|
-| **Refinements:**    | Types + Predicates             |
-| **Specification:**  | Refined Input/Output Types     |
-| **Verification:**   | SMT-based Predicate Subtyping  |
-| **Measures:**       | Specify Properties of Data     |
-
 <br>
 
-<div class="fragment">
-**Case Study:**  [Insertion Sort](04-case-study-insertsort.html)
+- **1. Refinements:** Types + Predicates
+- **2. Automation:** SMT Implication
+- <div class="fragment">**3. Measures:** Specify Properties of Data</div>
+- [Case Study: Insert Sort](04-insert-sort.html) 
 
-+ [Well Scoped Evaluator](05-case-study-eval.html)
-+ [Low-level Memory](06-case-study-bytestring.html)
-</div>
