@@ -11,6 +11,15 @@ import Prelude hiding (abs, max)
 zero, zero', zero'', four, four' :: Int
 nats :: [Int]
 
+{-@ plus :: x:Int -> y:Int -> {v:Int | v = x + y} @-}
+plus :: Int -> Int -> Int
+plus x y = x + y
+
+{-@ minus:: x:Int -> y:Int -> {v:Int | v = x - y} @-}
+minus :: Int -> Int -> Int
+minus x y = x - y
+
+
 -- zero'       :: Int
 -- safeDiv     :: Int -> Int -> Int
 -- size, size' :: [a] -> Int
@@ -19,8 +28,8 @@ nats :: [Int]
 </div>
 
 
-Simple Refinement Types
------------------------
+Basic Refinement Types
+----------------------
 
 <br>
 
@@ -74,7 +83,7 @@ e := x, y, z, ...         -- variables
    | f e1 ... en          -- uninterpreted function
 \end{spec}
 
-**Uninterpreted Functions**
+**Congruence Axiom for Uninterpreted Functions**
 
 $$\forall \overline{x}, \overline{y}.\ \overline{x} = \overline{y}\ \Rightarrow\ f(x) = f(y)$$
 
@@ -105,14 +114,16 @@ Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic
 
 Given a **Verification Condition** (VC)
 
-$$p_1 \Rightarrow p_2$$
+$$p_1 \Rightarrow \ldots \Rightarrow p_n$$
 
 SMT solvers can **decide if VC is Valid** ("always true")
 
-Example: Singletons
--------------------
+Example: "Singletons"
+---------------------
 
 <hr style="height:5px; visibility:hidden;" />
+
+The alias `Zero` describes a type inhabited by a *single* `Int` value `0` 
 
 \begin{code}
 {-@ type Zero = {v:Int | v == 0} @-}
@@ -124,6 +135,9 @@ zero = 0
 <div class="fragment">
 Refinement types via special comments `{-@ ... @-}`
 </div>
+
+**Exercise:** What happens if you modify the code or type?
+
 
 Example: Natural Numbers
 ------------------------
@@ -137,6 +151,7 @@ Example: Natural Numbers
 nats     =  [0, 1, 2, 3]
 \end{code}
 
+**Exercise:** What happens if you modify the code or type?
 
 A Term Can Have *Many* Types
 ----------------------------
@@ -156,6 +171,8 @@ zero' = zero
 
 </div>
 
+Is it `{v:Int|v=0}` or is it `{v:Int|0<=v}` ?
+
 
 1. Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
 ----------------------------------
@@ -181,7 +198,7 @@ $$\boxed{\Gamma \vdash t_1 \preceq t_2}$$
 
 <div class="fragment">
 
-Where **environment** $\Gamma$ is a sequence of *in-scope binders*
+Where $\Gamma$ is **variable-and-type** bindings that are **in-scope**
 
 $$\Gamma \doteq \overline{\bindx{x_i}{P_i}}$$
 
@@ -242,19 +259,53 @@ zero''    =  0    -- as |-  Zero <: Nat
 \end{code}
 </div>
 
+2. Typing Applications (Function Calls)
+---------------------------------------
+
+<div class="mybreak"><br></div>
+
+Terms built up by function-applications.
+
 
 2. Typing Applications (Function Calls)
 ---------------------------------------
 
 <div class="mybreak"><br></div>
 
-Terms built up by applications.
+Terms built up by function-applications.
+
+<div class="mybreak"><br></div>
+
+<div class="fragment">
+**Built-in Functions**
+
+\begin{spec} <div/>
+         plus  :: x:Int -> y:Int -> {v:Int|v = x + y} 
+         minus :: x:Int -> y:Int -> {v:Int|v = x - y} 
+\end{spec}
+</div>
+
+<div class="mybreak"><br></div>
+
+<div class="fragment">
+**Output Type is a Post-Condition**
+
+Specifies the _output_ value equals the sum/difference of the _inputs_
+</div>
+
+
+2. Typing Applications (Function Calls)
+---------------------------------------
+
+<div class="mybreak"><br></div>
+
+Terms built up by function-applications.
 
 <div class="mybreak"><br></div>
 
 \begin{code}
 {-@ four :: Nat @-}
-four  = x + 1
+four  = plus x 1
   where
     x = 3
 \end{code}
@@ -293,13 +344,13 @@ i.e. Output type with *formals substituted by actuals*
 
 $$
 \begin{array}{rl}
-{\mathbf{If}}   & \Gamma \vdash (+)   :: \bindx{a}{\Int} \rightarrow
-                                         \bindx{b}{\Int} \rightarrow
-                                         \reft{v}{\Int}{v = a + b} \\
-                & \Gamma \vdash x     :: \Int \\
-                & \Gamma \vdash 1     :: \Int \\
-                &                             \\
-{\mathbf{Then}} & \Gamma \vdash x + 1 :: \reft{v}{\Int}{v = x + 1}
+{\mathbf{If}}   & \Gamma \vdash \mathit{plus}     :: \bindx{a}{\Int} \rightarrow
+                                                     \bindx{b}{\Int} \rightarrow
+                                                     \reft{v}{\Int}{v = a + b} \\
+                & \Gamma \vdash x                 :: \Int \\
+                & \Gamma \vdash 1                 :: \Int \\
+                &                                         \\
+{\mathbf{Then}} & \Gamma \vdash \mathit{plus} x 1 :: \reft{v}{\Int}{v = x + 1}
 \end{array}
 $$
 
@@ -314,13 +365,38 @@ And so, we can type:
 
 \begin{code}
 {-@ four' :: Nat @-}
-four' = x + 1   -- x = 3 |- {v = x+1} <: Nat
-  where         -- as
-    x = 3       -- x = 3 =>  v = x+1  => 0 <= v
+four' = plus x 1   -- x = 3 |- {v = x+1} <: Nat
+  where            -- as
+    x = 3          -- x = 3 =>  v = x+1  => 0 <= v
 \end{code}
 
-Recap: Refinement Types 101
----------------------------
+<div class="mybreak"><br></div>
+
+**Exercise:** What happens if you replace `plus` with `minus`? 
+
+2. Typing Applications (Function Calls)
+---------------------------------------
+
+<div class="mybreak"><br></div>
+
+Similarly, we can type:
+
+<div class="mybreak"><br></div>
+
+\begin{code}
+{-@ incr :: Nat -> Nat @-}
+incr x = plus x 1  -- {0 <= x} |- {v = x + 1} <: Nat
+                   -- as
+                   -- (0 <= x) =>  v = x + 1  => 0 <= v
+\end{code}
+
+<div class="mybreak"><br></div>
+
+**Exercise:** Now, what happens if you replace `plus` with `minus`? 
+
+
+Recap: Basic Refinement Types
+-----------------------------
 
 <div class="mybreak"><br></div>
 
@@ -328,8 +404,8 @@ Recap: Refinement Types 101
 
 Types + Predicates
 
-Recap: Refinement Types 101
----------------------------
+Recap: Basic Refinement Types
+-----------------------------
 
 <div class="mybreak"><br></div>
 
@@ -361,26 +437,16 @@ Dependent Application + Predicate Subtyping
 
 <div class="mybreak"><br></div>
 
-**[[Eliminates boring proofs & Makes Verification Practical]](03-examples.html)**
+Plan
+----
 
+<br>
+<br>
+<br>
 
-Outline
--------
+**Part I:** [Refinements 101](02-refinements.html)
 
 <br>
 
-[Motivation](01-intro.html)
+**Case Study: [Vector Bounds](03-example-vectors.html)**
 
-[Refinements 101](02-refinements.html)
-
-
-Outline
--------
-
-<br>
-
-[Motivation](01-intro.html)
-
-[Refinements 101](02-refinements.html)
-
-[Refinements by Example](03-examples.html)

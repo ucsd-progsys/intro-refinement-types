@@ -9,10 +9,10 @@ FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
 IMG=assets/img
-GHPAGE=../live/
+GHPAGE=../CAV19-tutorial/
 
 ##############################################
-PANDOC=pandoc
+PANDOC=stack exec -- pandoc
 INDEXER=$(FILTERS)/Toc.hs
 METATEMPLATE=$(TEMPLATES)/pagemeta.template
 INDEXTEMPLATE=$(TEMPLATES)/index.template

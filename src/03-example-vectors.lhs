@@ -8,7 +8,6 @@ module Examples
        , sum'
        , sum''
        , average
-       -- , insertSort
        , length
        )
        where
@@ -27,8 +26,8 @@ size = undefined
 \end{code}
 </div>
 
-Refinement Types by Example
----------------------------
+Case Study: Vector Bounds
+-------------------------
 
 <div class="mybreak"><br></div>
 
@@ -40,10 +39,8 @@ Inference
 
 Collections & HOFs
 
-Refinements for Datatypes
-
-Refinement Types by Example
----------------------------
+Case Study: Vector Bounds
+-------------------------
 
 <div class="mybreak"><br></div>
 
@@ -58,8 +55,8 @@ Collections & HOFs
 Refinements for Datatypes
 
 
-Refinement Types by Example
----------------------------
+Case Study: Vector Bounds
+-------------------------
 
 <div class="mybreak"><br></div>
 
@@ -69,8 +66,8 @@ Specifications
 
 **Property: In-bounds Array Access**
 
-Refinement Types by Example
----------------------------
+Case Study: Vector Bounds
+-------------------------
 
 <div class="mybreak"><br></div>
 
@@ -119,8 +116,8 @@ What does a function **ensure** about its result?
 
 Refinement on the function's **output type**
 
-Refinement Types by Example
----------------------------
+Case Study: Vector Bounds
+-------------------------
 
 <div class="mybreak"><br></div>
 
@@ -131,8 +128,6 @@ Specifications
 Inference
 
 Collections & HOFs
-
-Refinements for Datatypes
 
 Verification: Vector Sum
 ------------------------
@@ -181,7 +176,7 @@ $$\begin{array}{lll}
 \end{array}$$
 
 
-Refinement Types by Example
+Case Study: Vector Bounds
 ---------------------------
 
 <div class="mybreak"><br></div>
@@ -193,8 +188,6 @@ Verification
 **Inference**
 
 Collections & HOFs
-
-Refinements for Datatypes
 
 Inference
 ---------
@@ -300,7 +293,7 @@ $$\begin{array}{lll}
 
 $$\kvar{}{v} = 0 \leq v$$
 
-Refinement Types by Example
+Case Study: Vector Bounds
 ---------------------------
 
 <div class="mybreak"><br></div>
@@ -312,8 +305,6 @@ Verification
 Inference
 
 **Collections & HOFs**
-
-Refinements for Datatypes
 
 
 Collections & Higher-Order Functions
@@ -372,7 +363,7 @@ sum'' v = foldr add 0 is
 Types make refinement inference *"just work"* ...
 
 
-Refinement Types by Example
+Case Study: Vector Bounds
 ---------------------------
 
 <div class="mybreak"><br></div>
@@ -385,119 +376,7 @@ Inference
 
 Collections & HOFs
 
-**Refinements for Datatypes**
-
-Example: List `average`
------------------------
-
-\begin{code}
-{-@ average :: [Int] -> Int @-}
-average xs  = total `div` n
-  where
-    total   = foldr (+) 0 xs
-    n       = length xs
-
-length        :: [a] -> Int
-length []     = 0
-length (_:xs) = 1 + length xs
-\end{code}
-
-Yikes! `average` requires **non-empty** lists!
-
-Refinements for Datatypes
--------------------------
-
-**Lift** (some) functions into specification logic:
-
-\begin{code}
-{-@ measure length @-}
-\end{code}
-
-which lets us define a type alias
-
-\begin{code}
-{-@ type ListNE a = {v:[a] | 0 < length v} @-}
-\end{code}
-
-<div class="mybreak"><br></div>
-
-Now lets go back and *fix* `average` ...
-
-Measures Yield Refined Constructors
------------------------------------
-
-**Lift** (some) functions into specification logic:
-
-\begin{spec}
-data [a] where
-  []  :: {v:[a] | length v = 0}
-  (:) :: a
-      -> t:[a]
-      -> {v:[a] | length v = 1 + length t}
-\end{spec}
-
-Where `length` is **uninterpreted** in refinement Logic
-
-Example: `map` over Lists
--------------------------
-
-What's the problem here? (Lets fix it!)
-
-\begin{code}
-{-@ hwAverage :: ListNE (a, Int) -> Int @-}
-hwAverage nxs = average (map snd nxs)
-
-{-@ map :: (a -> b) -> [a] -> [b] @-}
-map f []     = []
-map f (x:xs) = f x : map f xs
-\end{code}
-
-Refinements for Datatypes
--------------------------
-
-<div class="mybreak"><br></div>
-
-**Measures**
-
-Specify properties as *functions over datatypes*
-
-
-Refinements for Datatypes
--------------------------
-
-<div class="mybreak"><br></div>
-
-**Measures**
-
-Specify properties as *functions over datatypes*
-
-<div class="mybreak"><br></div>
-
-**Refined Constructors**
-
-Instantiate constraints at *fold* (`C ...`) & *unfold* (`case-of`)
-
-
-Refinements for Datatypes
--------------------------
-
-<div class="mybreak"><br></div>
-
-**Measures**
-
-Specify properties as functions over datatypes
-
-<div class="mybreak"><br></div>
-
-**Refined Constructors**
-
-Instantiate constraints at *fold* (`C ...`) & *unfold* (`case-of`)
-
-<div class="mybreak"><br></div>
-
-**Automate verification of data types**
-
-Refinement Types by Example
+Case Study: Vector Bounds
 ---------------------------
 
 <div class="mybreak"><br></div>
@@ -512,30 +391,21 @@ Collections & HOFs
 
 Refinements for Datatypes
 
+Plan
+----
 
-Outline
--------
+<br>
+<br>
+
+**Part I:** [Refinements 101](02-refinements.html)
+
+Case Study: [Vector Bounds](03-example-vectors.html)
 
 <br>
 
-[Motivation](01-intro.html)
+**Part II:** **[Properties of Structures](04-data-properties.html)**
 
-[Refinements 101](02-refinements.html)
+Case Study: [MergeSort](05-example-mergesort.html), [Interpreter](06-example-interpreter.html)
 
-[Refinements by Example](03-examples.html)
-
-
-Outline
--------
-
-<br>
-
-[Motivation](01-intro.html)
-
-[Refinements 101](02-refinements.html)
-
-[Refinements by Example](03-examples.html)
-
-[How to Avoid Infinite Loops](04-termination.html)
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602

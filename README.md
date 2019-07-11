@@ -1,20 +1,25 @@
 README
 ======
 
-This repository has the materials for a 25 minute talk on Refinement Types,
-with [LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
+This repository has the materials various talks and tutorials using
+[LiquidHaskell](https://github.com/ucsd-progsys/liquidhaskell).
 
-For longer versions, you may be interested in:
++ [3 hr tutorial (CAV 2019)](http://ranjitjhala.github.io/CAV19-tutorial/)      -- branch `cav19`
++ [1 hr minute talk (PLDI 17)](http://ucsd-progsys.github.io/live/)             -- branch `retro`
 
-+ [2 Hr Workshop](http://ucsd-progsys.github.io/lh-workshop/)
+You may also be interested in other versions
+
++ [2 hr Workshop (LambdaConf 15)](http://ucsd-progsys.github.io/lh-workshop/)
+
+And a really long but hopefully fun tutorial
+
 + [Tutorial](http://ucsd-progsys.github.io/liquidhaskell-tutorial/)
-
 
 Running LiquidHaskell
 ---------------------
 
 1. [Try Online][online]
-2. [VM Image][]
+2. [VM Image][vm]
 3. [Build Locally][local]
 
 [online]: (http://ucsd-progsys.github.io/intro-refinement-types)
@@ -43,11 +48,15 @@ Build Slides
 
 To build rust-style html (in dist/_site)
 
-     $ stack exec -- make html
+```sh
+$ stack exec -- make html
+```
 
 To build reveal.js slides (in dist/_slides)
 
-     $ stack exec -- make slides
+```sh
+$ stack exec -- make slides
+```
 
 Edit Slides
 -----------
@@ -57,23 +66,10 @@ You can modify the following parameters:
 1. **Server URL**: change `liquidserver` in `assets/templates/preamble.lhs`
 2. **MathJax URL**: change the relevant link in `assets/templates/pagemeta.template`
 
-Misc Links
-----------
 
-WBL Heaps
-
-+ [HS+DT proof](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/CombinedProofs.hs#L68)
-+ [HS](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/NoProofs.hs#L96)
-+ [HS+Liquid](https://github.com/ucsd-progsys/liquidhaskell/blob/master/tests/pos/WBL.hs#L129)
-
-Insert Sort
-
-+ https://github.com/davidfstr/idris-insertion-sort/tree/master
-+ http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
-+ https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
 
 Outline [25]
--------
+------------
 
 + 01-intro         [3]
 + 02-refinements   [6]
@@ -81,9 +77,8 @@ Outline [25]
 + 04-abstracting   [4]
 + 05-concl         [3]
 
-
-Outline [45]
--------
+Outline PLDI 17 [45]
+--------------------
 
 + 01-intro         [5]
 + 02-refinements   [8]
@@ -91,6 +86,37 @@ Outline [45]
 + 04-termination   [7]
 + 05-reflection    [7]
 + 06-concl         [5]
+
+Outline CAV 19 [180]
+--------------------
+
+[see this](http://ucsd-pl.github.io/cse230/Hw4/Interpreter.html)
+
+Part I
+
++ [*] 01-intro
++ [*] 02-refinements
++ [ ] 03-example-vectors
+
+Part II
+
++ [ ] 04-data-properties
++ [ ] 05-example-mergesort
++ [ ] 06-example-interpreter
+
+Part III
+
++ [ ] 07-data-legal
++ [ ] 08-example-mergesort
++ [ ] 09-example-searchtree
+
+Part IV
+
++ [ ] 10-termination
++ [ ] 11-reflection
++ [ ] 12-example-nnf
++ [ ] 13-example-searchtree
+
 
 Proving Theorems
 ----------------
@@ -120,8 +146,6 @@ Proving Theorems
   sumTo // full-proof
 
   sumTo // PLE
-
-
 
 ```
 {-@ LIQUID "--higherorder"                         @-}
@@ -198,3 +222,22 @@ thm (x:xs) ys zs = ((x:xs) ++ ys) ++ zs
                 ==.  x : (xs ++ (ys ++ zs)) ? thm xs ys zs
                 ==.  (x : xs) ++ (ys ++ zs)
                 *** QED
+
+
+Misc Links
+----------
+
+WBL Heaps
+
++ [HS+DT proof](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/CombinedProofs.hs#L68)
++ [HS](https://github.com/jstolarek/dep-typed-wbl-heaps-hs/blob/master/src/TwoPassMerge/NoProofs.hs#L96)
++ [HS+Liquid](https://github.com/ucsd-progsys/liquidhaskell/blob/master/tests/pos/WBL.hs#L129)
+
+Insert Sort
+
++ https://github.com/davidfstr/idris-insertion-sort/tree/master
++ http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
++ https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
+
+
+
