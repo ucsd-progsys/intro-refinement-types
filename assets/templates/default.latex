@@ -238,7 +238,7 @@ $endfor$
 % \newcommand\myfootnote[1]{\footnotetext{#1}} 
 
 
-\input{templates/haskellListings}
+\input{assets/templates/haskellListings}
 
 
 \begin{document}

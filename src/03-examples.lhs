@@ -203,6 +203,7 @@ Inference
 
     The more interesting your types get,
     the less fun it is to write them down.
+    
                        -- Benjamin Pierce
 
 Inference: Vector Sum

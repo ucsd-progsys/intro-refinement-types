@@ -24,17 +24,20 @@ dummy = 7
 
 </div>
 
-<div class="slide">
 
-<br>
-<br>
+
+Follow Along at This URL
+------------------------
+
 <br>
 <br>
 <br>
 
 [http://ucsd-progsys.github.io/live/](http://ucsd-progsys.github.io/live/)
 
-</div>
+<br>
+
+Zoom in to see nav arrows
 
 Whats this?
 -----------
@@ -193,7 +196,7 @@ Goal: Language-Integrated Verification
 
 Verify *program specific* properties via *domain specific* analysis
 
-Goal: Language-Integrated Verification 
+Goal: Language-Integrated Verification
 ---------------------------------------
 
 <br>

@@ -9,7 +9,7 @@ FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
 IMG=assets/img
-GHPAGE=../live/ 
+GHPAGE=../live/
 
 ##############################################
 PANDOC=pandoc
@@ -23,6 +23,18 @@ BIB=$(TEMPLATES)/bib.lhs
 PAGETEMPLATE=$(DIST)/page.template
 LINKS=$(DIST)/links.txt
 INDEX=$(DIST)/index.lhs
+
+##############################################
+
+PANDOCPDF=pandoc \
+	--highlight-style=tango \
+	--from=markdown+lhs \
+	--biblio templates/sw.bib \
+	--chapters \
+	--latex-engine=pdflatex \
+	--template=assets/templates/default.latex \
+	--filter assets/filters/Figures.hs \
+	--filter assets/filters/Latex.hs
 
 ##############################################
 
@@ -68,6 +80,10 @@ slideObjects := $(patsubst %.lhs,%.lhs.slide.html,$(wildcard src/*.lhs))
 all: html
 
 ################ rust style html ###################################
+
+pdf: $(lhsObjects)
+	cat $(lhsObjects) > dist/pbook.lhs
+	PANDOC_TARGET=pbook.pdf $(PANDOCPDF) $(PREAMBLE) $(BIB) dist/pbook.lhs -o dist/pbook.pdf
 
 html: indexhtml $(htmlObjects)
 	cp src/*.html               $(SITE)/
@@ -118,13 +134,13 @@ clean:
 distclean:
 	rm -rf $(DIST)/* && rm -rf $(SITE)/* && rm -rf src/*.tex && rm -rf src/.liquid && rm -rf src/*.html
 
-upload: all 
+upload: all
 	cp -r $(SITE)/* $(GHPAGE)
 	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
 
-live: all 
+live: all
 	cp -r $(SITE)/* $(GHPAGE)
-	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin master 
+	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin master
 
 
 

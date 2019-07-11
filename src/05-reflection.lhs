@@ -459,6 +459,8 @@ sumPf n =   2 * sum n
 Types as Theorems, Programs as Proofs
 -------------------------------------
 
+<br>
+
 <p align=center>
 
 | **Code**    |     | **Math**    |
@@ -471,6 +473,8 @@ Types as Theorems, Programs as Proofs
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
+
+<br>
 
 <p align=center>
 
@@ -485,6 +489,8 @@ Types as Theorems, Programs as Proofs
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
+
+<br>
 
 <p align=center>
 
@@ -568,6 +574,8 @@ reduceTheorem
 
 Types as Theorems, Programs as Proofs
 -------------------------------------
+
+<br>
 
 <p align=center>
 
