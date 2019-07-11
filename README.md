@@ -96,7 +96,7 @@ Part I
 
 + [*] 01-intro
 + [*] 02-refinements
-+ [ ] 03-example-vectors
++ [*] 03-example-vectors
 
 Part II
 
@@ -114,7 +114,7 @@ Part IV
 
 + [ ] 10-termination
 + [ ] 11-reflection
-+ [ ] 12-example-nnf
++ [ ] 12-example-const
 + [ ] 13-example-searchtree
 
 
