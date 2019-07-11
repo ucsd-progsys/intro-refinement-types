@@ -1,33 +1,38 @@
 <div class="hidden">
 \begin{code}
 {-@ LIQUID "--no-termination" @-}
-{-@ LIQUID "--short-names"    @-}
+{- LIQUID "--short-names"    @-}
 
 module Examples
        ( sum
        , sum'
        , sum''
-       , average
-       , length
+       , range
+       -- , average
+       -- , length
        )
        where
 
-import Prelude hiding (foldr, map, sum, length, (!))
+import Prelude hiding (map, sum, length, (!))
 
 data Vector a
-
-range :: Int -> Int -> [Int]
 
 at   :: Vector a -> Int -> a
 at = undefined
 
 size :: Vector a -> Int
 size = undefined
+
+-- {-@ range :: lo:_ -> hi:{lo <= hi} -> [{v:_ | lo <= v && v < hi}] @-}
 \end{code}
 </div>
 
 Case Study: Vector Bounds
 -------------------------
+
+<br> 
+
+**Goal: Whirlwind Overview** 
 
 <div class="mybreak"><br></div>
 
@@ -42,9 +47,13 @@ Collections & HOFs
 Case Study: Vector Bounds
 -------------------------
 
+<br> 
+
+**Goal: Whirlwind Overview** 
+
 <div class="mybreak"><br></div>
 
-**Specifications**
+<font color="#1569C7">Specifications</font>
 
 Verification
 
@@ -52,11 +61,14 @@ Inference
 
 Collections & HOFs
 
-Refinements for Datatypes
 
 
 Case Study: Vector Bounds
 -------------------------
+
+<br> 
+
+**Goal: Whirlwind Overview** 
 
 <div class="mybreak"><br></div>
 
@@ -68,6 +80,10 @@ Specifications
 
 Case Study: Vector Bounds
 -------------------------
+
+<br> 
+
+**Goal: Whirlwind Overview** 
 
 <div class="mybreak"><br></div>
 
@@ -80,6 +96,17 @@ Specifications
 \begin{code}
 {-@ measure vlen :: Vector a -> Int @-}
 \end{code}
+
+An **uninterpreted function** describing the **size** of a `Vector`
+
+Specifications: Pre-Conditions
+------------------------------
+
+<div class="mybreak"><br></div>
+
+What does a function **require** for correct execution?
+
+
 
 Specifications: Pre-Conditions
 ------------------------------
@@ -96,7 +123,16 @@ What does a function **require** for correct execution?
 
 <div class="mybreak"><br></div>
 
-Refinement on the function's **input type**
+**Refinement on the function's Input Type**
+
+Input index must be between `0` and the size of `vec`
+
+Specifications: Post-Conditions
+-------------------------------
+
+<div class="mybreak"><br></div>
+
+What does a function **ensure** about its result?
 
 
 Specifications: Post-Conditions
@@ -109,25 +145,33 @@ What does a function **ensure** about its result?
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ size :: v:Vector a -> {n:Int | n == vlen v} @-}
+{-@ size :: vec:Vector a -> {n:Nat | n == vlen vec} @-}
 \end{code}
 
 <div class="mybreak"><br></div>
 
-Refinement on the function's **output type**
+**Refinement on the function's Output Type**
+
+Returned value equals the size of the input `vec` 
+
 
 Case Study: Vector Bounds
 -------------------------
 
+<br> 
+
+**Goal: Whirlwind Overview** 
+
 <div class="mybreak"><br></div>
 
-Specifications
+Specification
 
-**Verification**
+<font color="#1569C7">Verification</font>
 
 Inference
 
 Collections & HOFs
+
 
 Verification: Vector Sum
 ------------------------
@@ -146,17 +190,17 @@ sum v = loop 0
 
 <div class="mybreak"><br></div>
 
-Oops! What gives?
+**Exercise:** Does the above verify? If not, can you fix it so it does?
 
 Verification: Vector Sum
 ------------------------
 
-<img src="img/sum-code-numbers.png" height=150px>
+<img src="img/sum-code-numbers.png" height=200px>
 
 Verification: Vector Sum
 ------------------------
 
-<img src="img/sum-code-numbers.png" height=150px>
+<img src="img/sum-code-numbers.png" height=200px>
 
 **Verification Conditions**
 
@@ -179,15 +223,20 @@ $$\begin{array}{lll}
 Case Study: Vector Bounds
 ---------------------------
 
+<br> 
+
+**Goal: Whirlwind Overview** 
+
 <div class="mybreak"><br></div>
 
-Specifications
+Specification
 
 Verification
 
-**Inference**
+<font color="#1569C7">Inference</font>
 
 Collections & HOFs
+
 
 Inference
 ---------
@@ -240,13 +289,13 @@ Represent **unknown refinements** with $\kvar{}{\cdot}$ variables ...
 Inference: Vector Sum
 ---------------------
 
-<img src="img/sum-code-infer.png" height=150px>
+<img src="img/sum-code-infer.png" height=200px>
 
 
 Inference: Vector Sum
 ---------------------
 
-<img src="img/sum-code-infer.png" height=150px>
+<img src="img/sum-code-infer.png" height=200px>
 
 **Horn Constraints**
 
@@ -296,15 +345,19 @@ $$\kvar{}{v} = 0 \leq v$$
 Case Study: Vector Bounds
 ---------------------------
 
+<br> 
+
+**Goal: Whirlwind Overview** 
+
 <div class="mybreak"><br></div>
 
-Specifications
+Specification
 
 Verification
 
 Inference
 
-**Collections & HOFs**
+<font color="#1569C7">Collections & HOFs</font>
 
 
 Collections & Higher-Order Functions
@@ -312,16 +365,60 @@ Collections & Higher-Order Functions
 
 <div class="mybreak"><br></div>
 
-**Composition >> Recursion!**
+**HOFs >> Recursion!**
 
 Collections & Higher-Order Functions
 ------------------------------------
 
 <div class="mybreak"><br></div>
 
-**Generic Sequences**
+**HOFs >> Recursion!**
+
+<br>
+
+[Example: AWS Pagination API (OLD)](https://docs.aws.amazon.com/sdk-for-java/v2/developer-guide/examples-pagination.html)
+
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**HOFs >> Recursion!**
+
+<div class="mybreak"><br></div>
+
+**Example: AWS Pagination API (OLD)**
+
+<p align=center>
+<img src="img/aws-pag-while.png" height=220px style="-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>
+</p>
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**HOFs >> Recursion!**
+
+<div class="mybreak"><br></div>
+
+**Example: AWS Pagination API (NEW)**
+
+<p align=center>
+<img src="img/aws-pag-stream.png" height=40px style="-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>
+</p>
+
+
+Collections & Higher-Order Functions
+------------------------------------
+
+<div class="mybreak"><br></div>
+
+**Refining Sequences**
 
 \begin{code}
+range :: Int -> Int -> [Int]
 range lo hi
   | lo < hi   = lo : range (lo + 1) hi
   | otherwise = []
@@ -329,7 +426,7 @@ range lo hi
 
 <div class="mybreak"><br></div>
 
-(What's a good type for `range`?)
+**Exercise:** Can you write down a good type for `range`?
 
 
 Collections & Higher-Order Functions
@@ -337,34 +434,50 @@ Collections & Higher-Order Functions
 
 <div class="mybreak"><br></div>
 
-**Fold over Sequences**
+**Reduce over Sequences (c.f. Map-Reduce)**
 
 \begin{code}
-foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr f b []     = b
-foldr f b (x:xs) = f x (foldr f b xs)
+reduce :: (a -> b -> a) -> a -> [b] -> a
+reduce f acc []     = acc 
+reduce f acc (x:xs) = let 
+                          acc' = f acc x 
+                      in
+                          reduce f acc' xs
 \end{code}
+
+**Type of `reduce` looks like Floyd-Hoare rule for Loops!**
+
+Type `a` is an *invariant* that holds on *initial* `acc` and is *inductively* by `f`
 
 Collections & Higher-Order Functions
 ----------------------
 
 <div class="mybreak"><br></div>
 
-**"Wholemeal" Vector Sum**
+**Vector Sum by Reduction**
 
 \begin{code}
 sum''   :: Vector Int -> Int
-sum'' v = foldr add 0 is
-  where
-    add = \i n -> n + at v i
-    is  = range 0 (size v)
+sum'' vec = let
+              is  = range 0 (size vec)
+              add = \n i -> n + at vec i 
+            in 
+              reduce add 0 is               
 \end{code}
 
-Types make refinement inference *"just work"* ...
+Polymorphic types make refinement inference "just work" ...
 
+\begin{spec}<div/>
+     is  ::        [{i:|0 <= i < len vec}]              
+     add :: Int  -> {i:|0 <= i < len vec} -> Int 
+\end{spec}
 
 Case Study: Vector Bounds
----------------------------
+-------------------------
+
+<br> 
+
+**Recap: Whirlwind Overview** 
 
 <div class="mybreak"><br></div>
 
@@ -375,21 +488,6 @@ Verification
 Inference
 
 Collections & HOFs
-
-Case Study: Vector Bounds
----------------------------
-
-<div class="mybreak"><br></div>
-
-Specifications
-
-Verification
-
-Inference
-
-Collections & HOFs
-
-Refinements for Datatypes
 
 Plan
 ----

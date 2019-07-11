@@ -446,7 +446,7 @@ Plan
 
 **Part I:** [Refinements 101](02-refinements.html)
 
-<br>
+<div class="mybreak"><br></div>
 
 **Case Study: [Vector Bounds](03-example-vectors.html)**
 
