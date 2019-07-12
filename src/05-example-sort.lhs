@@ -5,237 +5,165 @@
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--no-termination" @-}
 
-module InsertSort where
+module Sort where
 
 import Prelude hiding (sum, length, map, filter, foldr, foldr1)
 import qualified Data.Set as S -- hiding (elems, insert)
 
-insert, insertE :: (Ord a) => a -> List a -> List a
-sort, sortE     :: (Ord a) => List a -> List a
+insert, insertE :: (Ord a) => a -> [a] -> [a]
+sort, sortE     :: (Ord a) => [a] -> [a]
+
+split :: [a] -> ([a], [a])
+merge :: Ord a => [a] -> [a] ->  [a]
+msort :: Ord a => [a] -> [a]
+
 
 {-@ measure length @-}
-length :: List a -> Int
-length Emp        = 0
-length (_ ::: xs) = 1 + length xs
+{-@ length :: [a] -> Nat @-}
+length :: [a] -> Int
+length []     = 0
+length (_:xs) = 1 + length xs
 
-
-data List a  = Emp
-             | (:::) { hd :: a, tl :: List a }
-             deriving (Eq, Ord, Show)
-
-infixr 9 :::
-
-infixr 9 :<:
-
--- | Lists of a given size N
-{-@ type ListN a N = {v:List a | length v == N } @-}
-
-{-@ type OListE a S = {v:OList a | elemsO v = S} @-}
-
-{-@ measure elemsO @-}
-elemsO :: (Ord a) => OList a -> S.Set a
-elemsO OEmp       = S.empty
-elemsO (x :<: xs) = addElemO x xs
-
-{-@ inline addElemO @-}
-addElemO :: (Ord a) => a -> OList a -> S.Set a
-addElemO x xs = S.singleton x `S.union` elemsO xs
+-- insert :: x:_ -> xs:_ -> ListN a {1 + length xs} 
+-- insertE :: x:_ -> xs:_ -> ListE a {addElem x xs} 
+-- {-@ split :: xs:[a] -> {v:([a], [a]) | length (fst v) + length (snd v) = length xs} @-}
+-- {-@ merge :: xs:[a] -> ys:[a] -> ListN a {length xs + length ys} @-} 
 \end{code}
 
 </div>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Case Study: Insertion Sort
-==========================
-
+Case Study: Sorting Lists
+------------------------- 
 
 <br>
 <br>
+
+**Insertion Sort**
+
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+**Merge Sort**
+
+Case Study: Sorting Lists
+------------------------- 
+
 <br>
 <br>
 
-Insertion Sort {#asdisort}
+<font color="#1569C7">**Insertion Sort**</font>
+
+<br>
+
+**Merge Sort**
+
+
+Insertion Sort
 --------------
 
 <br>
 
-\begin{spec}
-sort :: (Ord a) => List a -> List a
-sort []           = Emp
-sort (x:xs)       = insert x (sort xs)
-
-insert :: (Ord a) => a -> List a -> List a
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys
+\begin{spec}<div/>
+            sort :: (Ord a) => List a -> List a
+            sort []         = []
+            sort (x:xs)     = insert x (sort xs)
+            
+            insert :: (Ord a) => a -> List a -> List a
+            insert x []     = x : Emp
+            insert x (y:ys)
+              | x <= y      = x : y : ys
+              | otherwise   = y : insert x ys
 \end{spec}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
 
 Goal: Verified Insertion Sort
 -----------------------------
 
 <br>
-
-**Goal:** specify & verify that output:
-
 <br>
 
-1. <div class="fragment">Is the same **size** as the input,</div>
-2. <div class="fragment">Has the same **elements** as the input,</div>
-3. <div class="fragment">Is in increasing **order**.</div>
+**Specify & Verify that output of `sort`**
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+<div class="mybreak"><br></div>
+
+Is the same **size** as the input 
+
+Has the same **elements** as the input 
+
+(Later) Is actually **sorted** in increasing order
+
+Goal: Verified Insertion Sort
+-----------------------------
+
 <br>
 <br>
 
+**Specify & Verify that output of `sort`**
+
+<div class="mybreak"><br></div>
+
+<font color="#1569C7">Is the same **size** as the input</font>
+
+Has the same **elements** as the input 
+
+(Later) Is actually **sorted** in increasing order
 
 Property 1: Size
-================
-
-
+----------------
 
 <br>
 <br>
-<br>
-<br>
-<br>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-Exercise: `insert`
-------------------
-
-**Q:** Can you fix the type of `insert` so `sort` checks?
+**An Alias for lists of size N** 
 
 \begin{code}
-{-@ sort :: (Ord a) => xs:List a -> ListN a {length xs} @-}
-sort Emp          = Emp
-sort (x:::xs)     = insert x (sort xs)
-
-{-@ insert :: (Ord a) => a -> xs:List a -> List a @-}
-insert x Emp      = x ::: Emp
-insert x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insert x ys
+{-@ type ListN a N = {v:[a] | length v == N} @-}
 \end{code}
 
 
+Property 1: Size
+----------------
+
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+\begin{code}
+{-@ sort :: xs:[a] -> ListN a (length xs) @-}
+sort []         = []
+sort (x:xs)     = insert x (sort xs)
+
+{-@ insert :: a -> xs:[a] -> [a] @-}
+insert x []     = [x] 
+insert x (y:ys)
+  | x <= y      = x : y : ys
+  | otherwise   = y : insert x ys
+\end{code}
+
+**Exercise:** Fix the type of `insert` so `sort` checks?
+
+Goal: Verified Insertion Sort
+-----------------------------
+
 <br>
 <br>
 
+**Specify & Verify that output of `sort`**
 
+<div class="mybreak"><br></div>
 
-Property 2: Elements
-====================
+Is the same **size** as the input
 
+<font color="#1569C7">Has the same **elements** as the input</font>
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+(Later) Is actually **sorted** in increasing order
 
-
-
-Permutation
------------
+Property 2: Permutation
+-----------------------
 
 <br>
 
 Same size is all fine, how about **same elements** in output?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
 
 SMT Solvers Reason About Sets
 -----------------------------
-
-<div class="fragment">
 
 <br>
 
@@ -243,7 +171,7 @@ Hence, we can write *Set-valued* measures
 
 <br>
 
-Using the `Data.Set` API for convenience
+Using the standard library `Data.Set` API for convenience
 
 <br>
 
@@ -251,595 +179,133 @@ Using the `Data.Set` API for convenience
 import qualified Data.Set as S
 \end{spec}
 
-</div>
 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Specifying A `List`s Elements
------------------------------
+Specifying A List's Elements
+----------------------------
 
 <br>
 
 \begin{code}
 {-@ measure elems @-}
-elems :: (Ord a) => List a -> S.Set a
-elems Emp      = S.empty
-elems (x:::xs) = addElem x xs
+elems :: (Ord a) => [a] -> S.Set a
+elems []     = S.empty
+elems (x:xs) = addElem x xs
 
 {-@ inline addElem @-}
-addElem :: (Ord a) => a -> List a -> S.Set a
+addElem :: (Ord a) => a -> [a] -> S.Set a
 addElem x xs = S.union (S.singleton x) (elems xs)
 \end{code}
 
 <br>
 
-<div class="fragment">
-`inline` lets us reuse Haskell terms in refinements.
-</div>
+`inline` lets us reuse (non-recursive) program functions in refinements
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Exercise: Verifying Permutation
--------------------------------
+Property 2: Permutation
+-----------------------
 
 Lets verify that `sortE` returns the same set of elements:
 
 \begin{code}
-{-@ type ListE a S = {v:List a | elems v = S} @-}
+{-@ type ListE a S = {v:[a] | elems v = S} @-}
 
-{-@ sortE :: (Ord a) => xs:List a -> ListE a {elems xs} @-}
-sortE Emp         = Emp
-sortE (x:::xs)    = insertE x (sortE xs)
+{-@ sortE :: xs:[a] -> ListE a (elems xs) @-}
+sortE []     = []
+sortE (x:xs) = insertE x (sortE xs)
 
-{-@ insertE :: (Ord a) => x:a -> xs:List a -> List a @-}
-insertE x Emp     = x ::: Emp
-insertE x (y:::ys)
-  | x <= y        = x ::: y ::: ys
-  | otherwise     = y ::: insertE x ys
+{-@ insertE :: x:a -> xs:[a] -> [a] @-} 
+insertE x []      = [x]
+insertE x (y:ys)
+  | x <= y        = x : y : ys
+  | otherwise     = y : insertE x ys
 \end{code}
 
-**Q:** Can you fix the type for `insertE` so `sortE` verifies?
+**Exercise:** Can you fix the type for `insertE` so `sortE` verifies?
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Property 3: Order
-=================
-
-<br>
-
-Yes, yes, but does `sort` actually **sort** ?
-
-<br>
-
-<div class="fragment">
-
-How to specify **ordered lists** ?
-
-</div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Recall: Refined Data Types
---------------------------
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-Refined Data: Ordered Pairs
----------------------------
-
-<br>
-
-Lets write a type for **ordered pairs**
-
-\begin{code}
-data OrdPair = OP {opX :: Int, opY :: Int}
-\end{code}
-
-<br>
-
-<div class="fragment">
-**Legal Values** value of `opX < opY`
-
-\begin{spec}
-okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal
-\end{spec}
-</div>
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Exercise: Ordered Pairs
------------------------
-
-<br>
-
-**Q:** Can you refine the data type to *legal* values only?
-
-<br>
-
-\begin{code}
-{-@ data OrdPair = OP { opX :: Int, opY :: Int} @-}
-
-okPair  = OP 2 4  -- legal
-badPair = OP 4 2  -- illegal
-\end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Refined Data: CSV Tables
-------------------------
-
-<br>
-
-\begin{code}
-data Csv = Csv {
-   hdrs :: List String
- , vals :: List (List Int)
- }
-
-scores  = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::       27  :::      83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }
-\end{code}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Exercise: Valid CSV Tables
---------------------------
-
-<br>
-
-**Q:** Can you refine `Csv` so `scores'` is rejected?
-
-\begin{code}
-{-@ data Csv = Csv {
-      hdrs :: List String
-    , vals :: List (List Int)
-    }                                          @-}
-
-scores' = Csv {
-   hdrs =  "Id" ::: "Midterm" ::: "Final" ::: Emp
- , vals = (   1 :::       25  :::      88 ::: Emp)
-      ::: (   2 :::                    83 ::: Emp)
-      ::: (   3 :::       19  :::      93 ::: Emp)
-      ::: Emp
- }
-\end{code}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Property 3: Ordered Lists
--------------------------
-
-<br>
-
-**Refine** the `List` data type to enforce **ordering**!
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Lists
------
-
-<br>
-
-Lets **define** a type for ordered lists
-
-<br>
-
-\begin{code}
-data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList a }
-\end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Ordered Lists
--------------
-
-<br>
-
-Lets **refine** the type to enforce **order**
-
-<br>
-
-\begin{code}
-{-@ data OList a =
-      OEmp
-    | (:<:) { oHd :: a
-            , oTl :: OList {v:a | oHd <= v}} @-}
-\end{code}
-
-<br>
-
-Head `oHd` is **smaller than every value** `v` in tail `oTl`
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Ordered Lists
--------------
-
-<br>
-
-*Illegal values unrepresentable*
-
-<br>
-
-\begin{code}
-okList :: OList Int
-okList = 1 :<: 2 :<: 3 :<: OEmp
-
-badList :: OList Int
-badList = 1 :<: 3 :<: 2 :<: OEmp
-\end{code}
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Exercise: Insertion Sort
-------------------------
-
-<br>
-
-**Q:** Oops. There's a problem! Can you fix it?
-
-<br>
-
-\begin{code}
-{-@ sortO ::  xs:List a -> OListE a {elems xs} @-}
-sortO Emp      = OEmp
-sortO (x:::xs) = insertO x (sortO xs)
-
-{-@ insertO :: x:a -> xs:_  -> OListE a {addElemO x xs} @-}
-insertO x (y :<: ys)
-  | x <= y     = y :<: x :<: ys
-  | otherwise  = y :<: insertO x ys
-insertO x _    = x :<: OEmp
-\end{code}
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Multiple Measures
-=================
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-Different Measures for `List`
+Goal: Verified Insertion Sort
 -----------------------------
 
 <br>
-
-We just wrote *two* measures for `List`
-
 <br>
 
-+ `length :: List a -> Nat`
-+ `elems  :: List a -> Set a`
+**Specify & Verify that output of `sort`**
+
+<div class="mybreak"><br></div>
+
+Is the same **size** as the input 
+
+Has the same **elements** as the input
+
+<font color="#1569C7">
+(Later) Is actually **sorted** in increasing order
+</font>
+
+
+Case Study: Sorting Lists
+------------------------- 
 
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+
+**Insertion Sort**
+
 <br>
 
-Multiple Measures are Conjoined
+<font color="#1569C7">
+**Merge Sort**
+</font>
+
+
+Exercise: MergeSort Size 
+------------------------
+
+\begin{code}
+{-@ msort :: xs:[a] -> ListN a (length xs) @-}
+msort []   = []
+msort [x]  = [x]
+msort xs   = let (xs1, xs2) = split xs
+             in 
+                 merge (msort xs1) (msort xs2)
+
+{-@ split :: xs:[a] -> ([a], [a]) @-}
+split (x:y:zs) = let (xs, ys) = split zs 
+                 in 
+                     (x:xs, y:ys) 
+split xs       = (xs, [])
+
+{-@ merge :: xs:[a] -> ys:[a] -> [a] @-} 
+merge xs []         = xs
+merge [] ys         = ys
+merge (x:xs) (y:ys)
+  | x <= y          = x : merge xs (y:ys)
+  | otherwise       = y : merge (x:xs) ys
+\end{code}
+
+
+Exercise: MergeSort Permutation
 -------------------------------
 
 <br>
-
-Data constructor refinements are **conjoined**
-
+<br>
 <br>
 
-\begin{spec}
-data List a where
-  Emp   :: {v:List a |  length v = 0
-                     && elems v  = empty}
-  (:::) :: x:a
-        -> xs:List a
-        -> {v:List a |  length v = 1 + length xs
-                     && elems v  = addElem x  xs }
+**Go back and modify the previous code to verify**
+
+\begin{spec}<div/>
+                {-@ msort :: xs:[a] -> ListE a (elems xs) @-}
 \end{spec}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Measures vs. Indexed Types
---------------------------
-
-<br>
-
-Unlike [indexed types](http://dl.acm.org/citation.cfm?id=270793), measures ...
-
-<br>
-
-<div class="fragment">
-
-+ **Decouple** properties from data type
-
-+ **Reuse** same data type with different invariants
-
-</div>
+Plan
+----
 
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
-Refinements vs. Full Dependent Types
-------------------------------------
+**Part I:** [Refinements 101](02-refinements.html)
+
+Case Study: [Vector Bounds](03-example-vectors.html)
 
 <br>
 
-+ *Limited* to **decidable logics** but ...
+**Part II:** [Properties of Structures](04-data-properties.html)
 
-+ *Offer* massive amounts of **automation**
-
-<br>
-
-<div class="fragment">
-
-Compare with `insertionSort` in:
-
-+ [Haskell-Singletons](https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs)
-+ [Idris](https://github.com/davidfstr/idris-insertion-sort/tree/master)
-+ [Coq](http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v)
-
-</div>
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Continue
---------
-
-<br>
-
-<div class="fragment">
-**Next: Case Studies**
-
-+ [Insertion Sort](04-case-study-insertsort.html)
-+ [Well Scoped Evaluator](05-case-study-eval.html)
-+ [Low-level Memory](06-case-study-bytestring.html)
-</div>
-
-<br>
-
-[[Continue]](05-case-study-eval.html)
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+Case Study: [Sorting](05-example-sort.html), **[Interpreter](06-example-interpreter.html)**
