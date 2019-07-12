@@ -255,8 +255,10 @@ Case Study: Sorting Lists
 </font>
 
 
-Exercise: MergeSort Size 
-------------------------
+MergeSort: Size 
+--------------
+
+**Exercise: Fix specifications for `split` and `merge` to verify `msort`
 
 \begin{code}
 {-@ msort :: xs:[a] -> ListN a (length xs) @-}
@@ -281,14 +283,14 @@ merge (x:xs) (y:ys)
 \end{code}
 
 
-Exercise: MergeSort Permutation
+MergeSort: Permutation
 -------------------------------
 
 <br>
 <br>
 <br>
 
-**Go back and modify the previous code to verify**
+**Exercise:** Modify the previous code to verify that
 
 \begin{spec}<div/>
                 {-@ msort :: xs:[a] -> ListE a (elems xs) @-}
@@ -309,7 +311,7 @@ Case Study: [Sorting](05-example-sort.html), **[Interpreter](06-example-interpre
 
 **Part III:** [Invariants of Data Structures](07-data-legal.html)
 
-Case Study: [Sorting and Search Trees](08-example-sort.html)
+Case Study: [Sorting revisited](08-example-sort.html)
 
 **Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
 

@@ -309,7 +309,7 @@ Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interprete
 
 **Part III:** **[Invariants of Data Structures](07-data-legal.html)**
 
-Case Study: [Sorting and Search Trees](08-example-sort.html)
+Case Study: [Sorting revisited](08-example-sort.html)
 
 **Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
 
