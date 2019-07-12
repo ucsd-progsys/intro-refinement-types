@@ -8,32 +8,51 @@ module Examples
        , length
        )
        where
+
+import Prelude hiding (map, length)
+
+reduce :: (a -> b -> a) -> a -> [b] -> a
+reduce f acc []     = acc 
+reduce f acc (x:xs) = let acc' = f acc x 
+                      in
+                          reduce f acc' xs
 \end{code}
+
 </div>
 
 Properties of Data Structures
 -----------------------------
 
-<div class="mybreak"><br></div>
+<br>
+<br>
 
-**So far:** Refinements just describe properties of basic values like `Int`
+**So far: Refinements for properties of basic values like `Int`**
 
 e.g. `{v:Int | lo <= v && v < hi}`
 
-<div class="mybreak"><br></div>
+Properties of Data Structures
+-----------------------------
 
-**Next:** How to describe properties of complex data structures
+<br>
+<br>
+
+**So far: Refinements for properties of basic values like `Int`**
+
+e.g. `{v:Int | lo <= v && v < hi}`
+
+<br>
+
+**Next: How to describe properties of data structures**
 
 Example: List `average`
 -----------------------
 
-<div class="mybreak"><br></div>
+<br>
+<br>
 
-Suppose we have a built-in `div` operator:
+**Suppose we have a built-in `div` operator:**
 
-\begin{spec}<div/>
-      div :: Int -> {d:Int| d /= 0} -> Int
-\end{spec}
+`div :: Int -> {d:Int| d /= 0} -> Int`
 
 <div class="mybreak"><br></div>
 
@@ -61,7 +80,7 @@ length []    = 0
 length (_:t) = 1 + length t 
 \end{code}
 
-**Exercise** Why is there an error? 
+**Exercise:** Why is there an error? 
 
 Properties of Structures
 ------------------------
@@ -92,7 +111,7 @@ Properties of Structures
 {-@ measure length @-}
 \end{code}
 
-Which lets us define a type alias
+**Which lets us define a type alias**
 
 \begin{code}
 {-@ type ListNE a = {v:[a] | 0 < length v} @-}
@@ -100,41 +119,69 @@ Which lets us define a type alias
 
 <div class="mybreak"><br></div>
 
-**Exercise:** Can you go back and *fix* `average` so it checks?
+**Exercise:** Go back and *fix* `average` so it checks?
 
-Measures Yield Refined Constructors
------------------------------------
+Properties of Structures
+------------------------
 
-<div class="mybreak"><br></div>
+<br>
 
-**Measures Allow (some) Functions Inside Refinements**
+**Measures Yield Refined Constructors**
 
 \begin{spec}<div/>
-[]  :: {v:[a] | length v = 0}
-(:) :: a -> t:[a] -> {v:[a] | length v = 1 + length t}
+   []  :: {v:[a] | length v = 0}
+   (:) :: a -> t:[a] -> {v:[a] | length v = 1 + length t}
 \end{spec}
 
-Where `length` is **uninterpreted** in refinement Logic
+
+Properties of Structures
+------------------------
+
+<br>
+
+**Measures Yield Refined Constructors**
+
+\begin{spec}<div/>
+   []  :: {v:[a] | length v = 0}
+   (:) :: a -> t:[a] -> {v:[a] | length v = 1 + length t}
+\end{spec}
+
 
 <div class="mybreak"><br></div>
 
-Now plain refinement typing "just works" for properties of strucures!
+**Where `length` is uninterpreted in refinement Logic**
+
+Properties of Structures
+------------------------
+
+<br>
+
+**Measures Yield Refined Constructors**
+
+\begin{spec}<div/>
+   []  :: {v:[a] | length v = 0}
+   (:) :: a -> t:[a] -> {v:[a] | length v = 1 + length t}
+\end{spec}
+
+<div class="mybreak"><br></div>
+
+**Where `length` is uninterpreted in refinement Logic**
+
+<div class="mybreak"><br></div>
+
+Now plain refinement typing "just works" for properties of structures!
 
 
 Example: `map` over Lists
 -------------------------
 
-Here's a datatype that defines a list of homework scores
+A datatype for homework scores, function to compute their average:
 
 \begin{code}
 data Hw = Hw { getName  :: String  -- ^ Student's Name
-             , getScore :: Int     -- ^ Student's Score 
+             , getScore :: Int     -- ^ Student's Score  
              }
-\end{code}
 
-Here's a function to compute the average of a collection of scores
-
-\begin{code}
 hwAverage :: [Hw] -> Int
 hwAverage hws = average (map getScore hws)
 
@@ -153,10 +200,10 @@ Recap: Properties of Structures
 **Measures specify properties as functions over Structures**
 
 \begin{spec}<div/>
-   {-@ measure length @-}
-   length       :: [a] -> Int
-   length []    = 0
-   length (_:t) = 1 + length t
+                 {-@ measure length @-}
+                 length       :: [a] -> Nat
+                 length []    = 0
+                 length (_:t) = 1 + length t
 \end{spec}
 
 Recap: Properties of Structures
@@ -167,11 +214,12 @@ Recap: Properties of Structures
 **Measures specify properties as functions over Structures**
 
 \begin{spec}<div/>
-   {-@ measure length @-}
-   length       :: [a] -> Int
-   length []    = 0
-   length (_:t) = 1 + length t
+                 {-@ measure length @-}
+                 length       :: [a] -> Nat
+                 length []    = 0
+                 length (_:t) = 1 + length t
 \end{spec}
+
 <div class="mybreak"><br></div>
 
 **Refined Constructor Types**
@@ -236,5 +284,3 @@ Case Study: [Vector Bounds](03-example-vectors.html)
 **Part II:** [Properties of Structures](04-data-properties.html)
 
 Case Study: **[Sorting](05-example-sort.html)**, [Interpreter](06-example-interpreter.html)
-
-

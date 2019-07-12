@@ -463,38 +463,34 @@ sum''   :: Vector Int -> Int
 sum'' vec = let is  = range 0 (size vec)
                 add = \n i -> n + at vec i 
             in 
-              reduce add 0 is               
+                reduce add 0 is               
 \end{code}
 
-Polymorphic types make refinement inference "just work" ...
+Polymorphic types enable [automatic refinement inference](100-range-constraints.html)
 
 \begin{spec}<div/>
      is  :: [{i:|0 <= i < len vec}]              
      add :: Int  -> {i:|0 <= i < len vec} -> Int 
 \end{spec}
 
-[Bonus slides: Constraints and Solution for `range`](03-bonus.html)
 
 
 Refinement Types and Collections
 --------------------------------
 
-<div class="mybreak"><br></div>
+<br>
+<br>
+<br>
 
-**Types Simplify Checking Properties of Collections** 
+**Types are an Algorithm for Generalization and Instantiation**
 
-Type system = Algorithm for *generalization* and *instantiation* 
-
-<div class="mybreak"><br></div>
 
 Refinement Types and Collections
 --------------------------------
 
+**Types are an Algorithm for Generalization and Instantiation**
+
 <div class="mybreak"><br></div>
-
-**Types Simplify Checking Properties of Collections** 
-
-Type system = Algorithm for *generalization* and *instantiation* 
 
 **Generalization**
 
@@ -502,24 +498,19 @@ Lift properties from single _value_ to whole _collection_
 
 e.g. from individual values to whole collection in `range`
 
-<div class="mybreak"><br></div>
 
 Refinement Types and Collections
 --------------------------------
 
+**Types are an Algorithm for Generalization and Instantiation**
+
 <div class="mybreak"><br></div>
-
-**Types Simplify Checking Properties of Collections** 
-
-Type system = Algorithm for *generalization* and *instantiation* 
 
 **Generalization**
 
 Lift properties from single _value_ to whole _collection_
 
 e.g. from individual values to whole collection in `range`
-
-<div class="mybreak"><br></div>
 
 **Instantiation**
 
@@ -560,81 +551,5 @@ Case Study: [Vector Bounds](03-example-vectors.html)
 **Part II:** **[Properties of Structures](04-data-properties.html)**
 
 Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
-
-Bonus Slides: Verifying `range`
--------------------------------
-
-\begin{spec}<div/>
-range :: lo:_ -> hi:{lo <= hi} -> [{v:_ | lo <= v && v < hi}] 
-range lo hi
-  | lo < hi   = let tail = range (lo + 1) hi  ---------- (1)
-                in  lo : tail -------------------------- (2-lo, 2-tail, 2-res)
-  | otherwise = [] ------------------------------------- (3)  
-\end{spec}
-
-**Polymorphic Type for "Cons"**
-
-\begin{spec}<div/>
-    (:) :: a -> [a] -> [a]
-\end{spec}
-
-**Polymorphic Instance for "Cons"** 
-
-\begin{spec}<div/>
-    (:) :: {v:Int|K(v)} -> [{v:Int|K(v)}] -> [{v:Int|K(v)}]
-\end{spec}
-
-where `a` replaced with unknown `{v:Int|K(v)}`
-
-
-Subtyping Constraints
----------------------
-
-\begin{spec}<div/>
-range :: lo:_ -> hi:{lo <= hi} -> [{v:_ | lo <= v && v < hi}] 
-range lo hi
-  | lo < hi   = let tail = range (lo + 1) hi  ---------- (1)
-                in  lo : tail -------------------------- (2-lo, 2-tail, 2-res)
-  | otherwise = [] ------------------------------------- (3)  
-\end{spec}
-
-Yields the **Subtyping Constraints**
-
-\begin{spec}<div/>
-lo < hi |- {v:Int|v = lo+1}     <: {v:Int|v <= hi}    -- (1)
-lo < hi |- {v:Int|v = lo}       <: {v:Int|K(v)}       -- (2-lo)
-lo < hi |- [{v:Int|lo+1<=v<hi}] <: [{v:Int|K(v)}]     -- (2-tail)
-lo < hi |- [{v:Int|K(v)}]       <: [{v:Int|lo<=v<hi}] -- (2-res)
-lo >=hi |- [{v:Int|false}]      <: [{v:Int|lo<=v<hi}] -- (3)
-\end{spec}
-
-Horn Constraints
-----------------
-
-\begin{spec}<div/>
-range :: lo:_ -> hi:{lo <= hi} -> [{v:_ | lo <= v && v < hi}] 
-range lo hi
-  | lo < hi   = let tail = range (lo + 1) hi  ---------- (1)
-                in  lo : tail -------------------------- (2-lo, 2-tail, 2-res)
-  | otherwise = [] ------------------------------------- (3)  
-\end{spec}
-
-**List Subtyping reduces to element-wise Subtyping**
-
-\begin{spec}<div/>
-lo < hi => (v = lo+1)   => (v <= hi)                  -- (1)
-lo < hi => (v = lo)     => K(v)                       -- (2-lo)
-lo < hi => (lo+1<=v<hi) => K(v)                       -- (2-tail)
-lo < hi => K(v)         => (lo <= v < hi)             -- (3)
-lo >=hi => false        => (lo <= v < hi)             -- (3)
-\end{spec}
-
-**Solution**
-
-\begin{spec}<div/>
-K(v) := lo <= v < hi
-\end{spec}
-
-
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602
