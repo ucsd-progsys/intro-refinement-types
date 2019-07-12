@@ -188,11 +188,11 @@ Case Study: [Vector Bounds](03-example-vectors.html)
 
 **Part II:** [Properties of Structures](04-data-properties.html)
 
-Case Study: [MergeSort](05-example-mergesort.html), [Interpreter](06-example-interpreter.html)
+Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
 
 **Part III:** [Invariants of Data Structures](07-data-legal.html)
 
-Case Study: [MergeSort](08-example-mergesort.html), [Binary Search Trees](09-example-searchtree.html)
+Case Study: [Sorting](08-example-sort.html), [Binary Search Trees](09-example-searchtree.html)
 
 **Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
 

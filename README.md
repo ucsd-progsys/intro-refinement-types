@@ -35,11 +35,15 @@ This is also very easy, if you can manage the 2Gb download.
 
 **Step 2** Choose your editor. For *emacs* do:
 
-       tar -zxvf liquid-emacs.tgz
+```sh
+tar -zxvf liquid-emacs.tgz
+```
 
 and for *Spacemacs* (a great Vim-Emacs hybrid) do:
 
-       tar -zxvf liquid-spacemacs.tgz
+```sh
+tar -zxvf liquid-spacemacs.tgz
+```
 
 **Step 3** Grab the source files from Github.
 
@@ -49,13 +53,13 @@ Build Slides
 To build rust-style html (in dist/_site)
 
 ```sh
-$ stack exec -- make html
+stack exec -- make html
 ```
 
 To build reveal.js slides (in dist/_slides)
 
 ```sh
-$ stack exec -- make slides
+stack exec -- make slides
 ```
 
 Edit Slides
@@ -238,6 +242,4 @@ Insert Sort
 + https://github.com/davidfstr/idris-insertion-sort/tree/master
 + http://www.enseignement.polytechnique.fr/informatique/INF551/TD/TD5/aux/Insert_Sort.v
 + https://github.com/goldfirere/singletons/blob/master/tests/compile-and-dump/InsertionSort/InsertionSortImp.hs
-
-
 
