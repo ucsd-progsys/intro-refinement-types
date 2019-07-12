@@ -26,7 +26,7 @@ dummy = 7
 <br>
 
 <h4 style="border-bottom:none"><font color="green">
-UC San Diego & Amazon/ARG
+UC San Diego & AWS/ARG
 </font></h4>
 
 </p>
@@ -192,8 +192,8 @@ Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interprete
 
 **Part III:** [Invariants of Data Structures](07-data-legal.html)
 
-Case Study: [Sorting](08-example-sort.html), [Binary Search Trees](09-example-searchtree.html)
+Case Study: [Sorting and Search Trees](08-example-sort.html)
 
 **Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
 
-Case Study: [Negation Normal Form](12-example-nnf.html), [SearchTrees](13-example-searchtree.html)
+Case Study: [Optimizer](12-example-opt.html)

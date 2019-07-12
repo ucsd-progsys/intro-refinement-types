@@ -437,16 +437,22 @@ Dependent Application + Predicate Subtyping
 
 <div class="mybreak"><br></div>
 
+
 Plan
 ----
 
-<br>
-<br>
-<br>
-
 **Part I:** [Refinements 101](02-refinements.html)
-
-<div class="mybreak"><br></div>
 
 **Case Study: [Vector Bounds](03-example-vectors.html)**
 
+**Part II:** [Properties of Structures](04-data-properties.html)
+
+Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
+
+**Part III:** [Invariants of Data Structures](07-data-legal.html)
+
+Case Study: [Sorting and Search Trees](08-example-sort.html)
+
+**Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
+
+Case Study: [Optimizer](12-example-opt.html)
