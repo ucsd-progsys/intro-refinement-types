@@ -8,6 +8,7 @@ module Examples
        , sum'
        , sum''
        , range
+       , binarySearch
        -- , average
        -- , length
        )
@@ -475,6 +476,7 @@ Polymorphic types enable [automatic refinement inference](100-range-constraints.
 
 
 
+
 Refinement Types and Collections
 --------------------------------
 
@@ -535,6 +537,33 @@ Verification
 Inference
 
 Collections & HOFs
+
+Putting it All Together: Binary Search
+--------------------------------------
+
+\begin{code}
+binarySearch :: Ord a => a -> Vector a -> Maybe Int
+binarySearch x v = 
+  if size v == 0
+    then Nothing
+    else loop x v 0 (size v - 1)
+
+loop :: Ord a => a -> Vector a -> Int -> Int -> Maybe Int
+loop x v lo hi = do
+    let mid = lo + ((hi - lo) `div` 2)
+    if x < (at v mid)
+    then do let hi' = mid - 1
+            if lo <= hi'
+              then loop x v lo hi'
+              else Nothing
+    else if (at v mid) < x
+    then do let lo' = mid + 1
+            if lo' <= hi
+            then loop x v lo' hi
+            else Nothing
+    else Just mid
+\end{code}
+
 
 Plan
 ----
