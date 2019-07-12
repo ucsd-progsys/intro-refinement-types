@@ -297,6 +297,8 @@ unsafe2 = (While (AVal 0) (Asgn "Z" (AVal 1)))  `Seq` -- while (0) { z := 1}
 Plan
 ----
 
+<br>
+
 **Part I:** [Refinements 101](02-refinements.html)
 
 Case Study: [Vector Bounds](03-example-vectors.html)
@@ -311,4 +313,4 @@ Case Study: [Sorting and Search Trees](08-example-sort.html)
 
 **Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
 
-Case Study: [Optimizer](11-example-opt.html)
+Case Study: [Optimizing Arithmetic Expressions](12-example-opt.html)

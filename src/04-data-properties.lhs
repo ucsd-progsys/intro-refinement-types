@@ -243,7 +243,7 @@ Recap: Properties of Structures
 
 **Generalize Properties** 
 
-During *construction* i.e. *applying* `[]` and `(:)` 
+During *construction* i.e. *applying* type of `[]` and `(:)` 
 
 <div class="mybreak"><br></div>
 
@@ -261,22 +261,58 @@ Recap: Properties of Structures
 
 **Generalize Properties** 
 
-During *construction* i.e. *applying* `[]` and `(:)` 
+During *construction* i.e. *applying* type of `[]` and `(:)` 
 
 <div class="mybreak"><br></div>
 
 **Instantiate Properties** 
 
-During *destruction* i.e. *pattern-matching* `[]` and `(:)` 
+During *pattern-matching* i.e. *unapplying* type of  `[]` and `(:)` 
+
+Multiple Measures are Conjoined
+-------------------------------
+
+<br>
+<br>
+
+We wrote multiple measures for lists
+
+\begin{spec}<div/>
+                 length :: [a] -> Nat
+                 elems  :: [a] -> Set a
+\end{spec}
+
+
+Multiple Measures are Conjoined
+-------------------------------
+
+We wrote multiple measures for lists
+
+\begin{spec}<div/>
+                 length :: [a] -> Nat
+                 elems  :: [a] -> Set a
+\end{spec}
+
+Their data constructor refinements are **conjoined**
+
+\begin{spec}<div/>
+  []  :: {v:[a] | length v = 0 && elems v = empty}
+  (:) :: x:a -> xs:[a] -> {v:[a] |  length v = 1 + length xs
+                                 && elems v  = addElem x  xs }
+\end{spec}
+
+**Allows programmer to easily _extend_ properties**
 
 Plan
 ----
 
+<br> 
+
 **Part I:** [Refinements 101](02-refinements.html)
 
-**Case Study: [Vector Bounds](03-example-vectors.html)**
+Case Study: [Vector Bounds](03-example-vectors.html)
 
-**Part II:** **[Properties of Structures](04-data-properties.html)**
+**Part II:** [Properties of Structures](04-data-properties.html)
 
 Case Study: **[Sorting](05-example-sort.html)**, [Interpreter](06-example-interpreter.html)
 
@@ -286,6 +322,6 @@ Case Study: [Sorting and Search Trees](08-example-sort.html)
 
 **Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
 
-Case Study: [Optimizer](12-example-opt.html)
+Case Study: [Optimizing Arithmetic Expressions](12-example-opt.html)
 
 
