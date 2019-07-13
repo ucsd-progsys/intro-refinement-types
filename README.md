@@ -104,23 +104,20 @@ Part I
 
 Part II
 
-+ [ ] 04-data-properties
-+ [ ] 05-example-mergesort
-+ [ ] 06-example-interpreter
++ [*] 04-data-properties
++ [*] 05-example-sort
++ [*] 06-example-interpreter
 
 Part III
 
-+ [ ] 07-data-legal
-+ [ ] 08-example-mergesort
-+ [ ] 09-example-searchtree
++ [*] 07-data-legal
++ [*] 08-example-sort
 
 Part IV
 
-+ [ ] 10-termination
-+ [ ] 11-reflection
-+ [ ] 12-example-const
-+ [ ] 13-example-searchtree
-
++ [ ] 09-termination
++ [ ] 10-reflection
++ [ ] 11-example-opt
 
 Proving Theorems
 ----------------
