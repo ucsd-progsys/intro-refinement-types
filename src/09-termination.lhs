@@ -91,7 +91,7 @@ Proving Termination
 
 Metric gets _strictly smaller_ and has a _lower-bound_
 
-_e.g. 99 bottles, 98 bottles, ..._
+_e.g. 99 bottles, 98 bottles, ..., 0 bottles!_
 
 Example: Proving Termination of `sum`
 -------------------------------------
@@ -349,32 +349,3 @@ Avoiding Infinite Loops is Easy (in Practice)
 
 `8`   currently *outside scope* of LiquidHaskell
 
-
-Outline
--------
-
-<br>
-
-[Motivation](01-intro.html)
-
-[Refinements 101](02-refinements.html)
-
-[Refinements by Example](03-examples.html)
-
-[How to Avoid Infinite Loops](04-termination.html)
-
-
-Outline
--------
-
-<br>
-
-[Motivation](01-intro.html)
-
-[Refinements 101](02-refinements.html)
-
-[Refinements by Example](03-examples.html)
-
-[How to Avoid Infinite Loops](04-termination.html)
-
-[Types as Theorems, Programs as Proofs](05-reflection.html)

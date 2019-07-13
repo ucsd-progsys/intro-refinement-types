@@ -313,4 +313,4 @@ Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
 
 **Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
 
-Case Study: [Optimizing Arithmetic Expressions](12-example-opt.html)
+Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)
