@@ -311,8 +311,8 @@ Case Study: [Sorting](05-example-sort.html), **[Interpreter](06-example-interpre
 
 **Part III:** [Invariants of Data Structures](07-data-legal.html)
 
-Case Study: [Sorting revisited](08-example-sort.html)
+Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
 
-**Part IV:** [Termination](10-termination.html) and [Correctness Proofs](11-reflection.html)
+**Part IV:** [Termination](09-termination.html) and [Correctness Proofs](11-reflection.html)
 
 Case Study: [Optimizing Arithmetic Expressions](12-example-opt.html)
