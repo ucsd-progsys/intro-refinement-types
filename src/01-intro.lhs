@@ -33,6 +33,14 @@ UC San Diego & AWS/ARG
 
 </div>
 
+AWS/ARG
+-------
+
+<p align=center>
+<img src="img/arg_intern_add.jpeg" height=280px/>
+</p>
+
+
 
 
 Follow Along at This URL

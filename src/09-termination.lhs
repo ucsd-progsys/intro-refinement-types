@@ -4,7 +4,7 @@
 {-# LANGUAGE TupleSections    #-}
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--short-names"    @-}
-{-@ LIQUID "--diff"           @-}
+{-  LIQUID "--diff"           @-}
 
 module Termination where
 
@@ -14,6 +14,9 @@ ack     :: Int -> Int -> Int
 range   :: Int -> Int -> [Int]
 fastSum :: Int -> Int -> Int
 
+-- {-@ split :: xs:[a] -> Halves a xs @-}
+-- {-@ type Halves a Xs = {v: (Half a Xs, Half a Xs) | len (fst v) + len (snd v) == len Xs} @-}
+-- {-@ type Half   a Xs = {v:[a] | (len Xs > 1) => (len v < len Xs)}                         @-}
 \end{code}
 
 </div>
@@ -41,8 +44,14 @@ Code is meant to be run...
 \end{spec}
 
 
-Code is meant to be run...and to finish!
-----------------------------------------
+Code is meant to be run...
+--------------------------
+
+<br>
+
+
+Code is meant to be run...and finish!
+-------------------------------------
 
 <br>
 <br>
@@ -59,7 +68,6 @@ Code is meant to be run...and to finish!
 
 <br>
 
-**Oh no, What happened?!**
 
 
 Avoiding Infinite Loops
@@ -70,9 +78,10 @@ Avoiding Infinite Loops
 </p>
 
 
-Lets use types to prove termination!
-------------------------------------
+Lets prove termination!
+-----------------------
 
+<br>
 
 
 
@@ -240,7 +249,7 @@ Why does `append` terminate?
 
 \begin{code}
 append           :: [a] -> [a] -> [a]
-append []     ys = ys []
+append []     ys = ys
 append (x:xs) ys = x : append xs ys
 \end{code}
 
@@ -256,7 +265,7 @@ User specified metrics on Data Types
 Why _does_ `merge` terminate?
 
 \begin{code}
-{-@ merge :: xs:[a] -> ys:[a] -> [a] @-}
+{-@ merge :: xs:[a] -> ys:[a] -> [a] / [len xs + len ys] @-}
 merge (x:xs) (y:ys)
   | x < y           = x : merge xs (y : ys)
   | otherwise       = y : merge ys (x : xs)
@@ -276,18 +285,15 @@ Termination Can be Tricky
 \begin{code}
 sort :: Ord a => [a] -> [a]
 sort []      = []
-sort xs      = merge (sort ys) (sort zs)
-  where
-    (ys, zs) = split xs
+sort xs      = let (ys, zs) = split xs 
+               in 
+                 merge (sort ys) (sort zs)
 
-{-@ split :: xs:[a] -> Halves a xs @-}
+
 split :: [a] -> ([a], [a])
 split (x:y:zs) = let (xs, ys) = split zs in 
                      (x:xs, y:ys) 
 split xs       = (xs, [])
-
-{-@ type Halves a Xs = {v: (Half a Xs, Half a Xs) | len (fst v) + len (snd v) == len Xs} @-}
-{-@ type Half   a Xs = {v:[a] | (len v > 1) => (len v < len Xs)}                         @-}
 \end{code}
 
 Avoiding Infinite Loops

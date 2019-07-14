@@ -117,6 +117,7 @@ get x (Bind y v s)
   | x == y    = v         -- ^ found the variable `x`, return v
   | otherwise = get x s   -- ^ recursively search `s`
 get x Emp     = impossible (x ++ " is undefined!") 
+
 \end{code}
 
 **Exercise:** When is the last case in `get` indeed `impossible`?
