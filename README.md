@@ -119,6 +119,31 @@ Part IV
 + [ ] 10-reflection
 + [ ] 11-example-opt
 
+
+Outline PLISS 2021 [120]
+------------------------
+
+Part I : Refinements 101
+
++ [] 01-intro
++ [] 02-refinements
++ [] 03-example-vectors
+
+Part II : Refining Datatypes
+
++ [] 04-data-properties
++ [] 05-example-sort
++ [] 06-data-legal
+
+Part III : Case Studies
+
++ [] 07-example-interpreter
++ [] 08-example-bytestring
+
+
+
+
+
 Proving Theorems
 ----------------
 
