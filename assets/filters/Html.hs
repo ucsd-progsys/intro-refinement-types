@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-@ LIQUID "--no-termination" @-}
 
 module InTex where
@@ -6,6 +7,7 @@ import Data.Maybe
 import Text.Pandoc.JSON
 import Data.List
 import Debug.Trace
+import qualified Data.Text as T
 
 main :: IO ()
 main = toJSONFilter tx
@@ -36,7 +38,7 @@ txInline (RawInline (Format "tex") z)
 
   | isNewthought z
   = [LineBreak, Strong [Str z']]
-  where z' = stripLatexCmd z
+  where z' = T.pack $ stripLatexCmd (T.unpack z)
 
 txInline (RawInline (Format "tex") z)
   = error $ "BAD LATEX: " ++ show z
@@ -49,7 +51,7 @@ hwexHTML id kvs (b : bs)
   = Div (id, ["hwex"], kvs) bs'
     where
       bs' = (addHdr hdr b) : bs ++ [Plain [LineBreak, LineBreak]]
-      hdr = Strong [Str $ "Exercise: (" ++ id ++ "): "]
+      hdr = Strong [Str $ "Exercise: (" <> id <> "): "]
 
 
 addHdr i (Plain is) = Plain (LineBreak : i : is)
@@ -66,9 +68,9 @@ dropBrace s       = s
 dropLast  = reverse . dropFirst . reverse
 dropFirst = tail
 
-isNoindent   = isPrefixOf "\\noindent"
-isNewthought = isPrefixOf "\\newthought"
-isHint       = isPrefixOf "\\hint"
+isNoindent   = T.isPrefixOf "\\noindent"
+isNewthought = T.isPrefixOf "\\newthought"
+isHint       = T.isPrefixOf "\\hint"
 
 txVerb s
   | isVerb c0 cn = error "asd" -- CodeBlock ... (unlines $ fromMaybe [] $ snip ls)

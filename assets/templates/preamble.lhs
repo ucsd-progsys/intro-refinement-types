@@ -7,6 +7,6 @@ toc:            true
 bibliography:   sw.bib
 notitle:        true
 root:           "."
-liquidserver:   "https://liquid-demo.programming.systems/"
+liquidserver:   https://liquid-demo.programming.systems/
 pdflink:        "book.pdf"
 ---

@@ -1,8 +1,12 @@
+
+{-# LANGUAGE OverloadedStrings #-}
+
 {-@ LIQUID "--no-termination" @-}
 
 module HeaderSlides where
 
 import Text.Pandoc.JSON
+import qualified Data.Text as T
 
 main :: IO ()
 main = toJSONFilter txPandoc
@@ -19,7 +23,10 @@ txPandoc (Pandoc m bs)   = Pandoc m bs''
 slideDiv :: Int -> Block -> [Block] -> Block
 slideDiv i h bs = Div attr (h:bs)
   where
-    attr        = ("slide-" ++ show i, ["slide"], [])
+    attr        = ("slide-" <> tshow i, ["slide"], [])
+
+tshow :: (Show a) => a -> T.Text
+tshow = T.pack . show
 
 splitOn :: (a -> Bool) -> [a] -> ([a], [(a, [a])])
 splitOn f xs    = (pre, splitOn' f rest)

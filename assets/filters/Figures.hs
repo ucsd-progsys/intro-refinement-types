@@ -83,9 +83,9 @@ txLink   :: (Walkable Inline b) => IORef Info -> b -> IO b
 txLink r = walkM (reLink r)
 
 reLink   :: IORef Info -> Inline -> IO Inline
-reLink r (Link [Str "auto"] tgt@('#':i,_))
-  = do n <- getCount r i
-       return $ Link [Str (show n)] tgt
+-- reLink r (Link attr [Str "auto"] tgt@('#':i,_))
+--   = do n <- getCount r i
+--        return $ Link attr [Str (tshow n)] tgt
 
 reLink _ i
   = return i
@@ -101,35 +101,37 @@ txBlock tgt prefix t r (Div (i, [cls], kvs) _)
 txBlock _ _ _ _ z
   = return z -- $ trace ("IAMTHIS:" ++ show z) z
 
-isFigure   :: String -> Bool
+isFigure   :: T.Text -> Bool
 isFigure s = s `elem` ["figure", "marginfigure"]
 
-makeFigure :: (Show a) => a -> T.Text -> T.Text -> IORef Info -> String -> String -> [(String, String)] -> IO Block
+makeFigure :: (Show a) => a -> T.Text -> T.Text -> IORef Info -> T.Text -> T.Text -> [(T.Text, T.Text)] -> IO Block
 makeFigure tgt prefix t r i cls kvs
-  = RawBlock (Format $ show tgt) . pad prefix t i cls kvs <$> getCount r i
+  = RawBlock (Format $ tshow tgt) . pad prefix t i cls kvs <$> getCount r i
 
-pad :: Show a => T.Text -> T.Text -> String -> String -> [(String, String)] -> a -> String
+tshow :: (Show a) => a -> T.Text
+tshow = T.pack . show 
+
+pad :: Show a => T.Text -> T.Text -> T.Text -> T.Text -> [(T.Text, T.Text)] -> a -> T.Text
 pad prefix tplt i cls kvs n
   = {- trace ("PAD" ++ show res) $ -} res
   where
-    res = L.unpack $ substitute tplt ctx
+    res = {- L.unpack $ -} L.toStrict $ substitute tplt ctx
     ctx          :: T.Text -> T.Text
-    ctx "class"  = T.pack cls
-    ctx "label"  = T.pack i
-    ctx "number" = T.pack $ show n
+    ctx "class"  = cls
+    ctx "label"  = i
+    ctx "number" = tshow n
     ctx "file"   = T.append prefix  (get "file" kvs)
-    ctx str      = get (T.unpack str) kvs
+    ctx str      = get str kvs
 
-get :: String -> [(String, String)] -> T.Text
-get k kvs = T.pack
-            $ fromMaybe (error $ "Cannot find: " ++ k )
+get :: T.Text -> [(T.Text, T.Text)] -> T.Text
+get k kvs =   fromMaybe (error $ "Cannot find: " ++ T.unpack k )
             $ lookup k kvs
 
 ----------------------------------------------
 
 data Info = Info { chapter :: Int
                  , count   :: Int
-                 , label   :: M.Map String Int
+                 , label   :: M.Map T.Text Int
                  }
             deriving (Show)
 
@@ -141,7 +143,7 @@ instance Show Ref where
 emptyInfo :: Info
 emptyInfo = Info 0 1 M.empty
 
-getCount :: IORef Info -> String -> IO Ref
+getCount :: IORef Info -> T.Text -> IO Ref
 getCount r idt
   = do info <- readIORef r
        let m  = label info

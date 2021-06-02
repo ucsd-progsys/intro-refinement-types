@@ -123,25 +123,23 @@ Part IV
 Outline PLISS 2021 [120]
 ------------------------
 
-Part I : Refinements 101
+
+Part I : Refinements on Functions
 
 + [] 01-intro
 + [] 02-refinements
 + [] 03-example-vectors
 
-Part II : Refining Datatypes
+Part II : Refinements on Datatypes 
 
 + [] 04-data-properties
-+ [] 05-example-sort
-+ [] 06-data-legal
++ [] 05-data-legal 
++ [] 06-example-sort
 
 Part III : Case Studies
 
 + [] 07-example-interpreter
 + [] 08-example-bytestring
-
-
-
 
 
 Proving Theorems

@@ -6,6 +6,7 @@
 
 module Toc where
 
+import Data.List (sort)
 import Data.Monoid (mempty)
 import Debug.Trace
 import Text.Printf (printf)
@@ -17,7 +18,7 @@ import Text.Pandoc
 import Text.Pandoc.Walk (query)
 import Control.Monad
 import Control.Applicative ((<$>))
-
+import Control.Exception (throw)
 import qualified Data.Map as M
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as L
@@ -38,7 +39,7 @@ main = do
   let tocT = T.pack $ tocHtml toc
   writeFile pageF  $ plug tplt  tocT
   writeFile indexF $ plug itplt tocT
-  writeFile linkF  $ tocDB toc
+  -- writeFile linkF  $ tocDB toc
 
 plug :: T.Text -> T.Text -> String
 plug tplt toc = L.unpack $ substitute tplt ctx
@@ -54,11 +55,12 @@ newtype TOC = TOC [(Int, FilePath, [(Ref, Info)])]
 
 type Ref  = String
 
-data Info = Info { i_file  :: FilePath
-                 , i_level :: Int
-                 , i_name  :: String
-                 }
-            deriving (Show)
+data Info = Info 
+  { i_file  :: FilePath
+  , i_level :: Int
+  , i_name  :: String
+  }
+  deriving (Show)
 
 data Chapter = Ch { c_num  :: Int
                   , c_name :: (Ref, Info)
@@ -70,7 +72,7 @@ data Chapter = Ch { c_num  :: Int
 
 makeToc :: FilePath -> IO TOC
 makeToc dir = do
-  files  <- dirLhs dir
+  files  <- sort <$> dirLhs dir
   refs   <- mapM fileTOC [dir </> f | f <- files]
   return  $ TOC $ zip3 [1..] files refs -- M.fromList $ concat refs
 
@@ -81,17 +83,23 @@ dirLhs dir = do
 
 readDoc   :: FilePath -> IO (Maybe Pandoc)
 readDoc f = do
-  str <- readFile f
-  let doc = readMarkdown def str  -- <$> readFile f
+  str <- TIO.readFile f
+  doc <- runIO (readMarkdown def str) 
   return $ rightToMaybe doc
 
 fileTOC :: FilePath -> IO [(Ref, Info)]
 fileTOC f = query (getRef f) <$> readDoc f
 
-
 getRef :: FilePath -> Block -> [(Ref, Info)]
-getRef f b@(Header n (l,_,_) is) = [(l, Info f n $ inlineString is)]
+getRef f b@(Header n (l,_,_) is) = [(T.unpack l, Info f n $ inlineString is)]
 getRef _ _                       = []
+
+inlineString :: [Inline] -> String
+inlineString is = case runPure act of 
+                    Left e -> throw e
+                    Right t -> T.unpack t
+  where
+    act = writeHtml5String def (Pandoc mempty [Plain is])
 
 tocHtml     :: TOC -> String
 tocHtml toc = unlines $  ["<ul class='chapter'>"]
@@ -137,11 +145,7 @@ makeLink file ref = htmlFile file ++ "#" ++ ref
 htmlFile file = (takeFileName file) `replaceExtension` ".html"
 
 -------------------------------------------------------------------------------
-
-inlineString    = writeHtmlString def . inlinePandoc
-inlinePandoc is = Pandoc mempty [Plain is]
-
 -------------------------------------------------------------------------------
 
 tocDB   :: TOC -> String
-tocDB _ = "undefined"
+tocDB _ = "tocDB:undefined"

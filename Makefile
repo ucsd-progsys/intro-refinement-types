@@ -9,7 +9,7 @@ FILTERS=assets/filters
 JS=assets/js
 CSS=assets/css
 IMG=assets/img
-GHPAGE=../CAV19-tutorial/
+GHPAGE=../pliss21-tutorial/
 
 ##############################################
 PANDOC=stack exec -- pandoc
@@ -43,16 +43,17 @@ PANDOCHTML=$(PANDOC)\
 	 --to=html5 \
      -s --mathjax \
 	 --standalone \
-     --parse-raw \
 	 --mathjax \
 	 --toc \
 	 --section-divs \
-	 --filter $(LIQUIDCLIENT)/templates/codeblock.hs \
+	 --filter $(FILTERS)/codeblock.hs \
 	 --filter $(FILTERS)/Figures.hs \
 	 --filter $(FILTERS)/Html.hs \
 	 --filter $(FILTERS)/HeaderSlides.hs \
 	 --variable=notitle \
 	 --highlight-style=tango
+
+# -f html+raw_html \
 
 REVEAL=$(PANDOC)\
 	   --from=markdown\
@@ -105,10 +106,10 @@ indexhtml: $(INDEX)
 	$(PANDOC) --from=markdown+lhs --to=html5 --template=$(INDEX) $(PREAMBLE) -o $(SITE)/index.html
 
 $(INDEX):
-	$(INDEXER) src/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
+	stack exec -- $(INDEXER) src/ $(METATEMPLATE) $(INDEXTEMPLATE) $(PAGETEMPLATE) $(INDEX) $(LINKS)
 
 src/%.html: src/%.lhs
-	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? $(TEMPLATES)/bib.lhs -o $@
+	PANDOC_TARGET=$@ PANDOC_CODETEMPLATE=$(LIQUIDCLIENT)/templates/code.template $(PANDOCHTML) --template=$(PAGETEMPLATE) $(PREAMBLE) $? $(TEMPLATES)/bib.lhs --metadata title="$*" -o $@
 
 ################ reveal slides html ###################################
 
@@ -136,7 +137,7 @@ distclean:
 
 upload: all
 	cp -r $(SITE)/* $(GHPAGE)
-	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
+# cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
 
 live: all
 	cp -r $(SITE)/* $(GHPAGE)

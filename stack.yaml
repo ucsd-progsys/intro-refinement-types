@@ -1,9 +1,16 @@
+# resolver: nightly-2016-01-06
+# resolver: lts-16.8
+
+resolver: lts-16.16
+
 flags: {}
 
 packages:
 - .
 
+extra-deps: 
+- template-0.2.0.10
 
-extra-deps: []
-# resolver: nightly-2015-09-18
-resolver: nightly-2016-01-06
+compiler: ghc-8.10.2
+
+allow-newer: true

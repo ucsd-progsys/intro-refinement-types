@@ -1,3 +1,7 @@
+---
+title: "Habits"
+---
+
 <div class="hidden">
 \begin{code}
 module Intro where
@@ -13,9 +17,8 @@ dummy = 7
 <br>
 <br>
 
-
 <p align=center>
-<h1 style="border-bottom:none">Verification with Refinement Types</h1>
+<h1 style="border-bottom:none">An Introduction to Refinement Types</h1>
 
 <br>
 
@@ -26,20 +29,12 @@ dummy = 7
 <br>
 
 <h4 style="border-bottom:none"><font color="green">
-UC San Diego & AWS/ARG
+UC San Diego
 </font></h4>
 
 </p>
 
 </div>
-
-AWS/ARG
--------
-
-<p align=center>
-<img src="img/arg_intern_add.jpeg" height=280px/>
-</p>
-
 
 
 
@@ -50,160 +45,199 @@ Follow Along at This URL
 <br>
 <br>
 
-[http://ranjitjhala.github.io/CAV2019-tutorial/](http://ranjitjhala.github.io/CAV2019-tutorial/)
+[http://ranjitjhala.github.io/pliss21-tutorial/](http://ranjitjhala.github.io/pliss21-tutorial/)
 
 <br>
 
 **Zoom in** to see nav arrows
 
+
+Whats this?
+-----------
+
+<br>
+
+<p align=center>
+<img src="img/firstbug-crop.jpg" height=200px/>
+</p>
+
+The First *Bug*
+---------------
+
+<br>
+
+<p align=center>
+<img src="img/firstbug-crop2.jpg" height=120px/>
+</p>
+
+<p align=center>
+**Page from Harvard Mark II log**
+
+A *dead moth* removed from the device
+</p>
+
+
+Fast forward to Present Day
+---------------------------
+
+
+<p align=center>
+<img src="img/news-bug-1.png" height=200px>
+</p>
+
+Fast forward to Present Day
+---------------------------
+
+
+<p align=center>
+<img src="img/news-bug-2.png" height=225px>
+</p>
+
+Fast forward to Present Day
+---------------------------
+
+
+<p align=center>
+<img src="img/news-bug-3.png" height=250px>
+</p>
+
 Program Analysis & Verification
 -------------------------------
 
-<br>
-<br>
-<br>
-<br>
-
-Why limited broader impact and adoption?
-
-Program Analysis & Verification
--------------------------------
-
-Why limited broader impact and adoption?
-
 <p align=center>
-<img src="img/intro0.png" height=280px/>
+  <img src="img/george-orwell.jpg" height=170px>
+
+  **George Orwell (1984)**
 </p>
 
-Program Analysis & Verification
--------------------------------
-
-Why limited broader impact and adoption?
-
-<p align=center>
-<img src="img/intro1.png" height=280px/>
-</p>
+<img src="img/thoughtcrime.png" height=45px>
 
 
-Program*mer's* Analysis & Verification
----------------------------------------
-
-<p align=center>
-<img src="img/intro2.png" height=330px/>
-</p>
-
-Analysis Influences Program's Design
-------------------------------------
-
-<p align=center>
-<img src="img/intro-fp0.png" height=330px/>
-</p>
-
-Analysis Influences Program's Design
-------------------------------------
-
-<p align=center>
-<img src="img/intro-fp1.png" height=330px/>
-</p>
-
-Analysis Influences Program's Design
-------------------------------------
+Modern Languages
+----------------
 
 <br>
 
-Uber NullAway [Sridharan et al.](https://eng.uber.com/nullaway/)
+F#
 
-<p align=center>
-<img src="img/intro-uber.png" height=220px style="-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>
-</p>
+Rust
 
-Analysis Influences Program's Design
-------------------------------------
+Scala
 
-<br>
+OCaml
 
-Static Analysis at Google [Sadowski et al. 2018](https://ai.google/research/pubs/pub46576) 
+Haskell
 
-<p align=center>
-<img src="img/intro-google.png" height=220px style="-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>
-</p>
 
-Analysis Influences Program's Design
-------------------------------------
+Modern Languages
+----------------
 
 <br>
 
-Infer Analysis at Facebook [Calcagno et al. 2018](https://research.fb.com/popl-2019-most-influential-paper-award-for-research-that-led-to-facebook-infer/) 
+Static Typing
 
-<p align=center>
-<img src="img/intro-fb.png" height=250px style="-webkit-filter: drop-shadow(5px 5px 5px #222); filter: drop-shadow(5px 5px 5px #222);"/>
-</p>
+First-class Functions
 
-Program*mer's* Analysis & Verification
----------------------------------------
+Immutability by Default
 
-<p align=center>
-<img src="img/intro2.png" height=330px/>
-</p>
-
-
-Program Influences Analysis' Abilities
---------------------------------------
-
-<p align=center>
-<img src="img/intro-out0.png" height=330px/>
-</p>
-
-Program Influences Analysis' Abilities
---------------------------------------
-
-<p align=center>
-<img src="img/intro-out1.png" height=330px/>
-</p>
-
-Language Integrated Verification (LIVE)
----------------------------------------
-
-<p align=center>
-<img src="img/intro2.png" height=260px/>
-</p>
+Modern Languages
+----------------
 
 <br>
 
-This tutorial: **LIVE with Refinement Types**
+Static Typing
+
+First-class Functions
+
+Immutability by Default
+
+<br>
+
+Make **good** designs **easy** and **bad** designs **hard**
+
+Modern Languages?
+-----------------
+
+<br>
+<br>
+<br>
+
+**Alas ... well-typed programs go very wrong!**
+
+Well-typed programs can go very wrong!
+-----------------
+
+<br>
+
+Well-typed programs can go very wrong!
+-----------------
+
+<hr style="height:5px; visibility:hidden;" />
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+
+Well-typed programs can go very wrong!
+-----------------
+
+<hr style="height:5px; visibility:hidden;" />
+
+Divide-by-zero
+
+Keys missing in Maps
+
+Pattern-match failures
+
+Buffer overflows (!)
+
+Non-termination
+
+Functional Correctness / Assertions...
+
+Goal: Language-Integrated Verification (LIVE)
+---------------------------------------------
+
+<br>
+
+**Expressive**
+
+Verify *program specific* properties via *domain specific* analysis
+
+Goal: Language-Integrated Verification (LIVE)
+---------------------------------------------
+
+<br>
+
+**Expressive**
+
+Verify *program specific* properties via *domain specific* analysis
+
+<br>
+
+**Automatic**
+
+Rapid feedback to *influence design*, not only post-facto validation
+
 
 LIVE with Refinement Types
 --------------------------
 
-<br>
-
-**Tutorial Goals**
-
-<br>
-
-Why and how to *use* Refinement Types 
-
-<br>
-
-How to *implement* Refinement Types
-
-Plan
-----
-
 <br> 
 
-**Part I:** **[Refinements 101](02-refinements.html)**
+**Part I:** **[Refinements on Functions](02-refinements.html)**
 
-Case Study: [Vector Bounds](03-example-vectors.html)
+Example: [Vector Bounds](03-example-vectors.html)
 
-**Part II:** [Properties of Structures](04-data-properties.html)
+**Part II:** [Refinements on Datatypes](04-data-properties.html)
 
-Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
+Example: [Sorting](06-example-sort.html)
 
-**Part III:** [Invariants of Data Structures](07-data-legal.html)
+**Part III:** Case Studies
 
-Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
+[Use-def analysis](07-example-interpreter.html)
 
-**Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
-
-Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)
+[Pointer Arithmetic](08-example-bytestring.html)
