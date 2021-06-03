@@ -59,6 +59,8 @@ MathJax.Hub.Config({
       Int:  "\\mathtt{Int}",
       Nat:  "\\mathtt{Nat}",
       Zero: "\\mathtt{Zero}",
+      Pos:  "\\mathtt{Pos}",
+      Two: "\\mathtt{Two}",
       foo:   ["{\\bf Jhala FOO #1}", 1],
       kvar:  ["{\\color[rgb]{1,0,0}{K_{#1}({#2})}}", 2],
       bindx: ["{{#1}\\!:\\!{#2}}", 2],

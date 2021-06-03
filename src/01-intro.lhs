@@ -1,7 +1,3 @@
----
-title: "Habits"
----
-
 <div class="hidden">
 \begin{code}
 module Intro where
@@ -176,9 +172,9 @@ Well-typed programs can go very wrong!
 
 Divide-by-zero
 
-Keys missing in Maps
-
 Pattern-match failures
+
+Buffer overflows (!)
 
 
 Well-typed programs can go very wrong!
@@ -188,56 +184,63 @@ Well-typed programs can go very wrong!
 
 Divide-by-zero
 
-Keys missing in Maps
-
 Pattern-match failures
 
 Buffer overflows (!)
 
 Non-termination
 
-Functional Correctness / Assertions...
+Information Leaks
+
+Functionality Bugs ...
 
 Goal: Language-Integrated Verification (LIVE)
 ---------------------------------------------
 
 <br>
 
-**Expressive**
+**Program Influences Analysis**
 
-Verify *program specific* properties via *domain specific* analysis
+Verify *program specific properties* via program specific analysis
+
 
 Goal: Language-Integrated Verification (LIVE)
 ---------------------------------------------
 
 <br>
 
-**Expressive**
+**Program Influences Analysis**
 
-Verify *program specific* properties via *domain specific* analysis
+Verify *program specific properties* via program specific analysis
+
 
 <br>
 
-**Automatic**
+**Analysis Influences Program**
 
-Rapid feedback to *influence design*, not only post-facto validation
+Rapid feedback to *influence design* not only post-facto validation
+
 
 
 LIVE with Refinement Types
 --------------------------
 
-<br> 
+<p style="margin-bottom:1.1cm;">
 
-**Part I:** **[Refinements on Functions](02-refinements.html)**
+**Part I: Refinements on Functions**
 
-Example: [Vector Bounds](03-example-vectors.html)
+a. [Basic Refinements](02-refinements.html) &emsp; &emsp; b. [Ex: Vector Bounds](03-example-vectors.html)
 
-**Part II:** [Refinements on Datatypes](04-data-properties.html)
+</p>
 
-Example: [Sorting](06-example-sort.html)
+<p style="margin-bottom:1.1cm;">
+**Part II: Refinements on Datatypes** 
 
-**Part III:** Case Studies
+a. [Legal data](04-data-legal.html) &emsp; &emsp; b. [Properties of data](05-data-properties.html) &emsp; &emsp; c. [Ex: Sorting](06-example-sort.html)
+</p>
 
-[Use-def analysis](07-example-interpreter.html)
+<p style="margin-bottom:1.1cm;">
+**Part III: Case Studies**
 
-[Pointer Arithmetic](08-example-bytestring.html)
+a. [Use-def analysis](07-example-interpreter.html) &emsp; &emsp; b. [Pointer Arithmetic](08-example-bytestring.html)
+</p>

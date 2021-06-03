@@ -8,8 +8,8 @@
 module SimpleRefinements where
 import Prelude hiding (abs, max)
 
-zero, zero', zero'', four, four' :: Int
-nats :: [Int]
+two, two', two'', four, four' :: Int
+digits :: [Int]
 
 {-@ plus :: x:Int -> y:Int -> {v:Int | v = x + y} @-}
 plus :: Int -> Int -> Int
@@ -19,17 +19,13 @@ plus x y = x + y
 minus :: Int -> Int -> Int
 minus x y = x - y
 
-
--- zero'       :: Int
--- safeDiv     :: Int -> Int -> Int
--- size, size' :: [a] -> Int
 \end{code}
 
 </div>
 
 
-Basic Refinement Types
-----------------------
+Refinement Types
+----------------
 
 <br>
 
@@ -39,16 +35,14 @@ Refinement Types = **Types** + **Predicates**
 Types
 -----
 
-<hr style="height:5px; visibility:hidden;" />
-
 \begin{spec}<div/>
-b := Int | Bool | ...  -- primitives
-   | a, b, c           -- type variables
+b := Int | Bool | Char ...  -- primitives
+   | a, b, c                -- type variables
 \end{spec}
 
 \begin{spec}<div/>
-t := {x:b | p}         -- refined base
-   | x:t -> t          -- refined function
+t := {x:b | p}              -- refined base
+   | x:t -> t               -- refined function
 \end{spec}
 
 `p` is a predicate from a **decidable logic**
@@ -64,11 +58,13 @@ Predicates
 
 **Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic**
 
+**Refinement Expressions**
+
 \begin{spec} <div/>
 e := x, y, z, ...         -- variables
    | 0, 1, 2, ...         -- constants
    | e + e | c * e | ...  -- arithmetic
-   | f e1 ... en          -- uninterpreted function
+   | f (e1 ... en)        -- functions
 \end{spec}
 
 Predicates
@@ -76,28 +72,34 @@ Predicates
 
 **Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic**
 
+**Refinement Expressions**
+
 \begin{spec} <div/>
 e := x, y, z, ...         -- variables
    | 0, 1, 2, ...         -- constants
    | e + e | c * e | ...  -- arithmetic
-   | f e1 ... en          -- uninterpreted function
+   | f (e1 ... en)        -- functions
 \end{spec}
 
 **Congruence Axiom for Uninterpreted Functions**
 
-$$\forall \overline{x}, \overline{y}.\ \overline{x} = \overline{y}\ \Rightarrow\ f(x) = f(y)$$
+$$\forall \overline{x}, \overline{y}.\ \overline{x} = \overline{y}\ \Rightarrow\ f(\overline{x}) = f (\overline{y})$$
 
 Predicates
 ----------
 
 **Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic**
 
+**Refinement Expressions**
+
 \begin{spec} <div/>
 e := x, y, z, ...         -- variables
    | 0, 1, 2, ...         -- constants
    | e + e | c * e | ...  -- arithmetic
-   | f e1 ... en          -- uninterpreted function
+   | f (e1 ... en)        -- functions
 \end{spec}
+
+**Refinement Predicates**
 
 \begin{spec} <div/>
 p := e <= e | ...         -- atoms
@@ -114,7 +116,7 @@ Quantifier-Free Logic of Uninterpreted Functions & Linear Arithmetic
 
 Given a **Verification Condition** (VC)
 
-$$p_1 \Rightarrow \ldots \Rightarrow p_n$$
+$$p \Rightarrow q$$
 
 SMT solvers can **decide if VC is Valid** ("always true")
 
@@ -123,13 +125,13 @@ Example: "Singletons"
 
 <hr style="height:5px; visibility:hidden;" />
 
-The alias `Zero` describes a type inhabited by a *single* `Int` value `0` 
+`Two` is a type inhabited by a *single* `Int` value `2` 
 
 \begin{code}
-{-@ type Zero = {v:Int | v == 0} @-}
+{-@ type Two = {v:Int | v == 2} @-}
 
-{-@ zero :: Zero @-}
-zero = 0
+{-@ two :: Two @-}
+two = 2 
 \end{code}
 
 <div class="fragment">
@@ -139,16 +141,16 @@ Refinement types via special comments `{-@ ... @-}`
 **Exercise:** What happens if you modify the code or type?
 
 
-Example: Natural Numbers
+Example: Positive Numbers
 ------------------------
 
 <hr style="height:5px; visibility:hidden;" />
 
 \begin{code}
-{-@ type Nat = {v:Int | 0 <= v} @-}
+{-@ type Pos = {v:Int | 0 < v} @-}
 
-{-@ nats :: [Nat] @-}
-nats     =  [0, 1, 2, 3]
+{-@ digits :: [Pos] @-}
+digits = [1, 2, 3]
 \end{code}
 
 **Exercise:** What happens if you modify the code or type?
@@ -160,18 +162,18 @@ A Term Can Have *Many* Types
 
 <div class="fragment">
 
-What *is* the type of `0` ?
+What *is* the type of `2` ?
 
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ zero' :: Nat @-}
-zero' = zero
+{-@ two' :: Pos @-}
+two' = two
 \end{code}
 
 </div>
 
-Is it `{v:Int|v=0}` or is it `{v:Int|0<=v}` ?
+Is it `{v:Int|v=2}` or is it `{v:Int|0<=v}` ?
 
 
 1. Predicate Subtyping [[NUPRL, PVS]](http://pvs.csl.sri.com/papers/subtypes98/tse98.pdf)
@@ -224,27 +226,27 @@ $$
 \end{array}
 $$
 
-Example: Natural Numbers
+Example: Positive Numbers
 ------------------------
 
 <div class="mybreak"><br></div>
 
 $$
 \begin{array}{rcrccll}
-\mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 0   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
-\mathbf{So:}            & \emptyset & \vdash      & \Zero    & \preceq     & \Nat      &   \\
+\mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 2   & \Rightarrow &  0 < v & \mbox{(by SMT)} \\
+\mathbf{So:}            & \emptyset & \vdash      & \Two     & \preceq     & \Pos   &   \\
 \end{array}
 $$
 
-Example: Natural Numbers
+Example: Positive Numbers
 ------------------------
 
 <div class="mybreak"><br></div>
 
 $$
 \begin{array}{rcrccll}
-\mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 0   & \Rightarrow &  0 \leq v & \mbox{(by SMT)} \\
-\mathbf{So:}            & \emptyset & \vdash      & \Zero    & \preceq     & \Nat      &   \\
+\mathbf{VC\ is\ Valid:} & \True     & \Rightarrow &  v = 2  & \Rightarrow &  0 < v & \mbox{(by SMT)} \\
+\mathbf{So:}            & \emptyset & \vdash      & \Two    & \preceq     & \Pos   &   \\
 \end{array}
 $$
 
@@ -254,8 +256,8 @@ $$
 And so, we can type:
 
 \begin{code}
-{-@ zero'' :: Nat @-}
-zero''    =  0    -- as |-  Zero <: Nat
+{-@ two'' :: Pos @-}
+two''    =  2    -- as |-  Two <: Pos
 \end{code}
 </div>
 
@@ -304,7 +306,7 @@ Terms built up by function-applications.
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ four :: Nat @-}
+{-@ four :: Pos @-}
 four  = plus x 1
   where
     x = 3
@@ -312,7 +314,7 @@ four  = plus x 1
 
 <div class="mybreak"><br></div>
 
-*How to prove* `four :: Nat` ?
+*How to prove* `four :: Pos` ?
 
 2. Typing Applications (Function Calls)
 ---------------------------------------
@@ -350,9 +352,11 @@ $$
                 & \Gamma \vdash x                 :: \Int \\
                 & \Gamma \vdash 1                 :: \Int \\
                 &                                         \\
-{\mathbf{Then}} & \Gamma \vdash \mathit{plus} x 1 :: \reft{v}{\Int}{v = x + 1}
+{\mathbf{Then}} & \Gamma \vdash \mathit{plus}\ x\ 1 :: \reft{v}{\Int}{v = x + 1}
 \end{array}
 $$
+
+i.e. Output type $\reft{v}{\Int}{v = a + b}$ with *formals* $a, b$ substituted by *actuals* $x, 1$
 
 2. Typing Applications (Function Calls)
 ---------------------------------------
@@ -364,10 +368,10 @@ And so, we can type:
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ four' :: Nat @-}
-four' = plus x 1   -- x = 3 |- {v = x+1} <: Nat
+{-@ four' :: Pos @-}
+four' = plus x 1   -- x = 3 |- {v = x+1} <: Pos
   where            -- as
-    x = 3          -- x = 3 =>  v = x+1  => 0 <= v
+    x = 3          -- x = 3 =>  v = x+1  => 0 < v
 \end{code}
 
 <div class="mybreak"><br></div>
@@ -384,10 +388,10 @@ Similarly, we can type:
 <div class="mybreak"><br></div>
 
 \begin{code}
-{-@ incr :: Nat -> Nat @-}
-incr x = plus x 1  -- {0 <= x} |- {v = x + 1} <: Nat
+{-@ incr :: Pos -> Pos @-}
+incr x = plus x 1  -- {0 < x} |- {v = x + 1} <: Pos 
                    -- as
-                   -- (0 <= x) =>  v = x + 1  => 0 <= v
+                   -- (0 < x) =>  v = x + 1  => 0 < v
 \end{code}
 
 <div class="mybreak"><br></div>
@@ -420,8 +424,8 @@ Types + Predicates
 Dependent Application + Predicate Subtyping
 
 
-Recap: Refinement Types 101
----------------------------
+Recap: Basic Refinement Types
+-----------------------------
 
 <div class="mybreak"><br></div>
 
@@ -437,24 +441,4 @@ Dependent Application + Predicate Subtyping
 
 <div class="mybreak"><br></div>
 
-
-Plan
-----
-
-<br> 
-
-**Part I:** [Refinements 101](02-refinements.html)
-
-Case Study: **[Vector Bounds](03-example-vectors.html)**
-
-**Part II:** [Properties of Structures](04-data-properties.html)
-
-Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
-
-**Part III:** [Invariants of Data Structures](07-data-legal.html)
-
-Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
-
-**Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
-
-Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)
+[continue...](00-plan.html)

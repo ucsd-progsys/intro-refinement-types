@@ -37,9 +37,11 @@ templateFile = do
 
 txBlock :: T.Text -> IORef Int -> Block -> IO Block
 
-txBlock t r z@(RawBlock (Format "latex") str)
+txBlock t r z@(RawBlock (Format "tex") str)
   | Just contents <- isSpecCode (T.unpack str)
   = return $ CodeBlock ("", ["spec"], []) (T.pack contents)
+ --  where 
+ --   foo = Debug.Trace.trace ("TXBLOCK: " ++ show str) $ isSpecCode (T.unpack str)
 
 txBlock t r z@(CodeBlock (id, classes, namevals) contents)
   | isCode classes
@@ -50,7 +52,7 @@ txBlock t r (RawBlock (Format "latex") str)
   = makeHtml t r True (T.pack contents)
 
 txBlock _ _ z
-  = return z
+  = return ({- Debug.Trace.trace ("TxBlock: " ++ show z) -} z)
 
 isCode  = ("haskell" `elem`)
 
