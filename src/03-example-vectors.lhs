@@ -128,6 +128,10 @@ What does a function **require** for correct execution?
 
 Input index must be between `0` and the size of `vec`
 
+\begin{spec}
+type Nat = {v:Int| 0 <= v}
+\end{spec}
+
 Specifications: Post-Conditions
 -------------------------------
 
@@ -543,10 +547,7 @@ Putting it All Together: Binary Search
 
 \begin{code}
 binarySearch :: Ord a => a -> Vector a -> Maybe Int
-binarySearch x v = 
-  if size v == 0
-    then Nothing
-    else loop x v 0 (size v - 1)
+binarySearch x v = loop x v 0 (size v)
 
 loop :: Ord a => a -> Vector a -> Int -> Int -> Maybe Int
 loop x v lo hi = do
@@ -564,29 +565,23 @@ loop x v lo hi = do
     else Just mid
 \end{code}
 
+Case Study: Vector Bounds
+-------------------------
 
-Plan
-----
+<br> 
 
-<br>
+**Goal: Whirlwind Overview** 
 
-**Part I:** [Refinements 101](02-refinements.html)
+<div class="mybreak"><br></div>
 
-Case Study: [Vector Bounds](03-example-vectors.html)
+Specification
 
-**Part II:** **[Properties of Structures](04-data-properties.html)**
+Verification
 
-Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
+Inference
 
-**Part III:** [Invariants of Data Structures](07-data-legal.html)
+Collections & HOFs
 
-Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
-
-**Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
-
-Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)
-
-
-
+[continue...](00-plan.html)
 
 [pldi08]: http://dl.acm.org/citation.cfm?id=1375602
