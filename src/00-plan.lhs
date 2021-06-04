@@ -27,6 +27,6 @@ a. [Properties of data](04-data-properties.html) &emsp; &emsp; b. [Legal data](0
 <p style="margin-bottom:1.1cm;">
 **Part III: Case Studies**
 
-a. [Use-def analysis](07-example-interpreter.html) &emsp; &emsp; b. [Pointer Arithmetic](08-example-bytestring.html)
+a. [Use-def analysis](07-example-interpreter.html) &emsp; &emsp; b. [Low-level Memory Safety](08-example-bytestring.html)
 </p>
 
