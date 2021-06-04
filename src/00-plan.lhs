@@ -7,8 +7,8 @@ zog = 12
 \end{code}
 </div>
 
-Outline: LIVE with Refinement Types
------------------------------------
+Plan: LIVE with Refinement Types
+--------------------------------
 
 <p style="margin-bottom:1.1cm;">
 
@@ -21,7 +21,7 @@ a. [Basic Refinements](02-refinements.html) &emsp; &emsp; b. [Ex: Vector Bounds]
 <p style="margin-bottom:1.1cm;">
 **Part II: Refinements on Datatypes** 
 
-a. [Legal data](04-data-legal.html) &emsp; &emsp; b. [Properties of data](05-data-properties.html) &emsp; &emsp; c. [Ex: Sorting](06-example-sort.html)
+a. [Properties of data](04-data-properties.html) &emsp; &emsp; b. [Legal data](05-data-legal.html) &emsp; &emsp; c. [Ex: Sorting](06-example-sort.html)
 </p>
 
 <p style="margin-bottom:1.1cm;">

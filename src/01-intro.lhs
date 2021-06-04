@@ -220,8 +220,6 @@ Verify *program specific properties* via program specific analysis
 
 Rapid feedback to *influence design* not only post-facto validation
 
-
-
 LIVE with Refinement Types
 --------------------------
 

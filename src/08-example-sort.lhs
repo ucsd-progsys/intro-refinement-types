@@ -242,3 +242,23 @@ Recap: Invariant via Refined Constructors
 
 Simply by *applying* and *un-applying* refined constructor type!
 
+Plan
+----
+
+<br> 
+
+**Part I:** [Refinements 101](02-refinements.html)
+
+Case Study: [Vector Bounds](03-example-vectors.html)
+
+**Part II:** [Properties of Structures](04-data-properties.html)
+
+Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
+
+**Part III:** [Invariants of Data Structures](07-data-legal.html)
+
+Case Study: [Sorting actually Sorts](08-example-sort.html)
+
+**Part IV:** **[Termination](09-termination.html)** and [Correctness Proofs](10-reflection.html)
+
+Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)
