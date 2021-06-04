@@ -137,7 +137,7 @@ distclean:
 
 upload: all
 	cp -r $(SITE)/* $(GHPAGE)
-# cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin gh-pages
+	cd $(GHPAGE) && git add . && git commit -a -m "update page" && git push origin main
 
 live: all
 	cp -r $(SITE)/* $(GHPAGE)
