@@ -451,7 +451,7 @@ exBad = do fp <- malloc 4
              poke (p `plusPtr` 0) zero
              poke (p `plusPtr` 1) zero
              poke (p `plusPtr` 2) zero
-             poke (p `plusPtr` {- 5 -} 3) zero -- FIXME
+             poke (p `plusPtr` 5) zero
            return fp
         where
            zero = 0 :: Word8
@@ -569,11 +569,11 @@ Illegal Bytestrings
 \begin{code}
 bad1 = do 
   fp <- malloc 3
-  return (PS fp 0 {- 10 -} 3) -- FIXME 
+  return (PS fp 0 10)
 
 bad2 = do 
   fp <- malloc 3
-  return (PS fp 2 {- 2 -} 1)  -- FIXME
+  return (PS fp 2 2)
 \end{code}
 
 <div class="mybreak"><br></div>
@@ -718,7 +718,7 @@ Lets revisit our potentially "bleeding" `chop`
 </div>
 
 \begin{code}
-{-@ chop :: s:String -> n:{Nat | n <= len s} -> StringN n @-} -- FIXME
+{-@ chop :: s:String -> n:Nat -> StringN n @-}
 chop s n = s'
   where
     b    = pack s            -- convert String to low-level
@@ -739,7 +739,7 @@ demo     = [ex6, ex30]
   where
     ex   = "Ranjit likes burritos"  -- has size 21 
     ex6  = chop ex 6                -- ok
-    ex30 = chop ex {- 30 -} 3 -- FIXME               -- out of bounds
+    ex30 = chop ex 30               -- out of bounds!
 \end{code}
 
 <br>
@@ -763,6 +763,7 @@ Recap: Types vs Overflows
 
 **Errors at *each* level are prevented by types at *lower* levels**
 
+[End...](00-plan.html)
 
 
 <div class="hidden">
@@ -792,8 +793,6 @@ foreign import ccall unsafe "string.h memcpy" c_memcpy
   @-}
 memcpy :: Ptr Word8 -> Ptr Word8 -> CSize -> IO ()
 memcpy p q s = c_memcpy p q s >> return ()
-
-
 \end{code}
 
 </div>
