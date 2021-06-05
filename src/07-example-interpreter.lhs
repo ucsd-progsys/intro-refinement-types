@@ -6,8 +6,7 @@
 {-@ LIQUID "--no-warnings"    @-}
 {-@ LIQUID "--no-termination" @-}
 
-
-module Interpreter (interpret) where
+module Interpreter (safeDiv, impossible, interpret) where
 
 import           Prelude hiding (lookup)
 import qualified Data.Set as S
@@ -25,11 +24,6 @@ import qualified Data.Set as S
 
 isSafe s = useS s == S.empty 
 
-{-@ measure vars @-}
-vars :: State -> S.Set Var 
-vars (Bind x _ st) = S.union (S.singleton x) (vars st)
-vars Emp           = S.empty 
-
 {-@ measure useE @-}
 useE :: AExp -> S.Set Var
 useE (AVal v)     = S.empty
@@ -43,14 +37,6 @@ useS (If e s1 s2) = S.union (useE e) (S.union (useS s1) (useS s2))
 useS (While e s)  = S.union (useE e) (useS s)
 useS (Seq s1 s2)  = S.union (useS s1) (S.difference (useS s2) (defS s1)) 
 useS Skip         = S.empty
-
-{-@ measure defS @-}
-defS :: Stmt -> S.Set Var
-defS (Asgn x e)   = S.singleton x
-defS (If e s1 s2) = S.intersection (defS s1) (defS s2)
-defS (While e s)  = S.empty
-defS (Seq s1 s2)  = S.union (defS s1) (defS s2) 
-defS Skip         = S.empty  
 
 
 -}
@@ -106,11 +92,25 @@ A datatype for mapping `Var` to their `Val`ue
 data State 
   = Emp                   -- ^ Empty  `State`
   | Bind Var Val State    -- ^ Extend `State` by assigning `Var` to `Val`
+\end{code}
 
+Updating State
+--------------
+
+`set x v s` returns a new state like `s` but where `x` has value `v`
+
+\begin{code}
 -- | Update `s` by setting the value of `x` to `v` 
 set :: Var -> Val -> State -> State
 set x v s = Bind x v s
+\end{code}
 
+Reading State
+-------------
+
+`get x s` returns the value of `x` in `s`
+
+\begin{code}
 -- | Lookup the value of `x` in `s`
 get :: Var -> State -> Val
 get x (Bind y v s) 
@@ -121,6 +121,20 @@ get x Emp     = impossible (x ++ " is undefined!")
 \end{code}
 
 **Exercise:** When is the last case in `get` indeed `impossible`?
+
+`Var`iables Defined in a `State`
+----------------------------
+
+Lets write a measure for the set of `Var` in a `State`
+
+\begin{code}
+{-@ measure vars @-}
+vars :: State -> S.Set Var 
+vars (Bind x _ st) = S.union (S.singleton x) (vars st)
+vars Emp           = S.empty 
+\end{code}
+
+**Exercise:** Can we go back and fix the error in `get`?
 
 Arithmetic Expressions 
 ----------------------
@@ -168,17 +182,13 @@ Variables Read in an Expression
 \begin{code}
 {-@ measure useE @-}
 useE :: AExp -> S.Set Var
+useE (AVal v)     = S.empty
 useE (AVar x)     = S.empty    -- TODO: replace with proper definition
-useE (AVal v)     = S.empty    -- TODO: replace with proper definition
 useE (AAdd e1 e2) = S.empty    -- TODO: replace with proper definition
 
 {- | HINT : You may want to use 
-     * S.empty              : the empty set
      * S.singleton x        : the set containing just x 
-     * S.union s1 s2        : the union of s1 and s2         
-     * S.intersection s1 s2 : the union of s1 and s2         
-     * S.isSubsetOf s1 s2   : is s1 a subset of s2 ?
--}
+     * S.union s1 s2        : the union of s1 and s2                -}
 \end{code}
 
 **Exercise:** Now, use `useE` to specify and verify `evalE`.
@@ -208,53 +218,62 @@ Evaluating Statements
 
 \begin{code}
 evalS :: State -> Stmt -> State
-
 evalS st Skip          = st
-
 evalS st (Asgn x e)    = set x (evalE st e) st
-
 evalS st (If e s1 s2)  = if (evalE st e /= 0)
                            then evalS st s1
                            else evalS st s2
-
 evalS st w@(While e s) = if (evalE st e /= 0)
                            then evalS st (Seq s w) 
                            else st
-
 evalS st (Seq s1 s2)   = evalS (evalS st s1) s2
 \end{code}
 
 **Exercise:** When is it safe to call `evalE st e`? 
 
-Specify Used-Before-Defined Variables
--------------------------------------
+Specify *Defined* Variables
+---------------------------
+
+<br>
+
+\begin{code}
+{-@ measure defS @-}
+defS :: Stmt -> S.Set Var
+defS Skip         = S.empty  
+defS (Asgn x e)   = S.singleton x
+defS (If e s1 s2) = S.intersection (defS s1) (defS s2)
+defS (While e s)  = S.empty
+defS (Seq s1 s2)  = S.union (defS s1) (defS s2) 
+\end{code}
+
+**Exercise:** Why is the `While` case `empty`? 
+
+
+Specify *Used* (Before-Definition) Variables
+--------------------------------------------
 
 **Problem: Which `Var`s are *used-before-definition* in a `Stmt`?**
 
 \begin{code}
 {-@ measure useS @-}
 useS :: Stmt -> S.Set Var
-useS (Asgn x e)   = S.empty    -- TODO: replace with proper definition 
-useS (If e s1 s2) = S.empty    -- TODO: replace with proper definition
-useS (While e s)  = S.empty    -- TODO: replace with proper definition
-useS (Seq s1 s2)  = S.empty    -- TODO: replace with proper definition
-useS Skip         = S.empty    -- TODO: replace with proper definition
+useS (Asgn x e)   = useE e 
+useS (If e s1 s2) = S.union (useE e) (S.union (useS s1) (useS s2)) 
+useS (While e s)  = S.union (useE e) (useS s)
+useS (Seq s1 s2)  = S.empty -- TODO: replace with proper definition
+useS Skip         = S.empty
 
-{- | HINT: * S.empty              : the empty set
-           * S.singleton x        : the set containing just x 
-           * S.union s1 s2        : the union of s1 and s2         
-           * S.intersection s1 s2 : the union of s1 and s2         
-           * S.isSubsetOf s1 s2   : is s1 a subset of s2 ?          -}
+{- | HINT: * S.difference s1 s2 : the difference of s1 and s2   -}
 \end{code}
 
-**Exercise:** Now go back and specify and verify `EvalS`
+**Exercise:** Now go back and specify and verify `evalS`
 
 Statically Verifying a Dynamic Check
 ------------------------------------
 
 <br>
 
-**`interpret` uses a *run-time check* to see if `s` is safe to evaluate.**
+**`interpret` *checks* to see if `s` is safe to evaluate.**
 
 \begin{code}
 interpret :: Stmt -> Maybe State
@@ -295,23 +314,3 @@ unsafe2 = (While (AVal 0) (Asgn "Z" (AVal 1)))  `Seq` -- while (0) { z := 1}
           (Asgn "Y" (AVar "Z"))                       -- y := z 
 \end{code}
 
-Plan
-----
-
-<br>
-
-**Part I:** [Refinements 101](02-refinements.html)
-
-Case Study: [Vector Bounds](03-example-vectors.html)
-
-**Part II:** [Properties of Structures](04-data-properties.html)
-
-Case Study: [Sorting](05-example-sort.html), [Interpreter](06-example-interpreter.html)
-
-**Part III:** **[Invariants of Data Structures](07-data-legal.html)**
-
-Case Study: [Sorting actually Sorts Lists](08-example-sort.html)
-
-**Part IV:** [Termination](09-termination.html) and [Correctness Proofs](10-reflection.html)
-
-Case Study: [Optimizing Arithmetic Expressions](11-example-opt.html)

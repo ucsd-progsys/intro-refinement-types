@@ -763,7 +763,7 @@ Recap: Types vs Overflows
 
 **Errors at *each* level are prevented by types at *lower* levels**
 
-[End...](00-plan.html)
+[Continue...](00-plan.html)
 
 
 <div class="hidden">
